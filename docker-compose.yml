@@ -1,4 +1,6 @@
 occu:
    build: .
    ports:
-      - 80:80
+      - "80:80"
+   volumes:
+      - occu-config:/usr/local
