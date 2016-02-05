@@ -2,5 +2,9 @@ occu:
    build: .
    ports:
       - "80:80"
+      - "2000:2000"
+      - "2001:2001"
+      - "2002:2002"
+      - "8181:8181"
    volumes:
       - occu-config:/usr/local

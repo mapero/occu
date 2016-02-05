@@ -29,6 +29,6 @@ COPY docker/reboot /sbin/
 
 VOLUME ["/usr/local"] 
 
-EXPOSE 80
+EXPOSE 80 90 443 2000 2001 2002 8001 8002 8181 4430 4431 4432 44381
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisor.conf"]
