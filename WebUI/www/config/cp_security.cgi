@@ -474,12 +474,13 @@ proc action_backup_restore_go {} {
     }
 		
 	if { "false" == $ccu1_backup } {	# backup for version >= 2
-		exec umount /usr/local
-        	exec /usr/sbin/ubidetach -p /dev/mtd6
-        	exec /usr/sbin/ubiformat /dev/mtd6 -y
-        	exec /usr/sbin/ubiattach -p /dev/mtd6
-        	exec /usr/sbin/ubimkvol /dev/ubi1 -N user -m
-        	exec mount /usr/local
+		rm -rf /usr/local/*
+#		exec umount /usr/local
+#        	exec /usr/sbin/ubidetach -p /dev/mtd6
+#        	exec /usr/sbin/ubiformat /dev/mtd6 -y
+#        	exec /usr/sbin/ubiattach -p /dev/mtd6
+#        	exec /usr/sbin/ubimkvol /dev/ubi1 -N user -m
+#        	exec mount /usr/local
 
 		if { [catch {exec tar xzf /tmp/usr_local.tar.gz} errorMessage] } {
 			# set msg "Beim Einspielen des Systembackups ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut. "
