@@ -27,6 +27,8 @@ COPY docker/supervisor/ /etc/supervisor/
 COPY docker/VERSION /boot/
 COPY docker/reboot /sbin/
 
+VOLUME ["/usr/local"] 
+
 EXPOSE 80
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisor.conf"]
