@@ -23,8 +23,9 @@ RUN ln -s / /opt/hm && \
     mkdir -p /usr/local/etc && \
     mv /etc/config /usr/local/etc/ && \
     ln -s /usr/local/etc/config /etc/config
-COPY supervisor/ /etc/supervisor/
-COPY VERSION /boot/
+COPY docker/supervisor/ /etc/supervisor/
+COPY docker/VERSION /boot/
+COPY docker/reboot /sbin/
 
 EXPOSE 80
 
