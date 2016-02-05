@@ -411,6 +411,12 @@ proc action_backup_restore_check {} {
     }
 }
 
+proc action_backup_restore_go_dbg {} {
+    # DBG
+    put_message "Bis hier Ok" "Bla Bla Bla"
+    return
+    #DBG
+}
 proc action_backup_restore_go {} {
     global env
     cd /tmp/
@@ -447,8 +453,6 @@ proc action_backup_restore_go {} {
     if { $config_has_user_key } {
         if { "$stored_signature" != "[exec crypttool -t 3 -k "$key" -s <usr_local.tar.gz]" } {
             # Der eingegebene System-Sicherheitsschl&uuml;ssel entspricht nicht dem zur Backup-Datei geh&ouml;renden System-Sicherheitsschl&uuml;ssel.
-            put_message "\${dialogSettingsSecurityMessageSysBackupSecurityErrorTitle}" "\${dialogSettingsSecurityMessageSysBackupSecurityError2Content}"
-            return
         }
     }
     
@@ -474,7 +478,7 @@ proc action_backup_restore_go {} {
     }
 		
 	if { "false" == $ccu1_backup } {	# backup for version >= 2
-		rm -rf /usr/local/*
+		exec rm -rf /usr/local/*
 #		exec umount /usr/local
 #        	exec /usr/sbin/ubidetach -p /dev/mtd6
 #        	exec /usr/sbin/ubiformat /dev/mtd6 -y
@@ -567,8 +571,8 @@ proc action_backup_restore_go {} {
 	}
 	
 	if { "false" == $backuperror } {
-        exec mount -o remount,ro /usr/local
-        exec mount -o remount,rw /usr/local
+#        exec mount -o remount,ro /usr/local
+#        exec mount -o remount,rw /usr/local
         division {class="popupTitle"} {
             puts "\${dialogSettingsSecurityMessageSysBackupRestartSystemTitle}"
         }

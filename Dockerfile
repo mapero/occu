@@ -24,6 +24,7 @@ RUN ln -s / /opt/hm && \
     mv /etc/config /usr/local/etc/ && \
     ln -s /usr/local/etc/config /etc/config
 COPY supervisor/ /etc/supervisor/
+COPY VERSION /boot/
 
 EXPOSE 80
 
