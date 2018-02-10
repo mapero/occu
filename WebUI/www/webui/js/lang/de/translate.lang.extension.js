@@ -11,8 +11,10 @@ jQuery.extend(true,langJSON, {
     "btnSelectRoomOrFunctionNew" : "Neu...",
     "btnSelectRoomOrFunctionClose" : "Schlie%DFen",
     "btnSimKeyPress" : "Simuliere Tastendruck",
+    "btnSimShortKeyPress" : "Simuliere kurzen Tastendruck",
+    "btnSimLongKeyPress" : "Simuliere langen Tastendruck",
     "btnDirectDeviceLinkCheckAgain" : "Erneut pr%FCfen",
-    "btnDirectDeviceLinkIgnore" : "Ignorieren",
+    "lblIgnore" : "Ignorieren",
     "lblNewRoom" : "neuer Raum",
     "lblNewFunction" : "neues Gewerk",
     "lblEmpty" : "leer",
@@ -196,7 +198,6 @@ jQuery.extend(true,langJSON, {
     "Budapest" : "Budapest",
     "SanFrancisco" : "San Francisco",
     "NewYork" : "New York",
-
     "Adana" : "Adana",
     "Ankara" : "Ankara",
     "Antalya" : "Antalya",
@@ -205,8 +206,6 @@ jQuery.extend(true,langJSON, {
     "Izmir" : "Izmir",
     "Konya" : "Konya",
     "Mersin" : "Mersin",
-
-
     "commentCitiesEnd" : "***********************************************",
     "commentDatePicker" : "***********************************************",
     "Sun" : "So",
@@ -214,7 +213,7 @@ jQuery.extend(true,langJSON, {
     "Tue" : "Di",
     "Wed" : "Mi",
     "Thu" : "Do",
-    "Fre" : "Fr",
+    "Fri" : "Fr",
     "Sat" : "Sa",
     "Jan" : "Januar",
     "Feb" : "Februar",
@@ -246,7 +245,7 @@ jQuery.extend(true,langJSON, {
     "dialogSettingsCMDialogPerformSoftwareUpdateP1" : "Das Software-Update wird jetzt durchgef%FChrt. Nach dem Update wird die " + HMIdentifier.de.CCUShortName + " automatisch neu gestartet.",
     "dialogSettingsCMDialogPerformSoftwareUpdateP2" : "Es wird dringend empfohlen, nach dem Update den Cache Ihres Webbrowsers zu l%F6schen. Gehen Sie dabei folgenderma%DFen vor:",
     "dialogSettingsCMDialogPerformSoftwareUpdateLi1" : "Beenden Sie die aktuelle Browser-Sitzung.",
-    "dialogSettingsCMDialogPerformSoftwareUpdateLi2" : "L%F6schen Sie den Cache Ihres Webbrowsers.<br />Hinweise dazu erhalten Sie in dem Tutorial <a href='http://www.homematic.com/fileadmin/pdfs/einleitungen/Web-UI_Firmware_Update_-_Browser-Cache_leeren.pdf'>WebUI Firmware Update: Browser-Cache leeren</a> auf http://www.homematic.com.",
+    "dialogSettingsCMDialogPerformSoftwareUpdateLi2" : "L%F6schen Sie den Cache Ihres Webbrowsers.<br />Hinweise dazu erhalten Sie in dem Tutorial <a href='http://www.eq-3.de/service/faq.html?id=38' target='_blank'>WebUI Firmware Update: Browser-Cache leeren</a> auf http://www.eq-3.de",
     "dialogSettingsCMDialogPerformSoftwareUpdateLi3" : "Starten Sie Ihren Webbrowser neu.",
     "dialogSettingsCMDialogPerformSoftwareUpdateStartTitle" : "Software-Update - Best%E4tigung",
     "dialogSettingsCMDialogPerformSoftwareUpdateStart" : "Die einzuspielende Softwaredatei befindet sich jetzt auf der " + HMIdentifier.de.CCUShortName + ".<br/>",
@@ -280,6 +279,7 @@ jQuery.extend(true,langJSON, {
     "ConfirmDeleteDeviceWindowDeleteOptions" : "L%F6schoptionen",
     "ConfirmDeleteDeviceWindowRemove" : "Ger%E4t ablernen",
     "ConfirmDeleteDeviceWindowRemoveDescription" : "Das Ger%E4t wird aus der HomeMatic Zentrale gel%F6scht. Direkte Verkn%FCpfungen bleiben jedoch bestehen.",
+    "ConfirmDeleteDeviceWindowRemoveDescriptionNoneCCUDevice" : "Das Ger%E4t wird aus der HomeMatic Zentrale gel%F6scht.",
     "ConfirmDeleteDeviceWindowReset" : "Ger%E4t in den Werkszustand zur%FCcksetzen",
     "ConfirmDeleteDeviceWindowResetDescription" : "Das Ger%E4t wird aus der HomeMatic Zentrale gel%F6scht und in den Werkszustand zur%FCckversetzt.",
     "ConfirmDeleteDeviceWindowDeleteButton" : "L%F6schen",
@@ -341,7 +341,6 @@ jQuery.extend(true,langJSON, {
     "dialogSetSecKeyLoadBackuplblA" : "Die Zentrale verwendet denselben Sicherheitsschl&uuml;ssel, der auch f&uuml;r das Erstellen des Backup verwendet wurde.",
     "dialogSetSecKeyLoadBackuplblB" : "Die Zentrale befindet sich im Auslieferungszustand und es wurde noch kein Sicherheitsschl&uuml;ssel gesetzt.",
     "dialogSetSecKeyLoadBackupLblC" : "Sicherheitsschl&uuml;ssel:",
-
     "comment" : "folgende 2 Keys sind Fragmente",
     "comment" : "Zusammengesetzt heisst es: 'Deinstallieren wurde erfolgreich ausgef%FChrt', bzw. 'Deinstallieren fehlgeschlagen'",
     "btnSysConfAdditionalSoftRemoveSuccess" : " wurde erfolgreich ausgef%FChrt.",
@@ -374,9 +373,7 @@ jQuery.extend(true,langJSON, {
     "transferConfigData" : "Ger%E4te-/Kanaleinstellungen werden an Komponenten %FCbertragen...",
     "setLoggingSuccess" : "Setzen der Logging-Einstellungen erfolgreich!",
     "setLoggingFailure" : "Setzen der Logging-Einstellungen fehlgeschlagen:\n",
-
     "comment" : "RF_REPEATER.txt",
-
     "maxEntriesReachedTitle" : "Achtung!",
     "maxEntriesReached_a" : "Die maximale Anzahl von ",
     "maxEntriesReached_b" : " Eintr&auml;gen wurde erreicht.<br/><br/>F&uuml;r Verkn&uuml;pfungen mit gleichen Ger&auml;ten f&uuml;r Sender und Empf&auml;ger wird jeweils ein Speicherplatz ben&ouml;tigt.",
@@ -515,66 +512,32 @@ jQuery.extend(true,langJSON, {
     "lblMinutes" : "Minuten",
     "lblErrorCheck" : "Fehlerpr%FCfung",
     "lblNoError" : "Kein Fehler",
-
-    "lblLinkPartnerTempSensor" : "Verkn%FCpfungspartner<br/>Temperatursensor",
-    "lblLinkPartnerWallMountedThermostat" : "Verkn%FCpfungspartner<br/>Wandthermostat",
-    "lblLinkPartnerHeatingThermostat" : "Verkn%FCpfungspartner<br/>Heizungsthermostat",
-    "lblLinkPartnerShutterContact" : "Verkn%FCpfungspartner<br/>Fensterkontakt",
-    "lblLinkPartnerHeatingThermostatSender" : "Verkn%FCpfungspartner<br/>Heizungsthermostat<br/>Sender",
-    "lblLinkPartnerHeatingThermostatReceiver" : "Verkn%FCpfungspartner<br/>Heizungsthermostat<br/>Empf%E4nger",
-    "lblLinkPartnerKey" : "Verkn%FCpfungspartner<br/>Taste",
-    "lblLinkPartnerSwitchActor" : "Verkn%FCpfungspartner<br/>Schaltaktor",
-
-    "lblSwitchActor" : "Schaltaktor",
-    "lblMeasurementChannel" : "Messwert-Kanal",
-    "lblPower" : "Leistungs-Sensor",
-    "lblCurrent" : "Strom-Sensor",
-    "lblVoltage" : "Spannungs-Sensor",
-    "lblFrequency" : "Frequenz-Sensor",
-
     "lblInfoStatusControlEnergyCounter" : "Energie-Z%E4hler " + HMIdentifier.de.CCUShortName,
     "lblInfoStatusControlDevice" : "Energie-Z%E4hler Ger%E4t",
     "lblInfoStatusControlVoltage" : "Spannung",
     "lblInfoStatusControlCurrent" : "Strom",
     "lblInfoStatusControlPower" : "Leistung",
     "lblInfoStatusControlFrequency" : "Netzfrequenz",
-
-    // Sch%FCco - don´t change
-    "lblTipTronicChn1" : "Aktor-Kanal",
-    "lblTipTronicChn2" : "Sensor-Kanal",
-    "lblTipTronicChn3" : "L%FCftungssperre-Kanal",
-    // End Sch%FCco
-
     "noLinkableChannelsAvailable" : "Es sind keine verkn%FCpfbaren Kan%E4le vorhanden.",
-
     "performingFirmwareUpdate" : "F%FChre Firmware-Update durch...",
     "interfaceProcessNotReadyA" : "Interface-Prozess",
     "interfaceProcessNotReadyB" : "l%E4uft nicht.",
-
     "dialogSettingsSecurityTDSSH" : "SSH",
     "dialogSettingsSecurityLblActivateSSH" : "SSH aktiv: ",
     "dialogSettingsSecurityLblPassword" : "Passwort: ",
     "dialogSettingsSecurityLblPasswordRepeat" : "Passwort-Wiederholung: ",
     "dialogSettingsSecuritySSHDescription" : "Hier k%F6nnen Sie die Einstellung des SSH-Zugangs der " + HMIdentifier.de.CCUShortName + " bearbeiten.",
-
     "dialogSettingsSecuritySSHAlert" : "Die Passw%F6rter sind nicht identisch.",
-
     "dialogSettingsSecuritySSHMsgBoxSavePasswdTitle" : "Die Einstellungen werden gespeichert!",
     "dialogSettingsSecuritySSHMsgBoxSavePasswdContent" : "",
-
     "dialogSettingsSecuritySSHMsgBoxNoErrorTitle" : "Fertig",
     "dialogSettingsSecuritySSHMsgBoxNoErrorContent" : "Die Einstellung wurde %FCbernommen.",
     "dialogSettingsSecuritySSHMsgBoxErrorTitle" : "Es ist ein Fehler aufgetreten!",
-
-
     "btnSettingsDiagrams" : "Diagramme",
     "btnSettingsGroups" : "Gruppen",
-
     "sessionInvalid" : "Die Sitzung ist ung%FCltig oder abgelaufen!",
 	  "forward" : "Weiter zur Startseite",
-
     "unknownMessage" : "unbekannte Meldung",
-
     "dialogEulaTitle" : "Endbenutzer-Lizenzvertrag",
     "acceptEula" : "Ich stimme den Bedingungen des Lizenzvertrags zu",
     "dialogEulaBtnInstall" : "Installieren",
@@ -591,7 +554,6 @@ jQuery.extend(true,langJSON, {
     "stringTableCommunicatingReporting" : "Kommunikations-Fehlermeldung",
     "stringTableCommunicatingReportingTrue" : "Kommunikations-Fehlermeldung",
     "stringTableCommunicatingReportingFalse" : "Keine Kommunikations-Fehlermeldung",
-
     "thVersion" : "Version",
     "thMinCCU" : "min. CCU-Version",
     "submenuDeviceFirmware" : "Ger%E4te-Firmware",
@@ -601,13 +563,11 @@ jQuery.extend(true,langJSON, {
     "addDevFirmwareSuccess" : "Die Firmware wurde erfolgreich hinzugef%FCgt.",
     "addDevFirmwareFailed" : "Fehler: Die Firmwaredatei konnte nicht hinzugef%FCgt werden.",
     "addDevFirmwareInfoCorrupt" : "Die 'info'-Datei ist entweder nicht vorhanden, oder fehlerhaft.",
-
     "delDevFirmwareFailed" : "Beim L%F6schen der Firmware ist ein Fehler aufgetreten!",
     "delDevFirmwareSuccessA" : "Firmware ",
     "delDevFirmwareSuccessB" : " gel%F6scht.",
     "delDevFirmwareMsgTitle" :"Best%E4tigung",
     "delDevFirmwareMsgBody" : "Wollen Sie die Firmware wirklich vom System entfernen?",
-
     "fwUpdatePressConfigKey" :
       "Bringen Sie das Ger%E4t in Funkreichweite der "+HMIdentifier.de.CCUShortName+" und dr%FCcken Sie die Konfigurations-Taste. "+
       "Anschlie%DFend startet das Firmwareupdate.",
@@ -615,40 +575,31 @@ jQuery.extend(true,langJSON, {
     "partyStart" : "Startzeit",
     "partyEnd" : "Endzeit",
     "partyTemperature" : "Temperatur",
-
     "errorComfortLTEco" : "Komfort Temp. kleiner Eco Temp.",
-
     "stringTableBatteryDefect" : "Batterie-Widerstand zu hoch",
     "stringTableBatteryNotDefect" : "Batterie-Widerstand OK",
-
     "stringTablePartyModeSubmit" : "Urlaubsmodus",
     "partyModeEndTime" : "Ende Urlaubsmodus:",
-
-
     "changeTimeZoneHint" : "Zum %C4ndern der Zeitzone ist ein Neustart der "+HMIdentifier.de.CCUShortName+" n%F6tig.",
-
     "tdPowerCost" : "Preis per kWh",
     "lblPowerCost" : "Preis/kWh",
     "lblCurrency" : "W%E4hrung",
-    "btnSavePowerCost" : "Speichern",
+    "btnSave" : "Speichern",
     "helpPowerCost" : "Hier k%F6nnen Sie den Preis pro kWh Ihres Energieanbieters eintragen.",
-
     "stringTableDeviceInBootloader": "Das Ger%E4t befindet sich im Bootloader",
     "stringTableUpdatePending" : "Ein Firmware-Update steht zur %DCbertragung an.",
-
+    "stringTableUpdatePendingFalse" : "Es steht kein Firmware-Update zur %DCbertragung an.",
+    "stringTableUpdatePendingTrue" : "Es steht ein Firmware-Update zur %DCbertragung an.",
     "dialogNewDiagramTitle" : "Erstellen Sie ein neues Diagramm.",
     "dialogNewDiagramSettings" : "W%E4hlen Sie den Diagrammtyp:",
-
     "temperatureMeasurement" : "Temperaturmessung",
     "energyMeasurement" : "Energiemessung",
     "powerMeasurement" : "Verbrauch",
     "userSpecific" : "Benutzerspezifisch",
-
     "diagramPeriodToday" : "Heute",
     "diagramPeriodThisWeek" : "Diese Woche",
     "diagramPeriodThisMonth" : "Dieser Monat",
     "diagramPeriodThisYear" : "Dieses Jahr",
-
     "iconOff":"Aus",
     "iconOn":"An",
     "iconOpen":"Offen",
@@ -661,39 +612,30 @@ jQuery.extend(true,langJSON, {
     "iconSignalGreen":"Signal gr%FCn",
     "iconSignalYellow":"Signal gelb",
     "iconSignalRed":"Signal rot",
-
     "statusDisplayDialogTitle" : "Display Konfiguration",
     "statusDisplayOptionText" : "Text",
-
     "statusDisplayOptionWhite" : "Wei%DF",
     "statusDisplayOptionRed" : "Rot",
     "statusDisplayOptionOrange" : "Orange",
     "statusDisplayOptionYellow" : "Gelb",
     "statusDisplayOptionGreen" : "Gr%FCn",
     "statusDisplayOptionBlue" : "Blau",
-
     "ruleDescrHexString" : "Parameterzeichenkette",
     "lblSysConfSetPowerCost" : "Energiekostenverwaltung",
-
     "dialogChangeLogTitle" : "Changelog",
     "btnChangelog" : "Changelog",
     "errorReadChangelog": "Fehler beim Lesen des Changelogs....",
-
     "statusDisplayLine" : "Zeile",
     "statusDisplayOptionFreeText" : "Freier Text",
-
     "controlChannelNotActive" : "Der Kanal ist deaktiviert!",
     "remoteModeEM8SpecialValHint" : "Nach dem %DCbertragen der Konfiguration, k%F6nnen Sie die Parameter des Kanals einstellen.",
     "hintPrgExists" : "Es besteht mindestens ein Programm. Daher sind einige Funktionen gesperrt.",
-
     "lblGeneralSettingsCurrent" : "Strom",
     "lblGeneralSettingsGas" : "Gas",
     "lblGeneralSettingsHeatingValue" : "Brennwert kWh/m<sup>3",
     "lblGeneralSettingsConditionNumber" : "Zustandszahl",
-
     "lblInfoStatusControlGas" : "Verbrauch",
-    "lblInfoDimmerLevelReal" : "Realer Wert",
-
+    "lblInfoLevelReal" : "Realer Wert",
     "optionRGBWControllerPrg0" : "Aus",
     "optionRGBWControllerPrg1" : "Langsamer Durchlauf",
     "optionRGBWControllerPrg2" : "Normaler Durchlauf",
@@ -701,32 +643,26 @@ jQuery.extend(true,langJSON, {
     "optionRGBWControllerPrg4" : "Lagerfeuer",
     "optionRGBWControllerPrg5" : "Wasserfall",
     "optionRGBWControllerPrg6" : "TV-Simulation",
-
     "titleRGBWControllerDialogTitle" : "Konfigurationsdialog",
     "lblProgram": "Programm",
     "lblColorValue" : "Farbwert",
+    "lblColorValueBR" : "Farb-<br/>wert",
     "lblBrightnessLevel" : "Helligkeitswert",
     "lblRampTime" : "Rampenzeit",
     "lblOnTime" : "Einschaltdauer",
     "lblColorValueMin" : "Farbwert Start",
     "lblcolorValueMax" : "Farbwert Ende",
-
     "lblAllowOnlyGroupOperation": "Einzelne Ger&auml;tebedienung deaktivieren",
     "lblAttentionGroupNameChange" : "ACHTUNG, virtuelle Ger%E4te-/Kanalnamen werden %DCberschrieben!",
-
     "dialogRenameVirtualGroupDeviceTitle" : "Umbenennung des virtuellen Ger%E4tes",
     "dialogVirtualGroupDeviceContent" : "M%F6chten Sie das virtuelle Ger%e4t der Gruppe sowie die entsprechenden Kan%E4le mit dem Gruppennamen %FCberschreiben?",
-
     "lblNewDeviceFirmwareAvailable" : "Neue Ger%E4te-Firmware verf%FCgbar",
     "dialogShowDeviceFirmwareTitle" : "Es stehen Ger%E4te-Firmware-Updates zur Verf%FCgung",
     "dialogShowDeviceFirmwareTHDevice": "Ger%E4t",
     "dialogShowDeviceFirmwareTHCurFw": "Aktuell",
     "dialogShowDeviceFirmwareTHNewFw": "Neu",
     "dialogShowDeviceFirmwareLinkDownload": "Zum Downloadbereich",
-
-
     "diagramHelpCustomModeTitle" : "Beschreibung der Werte f%FCr gr%F6%DFere Zeitr%E4ume",
-
     "diagramHelpCustomModeContent" :
       "<ul>" +
        "<li class='diagramHelpCustomModeLi1'>Durchschnittswerte" +
@@ -734,13 +670,11 @@ jQuery.extend(true,langJSON, {
             "<li>Bei dieser Ansicht werden die Durchschnittswerte von untergeordneten Zeitr%E4umen dargestellt.</li>" +
           "</ul>"+
         "</li>" +
-
         "<li class='diagramHelpCustomModeLi1'>Minimalwerte" +
            "<ul>" +
              "<li>Bei dieser Ansicht werden immer die minimalen Werte von untergeordneten Zeitr%E4umen dargestellt.</li>" +
            "</ul>"+
          "</li>" +
-
         "<li class='diagramHelpCustomModeLi1'>Maximalwerte" +
            "<ul>" +
              "<li>Bei dieser Ansicht werden immer die maximalen Werte von untergeordneten Zeitr%E4umen dargestellt.</li>" +
@@ -748,41 +682,65 @@ jQuery.extend(true,langJSON, {
          "</li>" +
       "</ul>" +
       "<div>Diese Einstellung hat nur Auswirkungen auf gro&szlig;e Zeitr%E4ume (Woche/Monat/Jahr)</div>",
-
     "lblSettingsDeviceFirmware0" : "%DCbersicht installierter Ger%E4te-Firmware-Dateien",
     "lblSettingsDeviceFirmware1" : "Ger%E4te-Firmware hinzuf%FCgen",
     "lblSettingsDeviceFirmware2" : "Ger%E4te-Firmware enfernen",
     "lblSettingsDeviceFirmware3" : "Changelog der Ger%E4te-Firmware betrachten",
-
     "hintDevFwAlreadyUploaded" : "" +
       "Die aktuellste Firmware des Ger%E4tes befindet sich bereits auf der " + HMIdentifier.de.CCUShortName + ".\n"+
       "Bitte nehmen Sie das Firmwareupdate auf der Konfigurationsseite vor.\n\n",
-
-    "lblRGBWControllerDimmer" : "Dimmer",
-    "lblRGBWControllerColor" : "Farbe",
-    "lblRGBWControllerAutomatic" : "Programm",
-
     "deviceUpdate" : "Ger%E4te-Update:",
-
     "weeklyProfile1" : "1",
     "weeklyProfile2" : "2",
     "weeklyProfile3" : "3",
-
+    "weeklyProfile4" : "4",
+    "weeklyProfile5" : "5",
+    "weeklyProfile6" : "6",
     "optionUnitS" : "Sekunden",
     "optionUnitM" : "Minuten",
     "optionUnitH" : "Stunden",
+    "optionUnitD" : "Tage",
+    "optionUnit1D" : "1 Tag",
+    "optionUnit7D" : "7 Tage",
+    "optionUnit14D" : "14 Tage",
+    "optionUnit28D" : "28 Tage",
+    "optionUnit30D" : "30 Tage",
+    "optionUnit10MS" : "10ms",
     "optionUnit100MS" : "100ms",
+    "optionUnit200MS" : "200ms",
+    "optionUnit300MS" : "300ms",
+    "optionUnit500MS" : "500ms",
+    "optionUnit1500MS" : "1500ms",
     "optionUnit1S" : "1 Sekunde",
     "optionUnit2S" : "2 Sekunden",
     "optionUnit3S" : "3 Sekunden",
+    "optionUnit4S" : "4 Sekunden",
     "optionUnit5S" : "5 Sekunden",
     "optionUnit10S" : "10 Sekunden",
+    "optionUnit15S" : "15 Sekunden",
+    "optionUnit20S" : "20 Sekunden",
+    "optionUnit25S" : "25 Sekunden",
     "optionUnit30S" : "30 Sekunden",
-    "optionUnit1M" : "1 Minute",
-    "optionUnit2M" : "2 Minuten",
-    "optionUnit5M" : "5 Minuten",
-    "optionUnit10M" : "10 Minuten",
-    "optionUnit30M" : "30 Minuten",
+    "optionUnit45S" : "45 Sekunden",
+    "optionUnit60S" : "60 Sekunden",
+    "optionUnit90S" : "90 Sekunden",
+    "optionUnit1M": "1 Minute",
+    "optionUnit2M": "2 Minuten",
+    "optionUnit4M": "4 Minuten",
+    "optionUnit5M": "5 Minuten",
+    "optionUnit6M": "6 Minuten",
+    "optionUnit8M": "8 Minuten",
+    "optionUnit10M": "10 Minuten",
+    "optionUnit12M": "12 Minuten",
+    "optionUnit14M": "14 Minuten",
+    "optionUnit15M": "15 Minuten",
+    "optionUnit16M": "16 Minuten",
+    "optionUnit18M": "18 Minuten",
+    "optionUnit20M": "20 Minuten",
+    "optionUnit25M": "25 Minuten",
+    "optionUnit30M": "30 Minuten",
+    "optionUnit60M": "60 Minuten",
+    "optionUnit120M": "120 Minuten",
     "optionUnit1H" : "1 Stunde",
     "optionUnit2H" : "2 Stunden",
     "optionUnit3H" : "3 Stunden",
@@ -793,39 +751,15 @@ jQuery.extend(true,langJSON, {
     "optionOnWithDelay" : "Ein mit Einschaltverz%F6gerung",
     "optionOnWithoutDelay" : "Ein ohne Einschaltverz%F6gerung",
     "optionInactiv" : "Inaktiv",
-    "optionActiv" : "AKtiv",
+    "optionActiv" : "Aktiv",
     "optionNormalLength" : "Normale L&auml;nge",
     "optionFileLength" : "Dateil%E4nge",
     "optionSetLength" : "L&auml;nge angeben",
-
     "lblDeviceFwPerformUpdate" : "Das Update des Ger%E4tes wird durchgef%FChrt",
     "lblDeviceFwDeliverFwImage" : "Die Updatedatei wird zum Ger%E4t %FCbertragen",
-    "lblHmIP_PSChn1" : "Tasterkanal<br/>Tastendruck",
-    "lblHmIP_PSChn2" : "Statusmitteilung Relais",
-    "lblHmIP_PSChn3" : "Verkn%FCpfungspartner<br/>Taste",
-    "lblHmIP_PSChn4" : "Zur Zeit nicht unterst%FCtzt",
-    "lblHmIP_PSChn5" : "Zur Zeit nicht unterst%FCtzt",
-    "lblHmIP_PSMChn1" : "Tasterkanal<br/>Tastendruck",
-    "lblHmIP_PSMChn2" : "Statusmitteilung Relais",
-    "lblHmIP_PSMChn3" : "Verkn%FCpfungspartner<br/>Taste",
-    "lblHmIP_PSMChn4" : "Zur Zeit nicht unterst%FCtzt",
-    "lblHmIP_PSMChn5" : "Zur Zeit nicht unterst%FCtzt",
-    "lblHmIP_PSMChn6" : "Statusmeldung Messwertkanal",
+    "lblGenericLinkPartner" : "Verkn%FCpfungspartner",
     //"lblHmIP_PSMChn7" : "Verkn%FCpfungspartner<br/>Schaltaktor",
-    "lblHmIP_PSMChn7" : "Zur Zeit nicht unterst%FCtzt",
-    "lblHmIP_WTHChn1" : "Verkn%FCpfungspartner Heizungsthermostat (manuelle Bedienung, Sender)",
-    "lblHmIP_WTHChn2" : "Verkn%FCpfungspartner Heizungsthermostat (manuelle Bedienung, Empf%E4nger)",
-    "lblHmIP_WTHChn3" : "Verkn%FCpfungspartner Heizungsthermostat (zykl. Daten, Soll- u. Ist-Temp.)",
-    "lblHmIP_WTHChn4" : "Verkn%FCpfungspartner T%FCr-/Fensterkontakt",
-    "lblHmIP_WTHChn5" : "Verkn%FCpfungspartner Schaltaktor f%FCr Zweipunktregelung",
-    "lblHmIP_WTHChn6" : "Verkn%FCpfungspartner Taster",
-    "lblHmIP_TRVChn1" : "Verkn%FCpfungspartner Heizungsthermostat (manuelle Bedienung, Sender)",
-    "lblHmIP_TRVChn2" : "Verkn%FCpfungspartner Heizungsthermostat (manuelle Bedienung, Empf%E4nger)",
-    "lblHmIP_TRVChn3" : "Verkn%FCpfungspartner Wandthermostat (zykl. Daten, Soll- u. Ist-Temp.)",
-    "lblHmIP_TRVChn4" : "Verkn%FCpfungspartner T%FCr-/Fensterkontakt",
-    "lblHmIP_TRVChn5" : "Verkn%FCpfungspartner Wandthermostat (manuelle Bedienung, Sender)",
-    "lblHmIP_TRVChn6" : "Verkn%FCpfungspartner Wandthermostat (manuelle Bedienung, Empf%E4nger)",
-    "lblHmIP_TRVChn7" : "Verkn%FCpfungspartner Taster",
+    "lblHmIP_NotSupported" : "Zur Zeit nicht unterst%FCtzt",
     "lblSetMode" : "Modus einstellen!",
     "lblChannelActivInactiv" : "Kanal aktiv / inaktiv:",
     "lblRepetition" : "Wiederholungen",
@@ -856,7 +790,7 @@ jQuery.extend(true,langJSON, {
     "lblTeachInSGTIN" : "SGTIN",
     "lblTeachInKEY" : "KEY",
     "lblIntrusionAlarm" : "Einbruch Alarm",
-
+    "btnTakeCurrentBrightness" : "Aktuelle Helligkeit %FCbernehmen",
     "dialogNewDevicesBidCosRFLbl1" : "<h1>"+HMIdentifier.de.LabelHomematic+" Ger%E4t direkt anlernen</h1>",
     "dialogNewDevicesBidCosRFLbl2" : "Um ein "+HMIdentifier.de.LabelHomematic+" Ger%E4t an die "+HMIdentifier.de.CCUShortName+" anzulernen, klicken Sie auf den Button &quot;HM Ger%E4t anlernen&quot;. Der Anlernmodus der "+HMIdentifier.de.CCUShortName+" ist dann f%FCr 60 Sekunden aktiv. Aktivieren Sie innerhalb dieser Zeit den Anlernmodus des "+HMIdentifier.de.LabelHomematic+" Ger%E4tes, das angelernt werden soll.",
     "dialogNewDevicesBidCosRFLbl3" : "<h1>"+HMIdentifier.de.LabelHomematic+" Ger%E4t mit Seriennummer anlernen</h1>",
@@ -871,22 +805,174 @@ jQuery.extend(true,langJSON, {
     "dialogNewDevicesHmIPWithInternet" : "<h1>"+HMIdentifier.de.LabelHomematicIPText+" Ger%E4t mit Internetzugang anlernen</h1>",
     "dialogNewDevicesHmIPWithoutInternet" : "<h1>"+HMIdentifier.de.LabelHomematicIPText+" Ger%E4t ohne Internetzugang anlernen</h1>",
     "dialogNewDevicesHmIPRFLbl1" : HMIdentifier.de.LabelHomematicIPText+" Ger%E4te k%F6nnen auch %FCber die "+HMIdentifier.de.CCUShortName+" angelernt werden. Klicken Sie auf den Button &quot;HmIP Ger%E4t anlernen&quot;. Der Anlernmodus der "+HMIdentifier.de.CCUShortName+" ist dann f%FCr 60 Sekunden aktiv. Aktivieren Sie innerhalb dieser Zeit den Anlernmodus des "+HMIdentifier.de.LabelHomematicIPText+" Ger%E4tes, das angelernt werden soll.",
-    "dialogNewDevicesHmIPRFLbl2" : HMIdentifier.de.LabelHomematicIPText+" Ger%E4te k%F6nnen auch ohne aktiven Internetzugang an die "+HMIdentifier.de.CCUShortName+" angelernt werden. Geben Sie die SGTIN und den KEY ein und klicken Sie auf &quot;HmIP Ger%E4t anlernen (lokal)&quot;.",
-
+    "dialogNewDevicesHmIPRFLbl2" : HMIdentifier.de.LabelHomematicIPText+" Ger%E4te k%F6nnen auch ohne aktiven Internetzugang an die "+HMIdentifier.de.CCUShortName+" angelernt werden. Geben Sie den KEY und die SGTIN ein und klicken Sie auf &quot;HmIP Ger%E4t anlernen (lokal)&quot;.",
     "energyMeterTransmitterHeader" : "Verbrauchs- und Leistungsmessung",
     "PMSwChannel2Hint_Energy" : "der Energieverbrauch um",
     "controlChannelHasNoFunction" : "Der Kanal hat hier keine Funktion",
     "weeklyProfileLbl" : "Wochenprofil",
-    "tooltipHmIPDeliverFirmwareImage" : "Das %DCbertragen der Updatedatei zum Ger%E4t geschieht<br/>im Hintergrund und nimmt erhebliche Zeit in Anspruch.<br/><br/>Nachdem die Datei erfolgreich %FCbertragen wurde,<br/>erscheint hier der Update-Button, mit dem Sie die<br/>Ger%E4tefirmware dann aktualisieren k%F6nnen.",
-
+    "_tooltipHmIPDeliverFirmwareImage" : "* old Version * Das %DCbertragen der Updatedatei zum Ger%E4t geschieht<br/>im Hintergrund und nimmt erhebliche Zeit in Anspruch.<br/><br/>Nachdem die Datei erfolgreich %FCbertragen wurde,<br/>erscheint hier der Update-Button, mit dem Sie die<br/>Ger%E4tefirmware dann aktualisieren k%F6nnen.",
+    "tooltipHmIPDeliverFirmwareImage" :
+        "Beachten Sie, dass neue Firmware-Dateien f%FCr Homematic IP Ger%E4te im Hintergrund %FCbertragen werden.<br/>" +
+        "Dieser Vorgang kann je nach Ger%E4t zwischen 8 und 42 Stunden dauern.<br/>" +
+        "Sobald die Firmware-Dateien %FCbertragen wurden, erscheint hier der Update-Button, um das Ger%E4teupdate durchzuf%FChren.",
     "selectFlashSequence" : "Wahl der Blinkfolge",
-
     "stringTableButtonLock" : "Lokale Bediensperre",
     "stringTableGlobalButtonLock" : "Globale Bediensperre",
+    "stringTableTxThresholdPercent" : "N%F6tige %C4nderung in %25 f%FCr erneute Statusmitteilung",
+    "stringTableLux" : "Helligkeit",
+    "optionBaud300" : "300 Baud",
+    "optionBaud600" : "600 Baud",
+    "optionBaud1200" : "1200 Baud",
+    "optionBaud2400" : "2400 Baud",
+    "optionBaud4800" : "4800 Baud",
+    "optionBaud9600" : "9600 Baud",
+    "optionBaud19200" : "19200 Baud",
+    "actionAlarmControlLblOff" : "Alarm<br />Aus",
+    "actionAlarmControlLblExtern" :  "Alle Sensoren<br />scharf<br />(extern scharf)",
+    "actionAlarmControlLblIntern" :  "Au%DFensensoren<br />scharf<br />(intern scharf)",
+    "actionAlarmControlLblBlocked" :  "Alarm<br />blockiert",
+    "lblSabotageUnknown" :  "Sabotagekontakt:<br >Zustand unbekannt",
+    "lblSabotage_0" :  "Sabotagekontakt: OK",
+    "lblSabotage_1" :  "Sabotagekontakt<br />ausgel%F6st",
+    "pirOperationModeNormal" :  "Normal",
+    "pirOperationModeEco" :  "Eco",
+    "lblIndoorSirenInternAlarm" :  "Interner Alarm",
+    "lblIndoorSirenExternAlarm" :  "Externer Alarm",
+    "lblIndoorSirenPanicAlarm" :  "Panik Alarm",
+    "lblIndoorSirenArming" :  "Scharfschalten",
+    "lblAcusticalSignal" :  "Akustisches Signal",
+    "lblOpticalSignal" :  "Optisches Signal",
+    "redFlash" :  "rotes Blitzen",
+    "greenFlash" :  "gr%FCnes Blitzen",
+    "orangeFlash" :  "oranges Blitzen",
+    "lblTextBlock" :  "Textblock",
+    "optionLong" :  "Lang",
+    "optionShort" :  "Kurz",
+    "optionInfinite" :  "Unendlich",
+    "lblQuantity" :  "Anzahl",
+    "lblTimeLag" :  "Abstand",
+    "lblLinkInternalDescInternalKey" :  "Verkn%FCpfung der internen Ger%E4tetaste",
+    "lblLicenseInformation" : "Lizenzinformation",
+    "stringTableHeating" : "Heizen",
+    "stringTableCooling" : "K&uuml;hlen",
+    "actionAlarmControlLblStart" : "Alarm ausl%F6sen",
+    "lblAlarmDuration" : "Alarmdauer",
+    "optionSetDuration" : "Dauer angeben",
+    "setAlarmDialogTitle" : "Alarm ausl%F6sen",
+    "titleConfigDialog" : "Konfigurationsdialog",
+    "btnToday" : "Heute",
+    "unknown" : "unbekannt",
+    "lblDewPointAlarm" :  "Taupunkt-Alarm",
+    "lblEmergencyOperation" : "Verbindungsabbruch zum RBG",
+    "lblExternalClock" :  "Modus Energiespar-Temperatur",
+    "lblFrostProtection" :  "Frostschutz",
+    "lblHumidityLimiter" :  "Feuchtigkeitsbegrenzung",
+    "lblSwitchingStatus" :  "Ansteuerung",
+    "lblLinkNoDescriptionAvailable" : "Es steht keine Beschreibung zur Verf%FCgung<br/>Bitte geben Sie sie manuell ein.",
+    "lblPassed" : "%FCberschritten",
+    "lblNotPassed" :  "nicht %FCberschritten",
+    "lblDigitalStatus" :  "Aktueller Wert:",
+    "lblDataInputPropertie" : "Dateneingangseigenschaften",
+    "lblTransmitterDataInputPropertie" :  "Dateneingang invertieren:",
+    "lblHeaderHelpTransmitterTransmissionCondition" : "<u>Hilfe zur gew%E4hlten Daten%FCbertragungsbedingung!</u>",
+    "lblSysConfCoupling1" : "DESCRIPTION",
+    "lblOsramLightify" :  "OSRAM Lightify",
+    "lblCheckIpAddress" : "Bitte IP-Adresse %FCberpr%FCfen",
+    "lblColorTemperatureBR" : "Farb-<br/>temperatur",
+    "lblKelvin" : "K",
+    "lblUnknown" : "unbekannt",
+
+    "optionDisable" : "Nicht aktiv",
+    "optionEnable" : "Aktiv",
+    "optionFloorHeatingStandard" : "Standard-Fussbodenheizung",
+    "optionFloorHeatingLowEnergy" : "Niedrigenergie-Fussbodenheizung",
+    "optionRadiator" : "Radiator",
+    "optionConvectorPassiv" : "Passiver Konvektor",
+    "optionConvectorActive" : "Aktiver Konvektor (mit L&uuml;fter)",
+    "optionStandardRoom" : "Standard Raum",
+    "optionRoomWithFirePlace" : "Raum mit Feuerstelle",
+    "optionRoomWithTowelRail" : "Raum mit Handtuch-Trockner",
+
+    "channelModeChangeOver" : "Change Over",
+    "channelModeExternalClock" :  "Absenkbetrieb (Eco-Mode)",
+    "channelModeHumidityLimiter" :  "Feuchtigkeitsbegrenzer",
+    "channelModeTactileSwitch" :  "Taster",
+    "channelModeTemperatureLimiter" : "Temperaturbegrenzer",
+    "dialogQuestionRemoveInternalLink" :  "<span class='attention'>ACHTUNG:</span><br/><br>Es handelt sich hier um eine interne Verkn%FCpfung des Ger%E4tes. Das L%F6schen dieser Verkn%FCpfung kann dazu f%FChren, dass das Ger%E4t unbedienbar wird. In diesem Fall m%FCssen Sie die Verkn%FCpfung neu erstellen.<br/><br/>M%F6chten Sie die Verkn%FCpfung wirklich l%F6schen?",
+    "descriptionTransmitterDataTransmissionCondition0" :  "<b>Modus 1</b><br/><br/>Senden auf Pegel%E4nderung am Daten%FCbertragungspin (DU30) von HIGH- auf LOW-Pegel.",
+    "descriptionTransmitterDataTransmissionCondition1" :  "<b>Modus 2</b><br/><br/>Senden auf Pegel%E4nderung am Daten%FCbertragungspin (DU30) von LOW- auf HIGH-Pegel.",
+    "descriptionTransmitterDataTransmissionCondition2" :  "<b>Modus 3</b><br/><br/>Senden auf Pegel%E4nderung am Daten%FCbertragungspin (DU30) auf jede Logikpegel%E4nderung.",
+    "descriptionTransmitterDataTransmissionCondition3" :  "<b>Modus 4</b><br/><br/>Senden, wenn neuer Logikzustand auf den Dateneing%E4ngen stabil f%FCr die Datenstabilit%E4tsfilterzeit ist.<br/><br/>Der Dateneingang ist deaktivert, wenn der Daten%FCbertragungspin (DU30) auf HIGH-Pegel ist (low aktiv).  ",
+    "descriptionTransmitterDataTransmissionCondition4" :  "<b>Modus 5</b><br/><br/>Senden des neuen Logikzustandes sofort, danach Sendeabstand von der Dauer der Datenstabilit%E4tsfilterzeit bis zur n%E4chsten Auswertung des Dateinganges.<br/><br/>Der Dateneingang ist deaktivert, wenn der Daten%FCbertragungspin (DU30) auf HIGH-Pegel ist (low aktiv).",
+    "descriptionTransmitterDataTransmissionCondition5" :  "<b>Modus 6</b><br/><br/>Senden, wenn neuer Logikzustand auf den Dateneing%E4ngen stabil f%FCr die Datenstabilit%E4tsfilterzeit ist.<br/><br/>Der Dateneingang ist deaktivert, wenn der Daten%FCbertragungspin (DU30) auf LOW-Pegel ist (high aktiv)",
+    "descriptionTransmitterDataTransmissionCondition6" :  "<b>Modus 7</b><br/><br/>Senden des neuen Logikzustandes sofort, danach Sendeabstand von der Dauer der Datenstabilit%E4tsfilterzeit bis zur n%E4chsten Auswertung des Dateinganges.<br/><br/>Der Dateneingang ist deaktivert, wenn der Daten%FCbertragungspin (DU30) auf LOW-Pegel ist (high aktiv).",
+    "dlgEnterMeterReadingsTitle" :  "Konfiguration des CCU-Energiez%E4hlers",
+    "btnSysConfCoupling" :  "Kopplungen",
+    "couplingDialogTitle" : "Dialog Kopplungen",
+    "lblIPAddress" :  "IP-Adresse",
+    "enterIPAddress" :  "Manuelle IP-Eingabe",
+    "invalidIP" : "Ung%FCltige IP-Adresse",
+    "btnScanGateway" :  "Suche Gateway",
+    "btnScanDevices" :  "Suche Ger%E4te",
+    "helpOsramLightifyToolTip" :
+      "<h1>Bitte beachten Sie:</h1>" +
+      "<ul>"+
+        "<li>Es darf nur ein OSRAM-Gateway im Netzwerk vorhanden sein.</li>" +
+        "<li>Das Gateway sollte vom DHCP-Server (WLAN-Router) immer die gleiche IP-Adresse bekommen!</li>" +
+        "<li>Damit das OSRAM-Gateway durch den Button <b>Start</b> erfolgreich gefunden werden kann,<br/>" +
+          "muss es von der "+HMIdentifier.de.CCUShortName+" erreichbar sein.</li>" +
+        "<li>Nach erfolgreicher Suche wird die IP-Adresse des Gateways angezeigt und alle am Gateway<br/>" +
+          "angelernten Leuchtmittel und Lampen stehen innerhalb der "+HMIdentifier.de.CCUShortName+" als Ger&auml;te zur Verf&uuml;gung.</li>" +
+      "</ul>",
+    "timeoutAddNewDevices" : "Timeout addNewDevices",
+    "unknownError" : "Unbekannter Fehler",
+    "helpOsramLightify" : "Hier stellen Sie die Kopplung zwischen "+HMIdentifier.de.CCUShortName+" und <b>OSRAM-Lightify</b> her. Mehr Informationen finden Sie hier:",
+    "helpPhilipsHue" : "Hier stellen Sie die Kopplung zwischen "+HMIdentifier.de.CCUShortName+" und <b>Philips-Hue</b> her. Mehr Informationen finden Sie hier:",
+
+    "msgNoGatewayFound" : "Kein Gateway gefunden",
+
+    "dialogDeleteCertificateTitle" : "Zertifikat l%F6schen",
+    "dialogSettingsNetworkLblDeleteCertificate" : "Zertifikat von der CCU2 entfernen",
+    "confirmCertificationPurgeA" : "Wenn Sie das Zertifikat l%F6schen, k%F6nnen Sie anschlie%DFend keine gesicherte Verbindung zu Ihrer "+HMIdentifier.de.CCUShortName+" mehr aufbauen.",
+    "confirmCertificationPurgeB" : "M%F6chten Sie das Zertifikat wirklich von der "+HMIdentifier.de.CCUShortName+" entfernen?",
+    "dialogRestartWebserverTitle" : "Lighttpd Restart",
+    "dialogRestartWebserverContent" : "Der Webserver wird jetzt neu gestartet.",
+    "lblHideStickyUnreach" : "Automatische Best%E4tigung der Servicemeldung<br/>'Ger%E4tekommunikation war gest%F6rt'",
+
+    "timeModuleUserHint" :
+      "<br/>Wir empfehlen bei der Benutzung des Zeitmoduls, keine Zeitabst&auml;nde kleiner 15 Min. zu verwenden.&nbsp;" +
+      " So ist sichergestellt, dass alle konfigurierten Programme zuverl&auml;ssig ausgef&uuml;hrt werden k&ouml;nnen.</br><br/>",
+
+    "lblLocation" :                              "Wohnort",
+    "lblMode" :                                  "Modus",
+    "dialogSetWPModeTitle" :                     "Modus einstellen",
+    "lblAutoCalibrationActiv" :                  "Auto-Kalibrierung aktiv",
+    "statePresenceFalse" :                       "Keine Pr%E4senz erkannt",
+    "statePresenceTrue" :                        "Pr%E4senz erkannt",
+    "presenceDetectionFalse" :                   "Pr%E4senzerkennung nicht aktiv",
+    "presenceDetectionTrue" :                    "Pr%E4senzerkennung aktiv",
+    "btnPresenceDetectionFalse" :                "Pr%E4senzerkennung einschalten",
+    "btnPresenceDetectionTrue" :                 "Pr%E4senzerkennung ausschalten",
+    "btnResetPresence" :                         "Reset Status",
+    "lblTDRegaVersion" :                         "Logikschicht<br/>Version",
+    "lblTDReGaVersionHelp" :                     "Hier k%F6nnen Sie festlegen, welche Version der Logikschicht in der CCU2 verwendet werden soll.<br/><br/>W%E4hlen Sie die Version <b>'Standard'</b>, um Fehlerbehebungen im Zeitmodul und neue Funktionen, wie z. B. mathematische Operationen in Skripten, nutzen zu k%F6nnen. " +
+                                                 "<br/><br/>W%E4hlen Sie die Version <b>'Community'</b> f%FCr zus%E4tzliche Verbesserungen zur Fehlerbehebung in Skripten. Bitte beachten Sie, dass diese Version zu Abbr%FCchen von Skripten f%FChren k%F6nnte, auch wenn diese mit bisherigen Versionen der CCU2-Software ausgef%FChrt wurden. " +
+                                                 "<br/><br/>Sollten seit dem Update auf die aktuelle CCU2-Software Probleme aufgetreten sein, k%F6nnen Sie mit der Auswahl <b>'Legacy'</b> auf die Vorg%E4ngerversion wechseln." ,
+
+    "optionReGaNORMAL" :                         "Standard",
+    "optionReGaLEGACY" :                         "Legacy",
+    "optionReGaCOMMUNITY" :                      "Community",
+    "dialogRestart2ChanceReGaVersion" :          "Damit die %C4nderung der Logikschicht-Version wirksam wird, muss die " +HMIdentifier.de.CCUShortName + " neu gestartet werden.",
+    "dialogBtnPerformLaterRestart" :             "Sp%E4ter",
+
+    "lblAttentionNoPasswd" : "Aus Sicherheitsgr%FCnden empfehlen wir,<br/>dass Sie ein Passwort f%FCr die CCU2 vergeben",
+    "dialogLblAckSecurityHint" : "Ich habe die obige Warnung gelesen!",
+    "btnNext" : "Weiter",
+
+    "powerSupply" : "Spannungsversorgung",
+    "operationModeBattery" : "Batteriebetrieb",
+    "operationModeMains" : "Netzbetrieb",
 
     "theEnd" : ""
-
-
   }
 });
-

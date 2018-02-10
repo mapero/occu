@@ -365,12 +365,34 @@ BLIND_setPosition = function(id)
 
 };
 
+jalousieShowSlatInputElem = function(id, chn) {
+  var selValue = jQuery("#"+id).val(),
+    jalousieSlatPosOffElm = jQuery("#jalousieSlatPosOff_" + chn),
+    jalousieSlatPosOnElm = jQuery("#jalousieSlatPosOn_" + chn);
+
+  switch (selValue) {
+    case "1":
+        jalousieSlatPosOffElm.hide();
+        jalousieSlatPosOnElm.show();
+      break;
+    case "2":
+        jalousieSlatPosOnElm.hide();
+        jalousieSlatPosOffElm.show();
+      break;
+    case "3":
+        jalousieSlatPosOnElm.show();
+        jalousieSlatPosOffElm.show();
+      break;
+  }
+};
+
 Disable_SimKey = function(ch, prn, specialInputId) 
 {
   var arrSpecialInputId = specialInputId.split("_"),
   pref_dirty = false,
   i = 1,
   jBtnSim = $("SimKey_" + arrSpecialInputId[1] + "_" +  arrSpecialInputId[2] + "_" + prn),
+  jBtnLongSim = $("SimLongKey_" + arrSpecialInputId[1] + "_" +  arrSpecialInputId[2] + "_" + prn),
   jHintSim = $("SimKeyHint_" + arrSpecialInputId[1] + "_" +  arrSpecialInputId[2] + "_" + prn);
   
   if (jBtnSim) {
@@ -387,23 +409,31 @@ Disable_SimKey = function(ch, prn, specialInputId)
      if ( (pref_dirty == true ) || ( IsDirty($(specialInputId + '_profiles')) ) ) 
     {
       jBtnSim.disabled = true;
+      if (jBtnLongSim) jBtnLongSim.disabled = true;
       //jBtnSim.value = "Simulation nicht möglich!";
       jBtnSim.value = translateKey("simulateKeyPressBtnTxtNotPossible");
+      if (jBtnLongSim) jBtnLongSim.value = translateKey("simulateKeyPressBtnTxtNotPossible");
       jHintSim.style.display = "inline";
     } 
     else
     {
       jBtnSim.disabled = false;
+      if (jBtnLongSim) jBtnLongSim.disabled = false;
       //jBtnSim.value = "Simuliere Tastendruck";
-      jBtnSim.value = translateKey("simulateKeyPressBtnTxt");
+      jBtnSim.value = translateKey("btnSimKeyPress");
+      if (jBtnLongSim) jBtnLongSim.value = translateKey("btnSimLongKeyPress");
       jHintSim.style.display = "none";
     }
   }
 };
 
 
-MD_catchBrightness = function(url, sender_address, receiver_address, set_value, id, commando, parameter)
+MD_catchBrightness = function(url, sender_address, receiver_address, brightness, convertValue, set_value, id, commando, parameter)
 {
+  if (convertValue == 1) {
+    brightness = MD_convertIlluminationToDecisionValue(brightness);
+  }
+
   ResetPostString();
   poststr += "&url=" +url;
   poststr += "&sender_address="   +sender_address;
@@ -413,6 +443,7 @@ MD_catchBrightness = function(url, sender_address, receiver_address, set_value, 
   poststr += "&commando=" +commando;
   poststr += "&parameter=" +parameter;
   poststr += "&active_bright=" + $F(id);
+  poststr += "&brightness=" + brightness;
   SendRequest('ic_md.cgi');
 };
 
@@ -502,8 +533,8 @@ MD_checkPNAME = function(id, param, id_on_time)
   
   if ($F(id_on_time) < min_value[min_interval] && $(id).selectedIndex == 0)
   {
-    $(id_on_time + '_hint0').firstChild.data = unescape(localized[0]['hint0a']) +  min_value[min_interval] + unescape(localized[0]['hint0b']);
-    $(id_on_time + '_hint1').firstChild.data = unescape(localized[0]['hint1a']) +  min_value[min_interval] + unescape(localized[0]['hint1b']);
+    jQuery('#'+id_on_time + '_hint0:first-child').html(unescape(localized[0]['hint0a']) +  min_value[min_interval] + unescape(localized[0]['hint0b']));
+    jQuery('#'+id_on_time + '_hint1:first-child').html(unescape(localized[0]['hint1a']) +  min_value[min_interval] + unescape(localized[0]['hint1b']));
   } else {
     $(id_on_time + '_hint0').firstChild.data = " "; 
     $(id_on_time + '_hint1').firstChild.data = " "; 
@@ -569,8 +600,11 @@ MD_getHelp = function(min, max, brightness, ready)
   var active = localized[0]['active_' + ready];
   
   //Je nachdem, ob die aktuelle Helligkeit zur Verfügung steht, oder nicht, werden verschiedene Hilfstexte generiert.
-  if (brightness != -1) {  var path = '/config/easymodes/etc/localization/' + language + '/MOTION_DETECTOR_1.txt';}
-  else {var path = '/config/easymodes/etc/localization/' + language + '/MOTION_DETECTOR_0.txt';}
+  if (brightness != -1) {
+    var path = '/config/easymodes/etc/localization/' + language + '/MOTION_DETECTOR_1.txt';
+  } else {
+    var path = '/config/easymodes/etc/localization/' + language + '/MOTION_DETECTOR_0.txt';
+  }
   
   // die entsprechende Uebersetzungstabellen der Easymodes einlesen
   new Ajax.Request(path ,
@@ -596,12 +630,15 @@ MD_link_help = function()
   MessageBox.show(help_txt[0]['title_kind_of'], help_txt[0]['help_kind_of'] ,"" ,450 , 260);
 };
 
-MD_catchBright_help = function(min, max, brightness, ready)
-{
+MD_catchBright_help = function(min, max, brightness, ready, condition) {
   //Hilfetext für die Helligkeitsschwelle des Motion-Detectors    
   var help_txt = MD_getHelp(min, max, brightness, ready);
 
-  MessageBox.show(help_txt[0]['title_brightness'], help_txt[0]['help_brightness'] ,"" ,475 ,185);
+  if (condition == "LT_LO") {
+    MessageBox.show(help_txt[0]['title_brightness'], help_txt[0]['help_brightness_active_LT_LO'], "", 475, 185);
+  } else {
+    MessageBox.show(help_txt[0]['title_brightness'], help_txt[0]['help_brightness_active_GE_LO'], "", 475, 185);
+  }
 
 };
 
@@ -699,6 +736,46 @@ MD_setMode = function(id_on_time_mode, channel, id_on_time)
   MD_checkMaxValue(id_on_time, channel, (id_on_time_mode));
 };
 
+// Converts the value of the parameter ILLUMINATION of e. g. a HmIP-MotionDetector (very high values possible)
+// to a valid decision value (0 - 255) for the use of direct links (CONDITION_LO/HI)
+MD_convertIlluminationToDecisionValue = function(value) {
+  var result = 0;
+  if (value < 80) {return parseInt(value);} // Linear-Grenze
+  value *= 10;
+  var msb = "0x80000";
+  var exp = 19;
+
+  while ((value & msb) == 0) {
+   msb >>= 1;
+   exp--;
+  }
+
+  var result = (((value^msb) << 8) / msb) | (exp << 8);
+  result /= 20;
+
+  if (result > 255) {
+    result = 255;
+  }
+
+  return parseInt(result);
+};
+
+SetSensitivityOfMotionDetection = function(sensElmID) {
+  var sensElm = jQuery("#" + sensElmID ),
+    sensElmFirstOption = jQuery("#" + sensElmID + " > option:first-child"),
+    lblSensorImpulsElm = jQuery("#lblSensorImpuls"),
+    extendedOptions = jQuery("#extendedOptions");
+
+  if (parseInt(sensElm.val()) > 1) {
+    sensElmFirstOption.text("1");
+    lblSensorImpulsElm.text(translateKey("motionDetectorEventFilterNumberC")); // Sensor-Impulsen innerhalb
+    extendedOptions.show();
+  } else {
+    sensElmFirstOption.text("jedem");
+    lblSensorImpulsElm.text(translateKey("motionDetectorEventFilterNumberB")); // Sensor-Impuls
+    extendedOptions.hide();
+  }
+};
 
 ProofFreeTime = function(id, min, max)
 {
@@ -1180,26 +1257,77 @@ WEATHER_change_thres = function(id)
 
 WEATHER_check_dir = function()
 {
+  var newSensor = "HM-WDS100-C6-O-2";
+  var sensorTypeDesc = jQuery("#weatherSensor").val();
+  var selectedWindDirection = jQuery("[name=\"subset_1_1\"]").prop("selectedIndex");
+
   var ein;
   var aus;
   //1 
-  
-  if (switch_dir) 
-  {  
-    //ein = document.createTextNode("Einschaltschwelle");
-    ein = document.createTextNode(translateKey("upperStormThreshold"));
-    //aus = document.createTextNode("Ausschaltschwelle");
-    aus = document.createTextNode(translateKey("lowerStormThreshold"));
+
+  if (sensorTypeDesc != newSensor) {
+    if (switch_dir) {
+      //ein = document.createTextNode("Einschaltschwelle");
+      ein = document.createTextNode(translateKey("upperStormThreshold"));
+      //aus = document.createTextNode("Ausschaltschwelle");
+      aus = document.createTextNode(translateKey("lowerStormThreshold"));
+    }
+    else {
+      //ein = document.createTextNode("Ausschaltschwelle");
+      ein = document.createTextNode(translateKey("lowerStormThreshold"));
+      //aus = document.createTextNode("Einschaltschwelle");
+      aus = document.createTextNode(translateKey("upperStormThreshold"));
+    }
+  } else {
+    // new Sensor
+    var ctON = jQuery("[name=\"SHORT_CT_ON\"]").prop("selectedIndex");
+    var ctOFF = jQuery("[name=\"SHORT_CT_OFF\"]").prop("selectedIndex");
+
+    if (switch_dir == 1) {
+      //ein = document.createTextNode("Einschaltschwelle");
+      ein = document.createTextNode(translateKey("upperStormThreshold"));
+      //aus = document.createTextNode("Ausschaltschwelle");
+      aus = document.createTextNode(translateKey("lowerStormThreshold"));
+      $('ein').replaceChild(ein, $('ein').firstChild);
+      $('aus').replaceChild(aus, $('aus').firstChild);
+      return;
+    }
+    else if (switch_dir == 0) {
+      //ein = document.createTextNode("Ausschaltschwelle");
+      ein = document.createTextNode(translateKey("lowerStormThreshold"));
+      //aus = document.createTextNode("Einschaltschwelle");
+      aus = document.createTextNode(translateKey("upperStormThreshold"));
+      $('ein').replaceChild(ein, $('ein').firstChild);
+      $('aus').replaceChild(aus, $('aus').firstChild);
+      return;
+    }
+
+    // X GE LO = 0
+    // X GE HI = 1
+    // X LT LO = 2
+    // X LT HI = 3
+    // Starker Wind EIN, schwacher Wind AUS / oder EIN nur bei starkem Wind, nicht aus (2. Profil)
+    if ((ctON == 2 && ctOFF == 1) || (ctON == 1 && ctOFF == 1)) {
+      //ein = document.createTextNode("Einschaltschwelle");
+      ein = document.createTextNode(translateKey("upperStormThreshold"));
+      //aus = document.createTextNode("Ausschaltschwelle");
+      aus = document.createTextNode(translateKey("lowerStormThreshold"));
+    }
+    // Starker Wind AUS, schwacher Wind EIN
+    if (ctON == 1 && ctOFF == 2) {
+      //ein = document.createTextNode("Ausschaltschwelle");
+      ein = document.createTextNode(translateKey("lowerStormThreshold"));
+      //aus = document.createTextNode("Einschaltschwelle");
+      aus = document.createTextNode(translateKey("upperStormThreshold"));
+    }
+
+
+
   }
-  else 
-  {
-    //ein = document.createTextNode("Ausschaltschwelle");
-    ein = document.createTextNode(translateKey("lowerStormThreshold"));
-    //aus = document.createTextNode("Einschaltschwelle");
-    aus = document.createTextNode(translateKey("upperStormThreshold"));
-  }  
-  $('ein').replaceChild(ein, $('ein').firstChild);
-  $('aus').replaceChild(aus, $('aus').firstChild);
+  try {
+    $('ein').replaceChild(ein, $('ein').firstChild);
+    $('aus').replaceChild(aus, $('aus').firstChild);
+  } catch (e) {}
 };
 
 WEATHER_check_expert = function()
@@ -1255,7 +1383,7 @@ WEATHER_check_weather = function()
     if (link) { throw true; }
   } catch (e) {
     if ( e == true) {
-      if ((link[0] == "WEATHER") && (linkPeer[0] != "WEATHER_RECEIVER")) return true;
+      if (((link[0] == "WEATHER") || (link[0] == "WEATHER_2")) && (linkPeer[0] != "WEATHER_RECEIVER")) return true;
       else return false;
     } else return false;
   }
@@ -1468,6 +1596,12 @@ load_JSFunc = function(fbib) {
         }
       );
   }
+};
+
+showParamHelp = function(topic, x , y) {
+ var width = (! isNaN(x)) ? x : 450;
+ var height = (! isNaN(y)) ? y : 260;
+ MessageBox.show(translateKey("HelpTitle"), translateKey(topic), "", width, height);
 };
 
 // Test

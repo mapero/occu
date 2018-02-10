@@ -174,17 +174,28 @@ proc put_NaviButtons {} {
   puts "</div>"
 }
 
-# AG test_space
-
-proc test_space {pruefling} {
+proc test_space {testObject} {
   
 # wenn &nbsp; vorhanden, dann 1, sonst 0
 
-  if {$pruefling == "&nbsp;"} {
+  if {$testObject == "&nbsp;"} {
     return 1
     } else {
     return 0
     }
+}
+
+# This can be used to extend the regular link description
+proc getExtendedLinkDescription {channelType channel} {
+  set result ""
+  if {$channelType == "SWITCH_SENSOR"} {
+    if {$channel == 1} {
+      set result "/ \${chType_SWITCH_SENSOR_Int}"
+    } elseif {$channel == 2} {
+     set result "/ \${chType_SWITCH_SENSOR_Ext}"
+    }
+  }
+  return $result
 }
 
 proc put_PreviousStep {} {
@@ -266,10 +277,18 @@ proc put_PreviousStep {} {
 
     set description1 ""
     set description2 ""
-    
-    catch {set description1 "\${lblStandardLink} $dev_descr_sender(TYPE) - $dev_descr_receiver(TYPE)"}
-    catch {set description2 "\${lblStandardLink} $dev_descr_sender(TYPE) - $dev_descr_receiver(TYPE)"}
-    #catch {set description2 "\${lblStandardLink} $dev_descr_sender(TYPE) - $dev_descr_receiver(TYPE)"}
+    set extSenderDescr ""
+    set extReceiverDescr ""
+
+    catch {set extReceiverDescr [getExtendedLinkDescription $dev_descr_receiver(TYPE) $dev_descr_receiver(INDEX)]}
+
+    if {[string equal $dev_descr_sender(PARENT_TYPE) "HmIP-MOD-RC8"] == 0} {
+      # This is for all links where the sender is no HmIP-MOD-RC8
+      catch {set description1 "\${lblStandardLink} $dev_descr_sender(TYPE) $extSenderDescr - $dev_descr_receiver(TYPE) $extReceiverDescr"}
+    } else {
+      catch {set description1 "\${lblStandardLink} HmIP-MOD-RC8 $extSenderDescr - $dev_descr_receiver(TYPE) $extReceiverDescr"}
+    }
+    catch {set description2 "\${lblStandardLink} $dev_descr_sender(TYPE) $extSenderDescr - $dev_descr_receiver(TYPE) $extReceiverDescr"}
 
     set SENTRY(LINKNAME)      "<input id=\"input_name\"              name=\"name\"              type=\"text\" value=\"$name\"/>"
     set SENTRY(LINKDESC)      "<input id=\"input_description\"       name=\"description\"  class=\"stringtable_input\"     type=\"text\" value=\"$description1\"/>"
@@ -403,7 +422,7 @@ proc put_tableheader {} {
   puts "<TD class=\"unsorted\" onclick=\"Sort('ChnListTbl', 4);\">\${thSerialNumber}<img src=\"/ise/img/arrow_down.gif\" alt=\"sorting\"/></TD>"
   puts "<TD class=\"unsorted\" onclick=\"Sort('ChnListTbl', 5);\">\${thCategorie}<img src=\"/ise/img/arrow_down.gif\" alt=\"sorting\"/></TD>"
   puts "<TD class=\"unsorted\" onclick=\"Sort('ChnListTbl', 6);\">\${thTransmitMode}<img src=\"/ise/img/arrow_down.gif\" alt=\"sorting\"/></TD>"
-  puts "<TD class=\"unsorted\" onclick=\"Sort('ChnListTbl', 7);\">\${thFunction}<img src=\"/ise/img/arrow_down.gif\" alt=\"sorting\"/></TD>"
+  puts "<TD class=\"unsorted\" onclick=\"Sort('ChnListTbl', 7);\">\${thFunc}<img src=\"/ise/img/arrow_down.gif\" alt=\"sorting\"/></TD>"
   puts "<TD class=\"unsorted\" onclick=\"Sort('ChnListTbl', 8);\">\${thRoom}<img src=\"/ise/img/arrow_down.gif\" alt=\"sorting\"/></TD>"
   puts "<TD class=\"nosort\">\${thAction}</TD>"
   puts "</TR>"
@@ -578,27 +597,88 @@ proc LinkExists {p_LINKLIST sender_address receiver_address} {
   return $match
 }
 
-proc showHmIPChannel {devType direction address} {
+proc showHmIPChannel {devType direction address chType} {
   # direction 1 = sender, 2 = receiver
+
+  set devType [string toupper $devType]
   set ch [lindex [split $address ":"] 1]
 
-  # The internal device button isn`t allowed for external links
-  if {([string toupper $devType] == "HMIP-PS" || [string toupper $devType] == "HMIP-PSM") && $direction == 1} {
+  # The internal device button of some devices aren`t allowed for external links
+  # The next code filters e. g. a HMIP-PSM AND a HMIP-PSM-UK or a HmIP-PCBS AND a HmIP-PCBS-BAT
+  if {(
+    ($devType == "HMIP-PS")
+    || ([string equal -nocase -length 8 $devType "HMIP-PSM"] == 1)
+    || ([string equal -nocase -length 8 $devType "HMIP-PDT"] == 1)
+    || ([string equal -nocase -length 9 $devType "HMIP-PCBS"] == 1)
+    ) && $direction == 1} { #; channel is sender
     # don't show the channel
     return 0
   }
 
-  # Channel 4 and 5 of the PS and the PSM currently aren`t allowed for external links (virtual channels).
-  if {([string toupper $devType] == "HMIP-PS" || [string toupper $devType] == "HMIP-PSM") && ($ch == 4 || $ch == 5)} {
-    # don't show the channel
-    return 0
+  if {$devType == "HMIP-WTH" && ($chType == "HEATING_CLIMATECONTROL_SWITCH_TRANSMITTER")} {
+   # show the channel
+    return 1
   }
 
-  if {[string toupper $devType] == "HMIP-WTH" && ($ch == 5)} {
+  # The weekly program is not yet in use, so we can't use it for links
+  if {$chType == "WEEK_PROGRAM"} {
    # don't show the channel
     return 0
   }
 
+  # Hide certain channels of HmIP devices when the expert mode is not activated.
+  if {! [session_is_expert]} {
+    # The HmIP-PSM is available as HmIP-PSM-IT/CH/UK etc.
+    if {(($devType == "HMIP-PS") || ([string equal -nocase -length 8 $devType "hmip-psm"] == 1) || ($devType == "HMIP-PCBS")) && ($chType == "SWITCH_VIRTUAL_RECEIVER")} {
+     if {$ch >= 4} {return 0}
+    }
+
+    if {($devType == "HMIP-BDT") && ($chType == "DIMMER_VIRTUAL_RECEIVER")} {
+     if {$ch >= 5} {return 0}
+    }
+
+    if {(($devType == "HMIP-PDT") || ($devType == "HMIP-PDT-UK")) && ($chType == "DIMMER_VIRTUAL_RECEIVER")} {
+     if {$ch >= 4} {return 0}
+    }
+
+    if {($devType == "HMIP-FDT") && ($chType == "DIMMER_VIRTUAL_RECEIVER")} {
+     if {$ch >= 3} {return 0}
+    }
+
+    if {($devType == "HMIP-BSM") && ($chType == "SWITCH_VIRTUAL_RECEIVER")} {
+     if {$ch >= 5} {return 0}
+    }
+
+    if {($devType == "HMIP-FSM" || $devType == "HMIP-FSM16") && ($chType == "SWITCH_VIRTUAL_RECEIVER")} {
+     if {$ch >= 3} {return 0}
+    }
+
+    if {($devType == "HMIP-MIOB" || $devType == "HMIP-WHS2") && ($chType == "SWITCH_VIRTUAL_RECEIVER")} {
+      if {($ch != 3) && ($ch != 7)} {return 0}
+    }
+
+    if {($devType == "HMIP-BBL" || $devType == "HMIP-FBL") && ($chType == "BLIND_VIRTUAL_RECEIVER")} {
+     if {$ch >= 5} {return 0}
+    }
+
+    if {($devType == "HMIP-BROLL" || $devType == "HMIP-FROLL") && ($chType == "SHUTTER_VIRTUAL_RECEIVER")} {
+     if {$ch >= 5} {return 0}
+    }
+
+    if {($devType == "HMIP-WGC") && ($chType == "SWITCH_VIRTUAL_RECEIVER")} {
+     if {$ch >= 4} {return 0}
+    }
+
+    if {($devType == "HMIP-MOD-OC8") && ($chType == "SWITCH_VIRTUAL_RECEIVER")} {
+      if {
+            ($ch == 11) || ($ch == 12) || ($ch == 15) || ($ch == 16) || ($ch == 19) || ($ch == 20)
+         || ($ch == 23) || ($ch == 24) || ($ch == 27) || ($ch == 28) || ($ch == 31) || ($ch == 32)
+         || ($ch == 35) || ($ch == 36) || ($ch == 39) || ($ch == 40)
+      } {
+        return 0
+      }
+    }
+  }
   # show the channel
   return 1
 }
@@ -665,7 +745,7 @@ proc put_tablebody {p_realchannels p_virtualchannels} {
         }
       }
             
-      if {$dev_descr(TYPE) == "VIRTUAL_DIMMER"} {
+      if {($dev_descr(TYPE) == "VIRTUAL_DIMMER") || ($dev_descr(TYPE) == "VIRTUAL_DUAL_WHITE_BRIGHTNESS") || ($dev_descr(TYPE) == "VIRTUAL_DUAL_WHITE_COLOR") } {
         #Virtuelle Dimmerkanäle nur anzeigen wenn Expertenmodus aktiv UND der virtuelle Kanal aktiv geschaltet ist.
         #Die virtuellen Dimmerkanäle können in den Kanalparametern unter dem Punkt 'Verknüpfungsregel' aktiviert werden.
         if {[session_is_expert]} {
@@ -685,8 +765,10 @@ proc put_tablebody {p_realchannels p_virtualchannels} {
       #Bestimmte Kanäle der HmIP-Geräte dürfen nicht auftauchen
       set parentType ""
       set isChannel [catch {set parentType $dev_descr(PARENT_TYPE)}]
+
       if {$isChannel == 0} {
-        if {[showHmIPChannel $parentType $dev_descr(DIRECTION) $dev_descr(ADDRESS)] == 0} {
+        # Don't show certain HmIP-Channels AND invisible marked channels (FLAGS visible = 0)
+        if {([showHmIPChannel $parentType $dev_descr(DIRECTION) $dev_descr(ADDRESS) $dev_descr(TYPE) ] == 0) || (! ($dev_descr(FLAGS) & 1))} {
           array_clear dev_descr
           continue
         }
@@ -829,7 +911,8 @@ proc put_tablebody {p_realchannels p_virtualchannels} {
       if { [test_space $SENTRY(NAME)] == 1 } then { puts "<td id=\"dev$rowcount\">$SENTRY(NAME)</td>" } else { puts "<td id=\"dev$rowcount\">[cgi_quote_html $SENTRY(NAME)]</td>" }
 
       puts "<script type=\"text/javascript\">"
-        puts "var ext = getExtendedDescription(\"$dev_descr(PARENT_TYPE)\", \"$dev_descr(INDEX)\");"
+        #puts "var ext = getExtendedDescription(\"$dev_descr(PARENT_TYPE)\", \"$dev_descr(INDEX)\");"
+        puts "var ext = getExtendedDescription(\{\"deviceType\" : \"$dev_descr(PARENT_TYPE)\", \"channelType\" : \"$dev_descr(TYPE)\" ,\"channelIndex\" : \"$dev_descr(INDEX)\", \"channelAddress\" : \"$dev_descr(ADDRESS)\" \});"
         puts "if (ext.length > 0) \{"
           puts "jQuery(\"#dev$rowcount\").html(\"<br/>$SENTRY(NAME)<br/><br/>\" + ext);"
         puts "\}"

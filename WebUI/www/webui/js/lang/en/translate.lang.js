@@ -5,6 +5,7 @@ jQuery.extend(true,HMIdentifier , {
     "CCUShortName" : "CCU",
     "BidCosRF" : "BidCos-RF",
     "BidCosWired" : "BidCos-Wired",
+    "HmIPRF" : "HmIP-RF",
     "VirtualDevices" : "VirtualDevices",
     "HomeMaticCFGAdapter" : "HomeMatic Configuration-Adapter",
     "LabelHomeMatic" : "HomeMatic",
@@ -21,6 +22,7 @@ jQuery.extend(true,langJSON, {
     "TEST" : "Well, it runs like a clockwork...",
     "BidCosRF" : HMIdentifier.en.BidCosRF,
     "BidCosWired" : HMIdentifier.en.BidCosWired,
+    "HmIPRF" : HMIdentifier.en.HmIPRF,
     "VirtualDevices" : HMIdentifier.en.VirtualDevices,
     "ccuNotReady" : "The " + HMIdentifier.en.CCUFullNameText + " is not yet ready",
     "ccuNotReadyHint" : "Please wait. You will automatically be redirected to the home page.",
@@ -162,6 +164,7 @@ jQuery.extend(true,langJSON, {
     "unknownDevice" : "Unknown device",
     "triggered" : "triggered",
     "lblActiv" : "active",
+    "lblNotActiv" : "not active",
     "lblUsable" : "operable",
     "lblVisible" : "visible",
     "lblSystemIntern" : "intrinsic",
@@ -338,6 +341,7 @@ jQuery.extend(true,langJSON, {
     "lblSettingsSystemConfig5" : "Perform updates",
     "lblSettingsSystemConfig6" : "Set time and date",
     "lblSettingsSystemConfig7" : "Location settings",
+    "lblSettingsSystemConfig8" : "Connections",
     "commentSettingsBtnSystemConfigEnd" : "***********************************************",
     "btnAddReceiver" : "Add<br/>receiver",
     "btnAddSender" : "Add<br/>transmitter ",
@@ -365,6 +369,11 @@ jQuery.extend(true,langJSON, {
     "btnLogin" : "Login",
     "btnNewLogin" : "New login",
     "btnNewStart" : "Restart",
+    "btnReset" : "Reset",
+    "btnSet" : "Set",
+
+    "btnConfigureDST" : "Configure DST",
+
     "dialogYes" : "Yes",
     "dialogNo" : "No",
     "dialogBack" : "Back",
@@ -490,7 +499,7 @@ jQuery.extend(true,langJSON, {
     "dialogSettingsSecurityLblPerformRestore" : "Step 2: Import file",
     "dialogSettingsSecurityLblSysResetPerform" : "Perform system reset",
     "dialogSettingsSecurityHintSecKey1" : "Attention!",
-    "dialogSettingsSecurityHintSecKey2" : "The security key should contain at least 5 characters.",
+    "dialogSettingsSecurityHintSecKey2" : "The security key should contain at least 5 characters. Please prevent the ampersand. All chars including the ampersand will be ignored. The following chars are possible: A-Z a-z 0-9 _",
     "dialogSettingsSecurityHintSecKey3" : "Please write down your security key and keep it in a safe place.<br/>For security reasons, there is no (!) possibility to reset or bypass the password.",
     "dialogSettingsSecurityHintSecKey4" : "After changing your security key, please perform a new system backup. An old backup version can not be used.",
     "dialogSettingsSecurityHintBackup1" : "Please note!",
@@ -1019,7 +1028,7 @@ jQuery.extend(true,langJSON, {
     "btnSysConfBidCosConfig" : "BidCos-RF configuration",
     "lblSysConfBidCosConfig1" : "Configure internal antenna",
     "lblSysConfBidCosConfig2" : "Manage HomeMatic Wireless LAN Gateways",
-    "btnSysConfLANGateway" : "LAN Gateway configuration",
+    "btnSysConfLANGateway" : "LAN Gateway<br/>configuration",
     "lblSysConfBidCosConfig3" : "Manage HomeMatic Wired LAN Gateways",
 
     "btnSysConfAdditionalSoft" : "Additional software",
@@ -1055,6 +1064,7 @@ jQuery.extend(true,langJSON, {
     "dummy" : "dummy",
 
     "optionLastValue" : "Last value",
+    "optionNoModification" : "No change",
     "optionNone" : "None",
     "optionNotActive" : "Not active"
   }

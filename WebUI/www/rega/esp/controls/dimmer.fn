@@ -11,12 +11,19 @@ function ::CreateDimmingActuator()
   real rLevelReal = -1.0;
   string sLevelReal;
 
-  if( cObj.ChannelType() == ictHSSDimmingActuator )
+  ! The HmIP-MIOB has a different channel type than an ordinary dimmer (17 =ictHSS instead of 27 = ictHSSDimmingActuator)
+  ! The same is true for all devices of the type VIR-LG-*
+  if( (cObj.ChannelType() == ictHSSDimmingActuator)
+      || (cObj.Label() == "HmIP-MIOB")
+      || (cObj.Label().Substr(0,7) == "VIR-LG-")
+    )
   {
     object oLevel = cObj.DPByControl("DIMMER.LEVEL");
     object oLevelReal = cObj.DPByControl("DIMMER.LEVEL_REAL");
+
     if( oLevel )
     {
+
       iLvlDpId = oLevel.ID();
       iState = oLevel.Value() * 100;
     }
@@ -65,7 +72,7 @@ function ::CreateDimmingActuator()
       WriteLine("</tr>");
       if ( (rLevelReal != -1.0) && (user.UserEasyLinkMode() != true) ) {
         WriteLine("<tr>");
-          WriteLine("<td><div class='ControlBtnInfo j_translate' style='color:white'>${lblInfoDimmerLevelReal}: "#sLevelReal.StrValueByIndex(".",0)#"%</div></td>")
+          WriteLine("<td><div class='ControlBtnInfo j_translate' style='color:white'>${lblInfoLevelReal}: "#sLevelReal.StrValueByIndex(".",0)#"%</div></td>")
         WriteLine("</tr>");
       }
     WriteLine("</table>");
@@ -73,11 +80,33 @@ function ::CreateDimmingActuator()
 
   string sCtrlId = "slidCtrl"#chnId;
   WriteLine("<script type='text/javascript'>");
-    WriteLine("ibd"#chnId#" = new iseButtonsDimmer("#chnId#", "#iState#", "#iLvlDpId#", "#iOldLvlDpId#", "#system.GetVar("iStatusOnly")#", "#system.GetVar('bSliderFlag')#");");
+    WriteLine("ibd"#chnId#" = new iseButtonsDimmer("#chnId#", "#iState#", "#iLvlDpId#", "#iOldLvlDpId#", "#system.GetVar("iStatusOnly")#", "#system.GetVar('bSliderFlag')#", '"#cObj.Label()#"' );");
 
     Write("jQuery('#"#chnId#"Off').html(translateKey('actionStatusControlLblOff')).show();");
     Write("jQuery('#"#chnId#"On').html(translateKey('actionStatusControlLblOn')).show();");
   WriteLine("</script>");
 
   return;
+}
+
+function ::CreateDimmerRealInfoControl() {
+  real rLevelReal = -1.0;
+  string sLevelReal;
+
+  object oLevelReal = cObj.DPByControl("DIMMER_REAL.LEVEL");
+
+  if ( oLevelReal ) {
+    rLevelReal = oLevelReal.Value() * 100;
+    sLevelReal = rLevelReal.ToString();
+  }
+
+  WriteLine("<td>");
+    WriteLine("<table class='ControlBtnInfo'>");
+      WriteLine("<tr style='height:40px;'>");
+        WriteLine("<td id='"#chnId#"Level'>");
+          WriteLine("${lblInfoLevelReal}: "#sLevelReal.StrValueByIndex(".",0)#"%");
+        WriteLine("</td>");
+      WriteLine("</tr>");
+    WriteLine("</table>");
+  WriteLine("</td>");
 }

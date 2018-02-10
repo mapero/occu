@@ -10,6 +10,7 @@
 "hour" : "Hours",
 "inactive" : "inactive",
 "lastValue" : "Last value",
+"noModification" : "No Modification",
 "long" : "long",
 "minimal" : "minimal",
 "minutes" : "Minutes",
@@ -37,3 +38,9 @@
 "not_active" : "inactive",
 "unknownProfile" : "Unknown profile",
 "useExpertMode" : "Please try again in expert mode.",
+"btnEdit" : "Edit",
+"btnChnEdit" : "Channel parameter",
+"helpDecisionValAndThreshold" : "<span class=\"translated\">The decision value and the upper/lower threshold value are channel parameters of the transmitter and must be configured correctly to enable correct operation of the profile. The settings can be adjusted here via the button 'Editing transmitter channel settings'.</span><br/><br/>",
+"helpDecisionVal" : "<span class=\"translated\">The decision value and the upper/lower threshold value are channel parameters of the transmitter and must be configured correctly to enable correct operation of the profile. The settings can be adjusted here via the button 'Editing transmitter channel settings'.</span><br/><br/>",
+
+"helpBtnChannelConfiguration" : "<span class=\"translated\">To enable correct operation of the profile, the channel parameters of the sensor have to be configured accordingly. The settings can be adjusted here via the button 'Editing transmitter channel settings'.</span><br/><br/>",

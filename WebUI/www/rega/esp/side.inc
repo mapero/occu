@@ -5,12 +5,22 @@
   string hm_oucmpcb = "HM-OU-CM-PCB";
   string hm_partyDialog = "HM-CC-RT-DN HM-TC-IT-WM-W-EU HM-CC-VG-1";
   string hm_statusDisplay = "HM-Dis-WM55";
+  string hm_statusDisplayEPaper = "HM-Dis-EP-WM55";
   string hm_rgbw_controller = "HM-LC-RGBW-WM";
+  string hm_jalousieActor = "HM-LC-Ja1PBU";
+  string heatingClimateControlTransceiver =  "HEATING_CLIMATECONTROL_TRANSCEIVER";
+
+  string osram_rgb_controller = "VIR-LG-RGB-DIM";
+  string osram_rgbw_controller = "VIR-LG-RGBW-DIM";
+  string osram_white_controller = "VIR-LG-WHITE-DIM";
+  string osram_group_controller = "VIR-LG-GROUP";
 
   string excludePARTY = "PARTY_";
   string includePARTY = "PARTY_MODE_SUBMIT";
 
   string excludeHmIPCDT =  "CONTROL_DIFFERENTIAL_TEMPERATURE";
+  string excludeHmIPResetMotion = "RESET_MOTION";
+  string excludeHmIPSmokeDetCommandReservedAlarmOff = "SMOKE_DETECTOR_COMMAND=RESERVED_ALARM_OFF";
 
   integer iDP = oSD.DestinationDP();
   integer iCH = oSD.DestinationChannel();
@@ -29,7 +39,8 @@
   if( iP == ivtSystemId ) { sSelected = " selected"; } else { sSelected = ""; }
   !Write( '<option'#sSelected#'>Systemzustand</option>' );
   Write( '<option'#sSelected#'>${ruleActivitySelectSystemState}</option>' );
-  if( iP == ivtString ) { sSelected = " selected"; } else { sSelected = ""; }
+  !if( (iP == ivtString) || (iP == "string") ) { sSelected = " selected"; } else { sSelected = ""; }
+  if( iP == ivtString  ) { sSelected = " selected"; } else { sSelected = ""; }
   !Write( '<option'#sSelected#'>Skript</option>' );
   Write( '<option'#sSelected#'>${ruleActivitySelectScript}</option>' );
   Write( '</select>' );
@@ -62,9 +73,9 @@
       }
     }
   }
-  if( iP == ivtString )
+  if( (iP == ivtString) || (iP == "string") )
   {
-    if( iVT == ivtString )
+    if( (iVT == ivtString) || (iVT == "string") )
     {
       string sScript = iV.Substr(0,60);
       sScript = sScript#"...";
@@ -150,26 +161,35 @@
                 string sVLValue = web.webGetValueFromList( oDP.ValueList(), sVLKey );
                 if( sVLValue.Length() )
                 {
-                  if( (oDP.ID() == iDP) && (iV == sVLKey) ) { sSelected = " selected"; } else { sSelected = ""; }
-                  Write( '<option value="'#oDP.ID()#':'#sVLKey#'"'#sSelected#'>' );
-                  string sValue = oDP.Name()#": "#sVLValue;
-                  if( (!oDP.IsTypeOf(OT_VARDP)) && (!oDP.IsTypeOf(OT_ALARMDP)) )
-                  {
-                    string sLongKey = oCH.ChnLabel()#"|"#oDP.HSSID()#"="#sVLValue;
-                    string sShortKey = oDP.HSSID()#"="#sVLValue;
-                    sValue = web.webKeyFromStringTable(sLongKey);
-                    if( !sValue.Length() )
+                  string optionVal = "";
+                  if( !oDP.IsTypeOf( OT_VARDP ) ) {
+                    optionVal = oDP.HSSID()#"="#sVLValue;
+                  }
+                  if (optionVal != excludeHmIPSmokeDetCommandReservedAlarmOff) {
+
+                    if( (oDP.ID() == iDP) && (iV == sVLKey) ) { sSelected = " selected"; } else { sSelected = ""; }
+                    Write( '<option value="'#oDP.ID()#':'#sVLKey#'"'#sSelected#'>' );
+                    string sValue = oDP.Name()#": "#sVLValue;
+                    if( (!oDP.IsTypeOf(OT_VARDP)) && (!oDP.IsTypeOf(OT_ALARMDP)) )
                     {
-                      sValue = web.webKeyFromStringTable(sShortKey);
+                      string sLongKey = oCH.ChnLabel()#"|"#oDP.HSSID()#"="#sVLValue;
+                      string sShortKey = oDP.HSSID()#"="#sVLValue;
+                      sValue = web.webKeyFromStringTable(sLongKey);
                       if( !sValue.Length() )
                       {
-                        sValue = sShortKey;
+                        sValue = web.webKeyFromStringTable(sShortKey);
+                        if( !sValue.Length() )
+                        {
+                          sValue = sShortKey;
+                        }
                       }
                     }
+                    Write( sValue );
+                    Write( '</option>' );
                   }
-                  Write( sValue );
-                  Write( '</option>' );
+
                 }
+
               }
             }
             else
@@ -218,7 +238,10 @@
               else
               {
                 ! Some parameter shouldn´t be visible
-                if( ((oDP.HSSID().Find(excludePARTY) == -1) || (oDP.HSSID().Find(includePARTY) != -1)) && (oDP.HSSID().Find(excludeHmIPCDT) == -1) ) {
+                if ( ((oDP.HSSID().Find(excludePARTY) == -1) || (oDP.HSSID().Find(includePARTY) != -1))
+                && (oDP.HSSID().Find(excludeHmIPCDT) == -1)
+                && (oDP.HSSID().Find(excludeHmIPResetMotion) == -1)
+                ) {
                   Write( '<option value="'#oDP.ID()#':0|'#oDP.Name()#'"'#sSelected#'>' );
                   string sValue = oDP.Name();
                   if( (!oDP.IsTypeOf(OT_VARDP)) && (!oDP.IsTypeOf(OT_ALARMDP)) )
@@ -245,7 +268,8 @@
               }
             }
           }
-          string sEnumSpecial = oDP.EnumSpecialIDs().ToString();
+          string sEnumSpecial = "";
+          if( oDP.IsTypeOf( OT_HSSDP ) ) { sEnumSpecial = oDP.EnumSpecialIDs().ToString(); };
           if( sEnumSpecial == "65535" ) { sEnumSpecial = ""; }
           string s;
           foreach(s,sEnumSpecial)
@@ -298,40 +322,89 @@
 
           if( (iVT == ivtInteger) || (iVT == ivtFloat) || (iVT == ivtScaling) || (iVT == ivtRelScaling) || (iVT == ivtBitMask) || (iVT == ivtWord) || (iVT == ivtDWord) )
           {
-            if( iDPst != istEnum )
-            {
-              Write( ' <i>${ruleDescrSetValueA}</i> ' );
-              string sUnit = oDP.ValueUnit().ToString();
+            if ((!oDP.IsTypeOf(OT_VARDP)) && (!oDP.IsTypeOf(OT_ALARMDP)) && (oDP.HSSID().Find("WHITE") == 0)) {
+                ! e. g. OSRAM device
+                string sUnit = "K";
+                real rMin = oDP.ValueMin();
+                real rMax = oDP.ValueMax();
 
-              real rMin = oDP.ValueMin();
-              real rMax = oDP.ValueMax();
-
-              integer iPercentPos = sUnit.Find("%");
-
-              if( iPercentPos != -1 )
-              {
-                iV = 100.0 * iV;
-                sUnit = sUnit.Substr(iPercentPos,1);
-              }
-
-              if( iV.Type() == "real" )
-              {
                 if( iV < rMin)
                 {
-                  iV = rMin.ToInteger().ToString() + rMin.ToString().Substr(rMin.Find("."),3);
+                  iV = rMin.ToInteger().ToString();
                 }
-                iV = iV.ToString(2);
+
+                iV = iV.ToString(0);
+                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" type="text" class="SelectBox alignCenter" size="10" value="'#iV#'" onfocus="Set_VIR_LG_WHITEController('#oSD.ID()#','#rMin#','#rMax#','#iV#');" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value);" /><span>'#sUnit#'</span>' );
+                Write( '<span id="setWhiteController'#oSD.ID()#'" class="CLASS02401" onclick="Set_VIR_LG_WHITEController('#oSD.ID()#','#rMin#','#rMax#','#iV#');"><img src="/ise/img/notepad.png" /></span>' );
+            } else {
+
+              if( iDPst != istEnum )
+              {
+                Write( ' <i>${ruleDescrSetValueA}</i> ' );
+
+                ! Label() presents the type id of the channel, e.g. HM-OU-LED16 or  HM-OU-CFM-Pl
+                string chLabel = oCH.Label();
+
+                integer hmipWth = oCH.HssType().Find(heatingClimateControlTransceiver);
+
+                if (hmipWth != -1) {
+                  hmipWth = 1;
+                }
+
+                string sUnit = oDP.ValueUnit().ToString();
+
+                real rMin = oDP.ValueMin();
+                real rMax = oDP.ValueMax();
+
+                integer iPercentPos = sUnit.Find("%");
+
+                if( iPercentPos != -1 )
+                {
+                  iV = 100.0 * iV;
+                  sUnit = sUnit.Substr(iPercentPos,1);
+                }
+
+                if( iV.Type() == "real" )
+                {
+                  if( iV < rMin)
+                  {
+                    iV = rMin.ToInteger().ToString() + rMin.ToString().Substr(rMin.Find("."),3);
+                  }
+                  iV = iV.ToString(2);
+                }
+
+                string sRange = " (" + rMin.ToInteger().ToString() + rMin.ToString().Substr(rMin.Find("."),3) + " - " + rMax.ToInteger().ToString() + rMax.ToString().Substr(rMax.Find("."),3) + ")";
+
+                ! Add more exceptions
+                if (hmipWth != -1) {
+                  boolean showGenericElem = true;
+                  if ((hmipWth != -1) ) {
+
+                    if ((oDP.HSSID().Find("CONTROL_MODE") != -1) || (oDP.HSSID().Find("SET_POINT_MODE") != -1)) {
+                      ! The maximal valid value is 3, but 3 is reserved (AUTO,MANU,PARTY,RESERVED), so we restrict the maximal value to 2
+                      ! Write( '<input id="valSD_'#oSD.ID()#'" type="text" class="SelectBox alignCenter" size="6" value="'#iV#'" onfocus="SetWTHControlMode('#oSD.ID()#',\''#oCH.HSSID()#'\');" onchange="iseSingleDestination.SetValueMinMax('#oSD.ID()#',this.value,\''#sUnit#'\','#oDP.ValueMin()#',2);" />' );
+                      Write( '<input id="valSD_'#oSD.ID()#'" type="text" class="CLASS02401 SelectBox alignCenter" size="6" value="'#iV#'" onfocus="SetWTHControlMode('#oSD.ID()#',\''#oCH.HSSID()#'\');" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');"/>' );
+                      Write('<span id="wthControlMode'#oSD.ID()#'" class="CLASS02401" onclick="SetWTHControlMode('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span>' );
+
+                      showGenericElem = false;
+                    }
+
+                    if (showGenericElem) {
+                      Write( '<input id="valSD_'#oSD.ID()#'" type="text" class="SelectBox" size="6" value="'#iV#'" onchange="iseSingleDestination.SetValueMinMax('#oSD.ID()#',this.value,\''#sUnit#'\','#oDP.ValueMin()#','#oDP.ValueMax()#');" />' );
+                      Write( sUnit );
+                      Write( '<span class="CLASS02401" onclick="ChangeDestinationValue('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span>' );
+                    }
+                  }
+
+                } else {
+                  Write( '<input id="valSD_'#oSD.ID()#'" type="text" class="SelectBox" size="6" value="'#iV#'" onchange="iseSingleDestination.SetValueMinMax('#oSD.ID()#',this.value,\''#sUnit#'\','#oDP.ValueMin()#','#oDP.ValueMax()#');" />' );
+                  Write( sUnit );
+                  Write( '<span class="CLASS02401" onclick="ChangeDestinationValue('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span>' );
+                }
               }
-
-              string sRange = " (" + rMin.ToInteger().ToString() + rMin.ToString().Substr(rMin.Find("."),3) + " - " + rMax.ToInteger().ToString() + rMax.ToString().Substr(rMax.Find("."),3) + ")";
-
-              Write( '<input id="valSD_'#oSD.ID()#'" type="text" class="SelectBox" size="6" value="'#iV#'" onchange="iseSingleDestination.SetValueMinMax('#oSD.ID()#',this.value,\''#sUnit#'\','#oDP.ValueMin()#','#oDP.ValueMax()#');" />' );
-              Write( sUnit );
-              Write( '<span class="CLASS02401" onclick="ChangeDestinationValue('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span>' );
             }
           }
-
-          if( iVT == ivtString )
+          if( (iVT == ivtString) || (iVT == "string") )
           {
             ! Label() presents the type id of the channel, e.g. HM-OU-LED16 or  HM-OU-CFM-Pl
             string chLabel = oCH.Label();
@@ -342,16 +415,35 @@
             integer oucmpcb = chLabel.Find(hm_oucmpcb);
             integer partyDialogDevice = hm_partyDialog.Find(chLabel);
             integer statusDisplayDevice = hm_statusDisplay.Find(chLabel);
+            integer statusDisplayEPaperDevice = hm_statusDisplayEPaper.Find(chLabel);
             integer rgbw_controller = chLabel.Find(hm_rgbw_controller);
+            integer osram_rgb = chLabel.Find(osram_rgb_controller);
+            integer osram_rgbw = chLabel.Find(osram_rgbw_controller);
+            integer osram_group = chLabel.Find(osram_group_controller);
+            integer jalousieActor = chLabel.Find(hm_jalousieActor);
 
-            if ((statusDisplayDevice != -1) || (rgbw_controller != -1)){
+            if ((statusDisplayDevice != -1)
+              || (statusDisplayEPaperDevice != -1)
+              || (rgbw_controller != -1)
+              || ((jalousieActor != - 1) && (oDP.HSSID().Find("LEVEL_COMBINED") != -1))
+              || (((osram_rgb != - 1) && (oDP.HSSID().Find("RGB") != -1)) || ((osram_rgbw != - 1) && (oDP.HSSID().Find("RGBW") != -1)) || ((osram_group != - 1) && (oDP.HSSID().Find("RGBW") != -1)))
+              ) {
               if (statusDisplayDevice != -1) {
                 if(iV == "0") {
-                  ! This is the correct string for 'all channels not used'
+                  ! This is the default string for 'all values not used'
                   iV = "0x02,0x0A,0x0A,0x0A,0x0A,0x0A,0x0A,0x03";
                 }
-                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="SetStatusDisplay('#oSD.ID()#');" type="text" class="SelectBox" size="10" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
+                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="SetStatusDisplay('#oSD.ID()#',\'DIS\');" type="text" class="SelectBox" size="10" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
               }
+
+              if (statusDisplayEPaperDevice != -1) {
+                if(iV == "1") {
+                  ! This is the default string for 'all values not used'
+                  iV = "0x02,0x0A,0x0A,0x0A,0x0A,0x0A,0x14,0xC0,0x1C,0xD0,0x16,0x,0x1D,0xE0F0,0x03";
+                }
+                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="SetStatusDisplay('#oSD.ID()#',\'DIS-EP\');" type="text" class="SelectBox" size="10" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
+              }
+
               if (rgbw_controller != -1) {
 
                 if (iV == "0") {
@@ -368,11 +460,46 @@
                 }
                 Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="SetRGBWController('#oSD.ID()#',\''#oCH.HSSID()#'\');" type="text" class="SelectBox" size="10" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
               }
+
+              if ((jalousieActor != - 1) && (oDP.HSSID().Find("LEVEL_COMBINED") != -1)) {
+                if (iV == "0") {
+                  iV = "0X00,0X00";
+                }
+                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="SetJalousieActor('#oSD.ID()#',\''#oCH.HSSID()#'\');" type="text" class="SelectBox" size="10" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
+              }
+
+              if ((osram_rgb != -1) && (oDP.HSSID().Find("RGB") != -1)) {
+
+                if(iV.Find("rgb") == -1) {
+                  iV = "rgb(255, 255, 255)";
+                }
+
+                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="Set_VIR_LG_RGBWController('#oSD.ID()#',\'RGB\');" type="text" class="SelectBox alignCenter" size="20" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
+              }
+
+              if (((osram_rgbw != -1) || (osram_group != -1)) && (oDP.HSSID().Find("RGBW") != -1)) {
+                if(iV.Find("rgb") == -1) {
+                  iV = "rgb(255, 255, 255, 255)";
+                }
+                Write( '<input id="prgStringOptionValue'#oSD.ID()#'" onfocus="Set_VIR_LG_RGBWController('#oSD.ID()#',\'RGBW\');" type="text" class="SelectBox alignCenter" size="20" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
+              }
             } else {
               Write( '<input id="prgStringOptionValue'#oSD.ID()#'" type="text" class="SelectBox" size="10" value="'#iV#'" onchange="iseSingleDestination.SetValue('#oSD.ID()#',this.value,\'STRING\');" /> ' );
             }
 
-            if((ouled16 == -1) && (oucfm == -1) && (oucfmTW == -1) && (oucmpcb == -1) && (partyDialogDevice == -1) && (statusDisplayDevice == -1) && (rgbw_controller == -1)) {
+            if((ouled16 == -1)
+              && (oucfm == -1)
+              && (oucfmTW == -1)
+              && (oucmpcb == -1)
+              && (partyDialogDevice == -1)
+              && (statusDisplayDevice == -1)
+              && (statusDisplayEPaperDevice == -1)
+              && (rgbw_controller == -1)
+              && (jalousieActor == -1)
+              && (osram_rgb == -1)
+              && (osram_rgbw == -1)
+              && (osram_group == -1)
+              ) {
               Write( '<span class="CLASS02401" onclick="ChangeDestinationValue('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span>' );
             } else {
               if(ouled16 != -1) {
@@ -385,22 +512,37 @@
                 Write( '<span id="setPartyMode" class="CLASS02401" onclick="SetPartyMode(this);"><img src="/ise/img/notepad.png" /></span>' );
               }
               if (statusDisplayDevice != -1) {
-                Write( '<span id="setStatusDisplay'#oSD.ID()#'" class="CLASS02401" onclick="SetStatusDisplay('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span>' );
+                Write( '<span id="setStatusDisplay'#oSD.ID()#'" class="CLASS02401" onclick="SetStatusDisplay('#oSD.ID()#',\'DIS\');"><img src="/ise/img/notepad.png" /></span>' );
               }
-               if (rgbw_controller != -1) {
+              if (statusDisplayEPaperDevice != -1) {
+                Write( '<span id="setStatusDisplayEPaper'#oSD.ID()#'" class="CLASS02401" onclick="SetStatusDisplay('#oSD.ID()#',\'DIS-EP\');"><img src="/ise/img/notepad.png" /></span>' );
+              }
+              if (rgbw_controller != -1) {
                 Write( '<span id="setRGBWController'#oSD.ID()#'" class="CLASS02401" onclick="SetRGBWController('#oSD.ID()#',\''#oCH.HSSID()#'\');"><img src="/ise/img/notepad.png" /></span>' );
+              }
+
+              if ((jalousieActor != - 1) && (oDP.HSSID().Find("LEVEL_COMBINED") != -1)) {
+                Write( '<span id="setJalousieActor'#oSD.ID()#'" class="CLASS02401" onclick="SetJalousieActor('#oSD.ID()#',\''#oCH.HSSID()#'\');"><img src="/ise/img/notepad.png" /></span>' );
+              }
+
+              if ((osram_rgb != -1) && (oDP.HSSID().Find("RGB") != -1)) {
+                Write( '<span id="setRGBWController'#oSD.ID()#'" class="CLASS02401" onclick="Set_VIR_LG_RGBWController('#oSD.ID()#',\'RGB\');"><img src="/ise/img/notepad.png" /></span>' );
+              }
+
+              if (((osram_rgbw != -1) || (osram_group != -1)) && (oDP.HSSID().Find("RGBW") != -1)) {
+                Write( '<span id="setRGBWController'#oSD.ID()#'" class="CLASS02401" onclick="Set_VIR_LG_RGBWController('#oSD.ID()#',\'RGBW\');"><img src="/ise/img/notepad.png" /></span>' );
               }
             }
           }
-          
+
           if( iVT == ivtObjectId )
           {
-            
+
             Write( ' <i>mit</i> ' );
             object oDPTmp = dom.GetObject( iV );
             if( oDPTmp )
             {
-              
+
               object oCH = dom.GetObject( oDPTmp.Channel() );
               if( oCH )
               {
@@ -426,7 +568,7 @@
                     {
                       integer iDPvt = oDP.ValueType();
                       integer iDPst = oDP.ValueSubType();
-                      if( iFirstID == ID_ERROR ) { iFirstID = oDP.ID(); }         
+                      if( iFirstID == ID_ERROR ) { iFirstID = oDP.ID(); }
                       string sSelected = "";
                       if( oDP.ID() == iV ) { sSelected = " selected"; bFound = true; } else { sSelected = ""; }
                       string sIdx = "";
@@ -456,7 +598,7 @@
             } else { Write("(unbekannter Datenpunkt)"); }
             Write( ' <span class="CLASS02401" onclick="ChangeDestinationValue('#oSD.ID()#');"><img src="/ise/img/notepad.png" /></span> ' );
           }
-          
+
           if( iVT == ivtSystemId )
           {
             Write( ' <i>mit</i> ' );
@@ -527,6 +669,6 @@
           Write( '</select> ' );
         }
       }
-    }       
+    }
   }
 %>

@@ -376,9 +376,8 @@ proc action_put_page {} {
                                     table {
                                         table_row {
                                             table_data {
-                                                division {class="CLASS20908"} "onClick=\"window.location.href='$REMOTE_FIRMWARE_SCRIPT?cmd=download&version=$cur_version&serial=$serial&lang=de&product=HM-CCU2';\"" {
-                                                    puts "\${dialogSettingsCMBtnPerformSoftwareUpdateDownload}"
-                                                }
+                                                division {class="CLASS20908" style="display: none"} {id="btnFwDownload"} {} "onClick=\"window.location.href='$REMOTE_FIRMWARE_SCRIPT?cmd=download&version=$cur_version&serial=$serial&lang=de&product=HM-CCU2';\"" {}
+                                                division {class="CLASS20908"}  "onClick=\"showCCULicense();\"" {puts "\${dialogSettingsCMBtnPerformSoftwareUpdateDownload}"}
                                             }
                                         }
                                     }
@@ -437,6 +436,9 @@ proc action_put_page {} {
                         li {
                              ${dialogSettingsCMHintSoftwareUpdate3}
                         }
+                        li {
+                             ${dialogSettingsCMHintSoftwareUpdate3a}
+                        }
                         set bat_level [get_bat_level]
                         if {$bat_level < 50} {
                             set msg " \${dialogSettingsCMHintSoftwareUpdate4a} $bat_level%. "
@@ -453,8 +455,8 @@ proc action_put_page {} {
             table_row {class="CLASS20902 j_noForcedUpdate j_fwUpdateOnly"} {
                 table_data {class="CLASS20903"} $styleMaxWidth {
                     #puts "Zentralen-<br>"
-		                #puts "Neustart"
-		                puts "\${dialogSettingsCMTDCCURestart}"
+                    #puts "Neustart"
+                    puts "\${dialogSettingsCMTDCCURestart}"
 
                 }
                 table_data {class="CLASS20904"} {
@@ -487,7 +489,86 @@ proc action_put_page {} {
                     puts "\${dialogSettingsCMHintRestartSafeMode}"
                 }
             }
-            
+
+            # Version Logikschicht
+            table_row {class="CLASS20902 j_noForcedUpdate j_fwUpdateOnly"} {
+
+              table_data {class="CLASS20903"} $styleMaxWidth {
+                puts "\${lblTDRegaVersion}"
+              }
+
+              table_data {class="CLASS20904"} {
+
+                table {class="CLASS20909"} {
+                  table_row {
+                    table_data {
+                      puts "\${dialogHelpInfoLblVersion}"
+                    }
+                    table_data {align="left"} {
+                      puts "<select id='selectedReGaVersion'>"
+                        puts "<option value='NORMAL'>\${optionReGaNORMAL}</option>"
+                        puts "<option value='LEGACY'>\${optionReGaLEGACY}</option>"
+                        puts "<option value='COMMUNITY'>\${optionReGaCOMMUNITY}</option>"
+                      puts "</select>"
+                    }
+                  }
+
+                  table_row {
+                    table_data {}
+                    table_data {align="left"} {
+                      division {class="popupControls CLASS20905"} {
+                        division {class="CLASS20919"} {style="margin-top:10px; margin-left:0px;"} {onClick="saveRegaVersion(this);"} {
+                            puts "\${btnSave}"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+
+              table_data {align="center"} {class="CLASS20904"} {
+                # puts "\${lblTDReGaVersionHelp}"
+                division {Class="StdTableBtnHelp"} {puts "<img id='showReGaVersionHelp' src='/ise/img/help.png'>"}
+              }
+            }
+
+            cgi_javascript {
+              puts "var url = \"$env(SCRIPT_NAME)?sid=\" + SessionId;"
+              puts {
+
+               jQuery("#showReGaVersionHelp").click(function() {
+                MessageBox.show(translateKey("tooltipHelp"), translateKey("lblTDReGaVersionHelp"), "", 600, 250);
+               });
+
+                homematic("User.getReGaVersion",{}, function(result) {
+                  if (result) {
+                    jQuery("#selectedReGaVersion").val(result);
+                  } else {
+                    jQuery("#selectedReGaVersion").val("NORMAL");
+                  }
+                });
+
+                saveRegaVersion = function(elm) {
+                  jQuery(elm).css({"border-width" : "2px"});
+                  var selectedReGa = jQuery("#selectedReGaVersion").val();
+                  homematic("User.setReGaVersion", {"ReGaVersion": selectedReGa}, function() {
+                    jQuery(elm).css({"border-width" : "1px"});
+
+                    var dlgYesNo = new YesNoDialog(translateKey("dialogPerformRebootTitle"), translateKey("dialogRestart2ChanceReGaVersion"), function(result) {
+                      if (result == YesNoDialog.RESULT_YES)
+                      {
+                        dlgPopup.hide();
+                        dlgPopup.setWidth(400);
+                        dlgPopup.LoadFromFile(url, "action=reboot_confirm");
+                      }
+                    });
+                    dlgYesNo.btnTextYes(translateKey("dialogBtnPerformRestart"));
+                    dlgYesNo.btnTextNo(translateKey("dialogBtnPerformLaterRestart"));
+                  });
+                }
+              }
+            }
+
             table_row {class="CLASS20902 j_noForcedUpdate j_fwUpdateOnly"} {
                 table_data {class="CLASS20903"} $styleMaxWidth  {
                     #puts "Fehler-<br>"
@@ -504,11 +585,11 @@ proc action_put_page {} {
                                             puts "\${dialogSettingsCMLblLogBidCosRF}"
                                         }
                                         table_data {align="right"} {
-					    if [catch { set cur_level [xmlrpc $RFD_URL logLevel]  } ] {set cur_level 0}
+              if [catch { set cur_level [xmlrpc $RFD_URL logLevel]  } ] {set cur_level 0}
                                             cgi_select log_rfd= {id="select_log_rfd"} {
                                                 foreach level [lsort [array names LOGLEVELS]] {
                                                     set selected [expr { $level == $cur_level ? "selected":""}]
-						    # process a country entry
+                # process a country entry
                                                     cgi_option $LOGLEVELS($level) value=$level $selected
                                                 }
                                             }
@@ -519,7 +600,7 @@ proc action_put_page {} {
                                             puts "\${dialogSettingsCMLblLogBidCosWired}"
                                         }
                                         table_data {align="right"} {
-					    if [catch { set cur_level [xmlrpc $HS485D_URL logLevel]  } ] {set cur_level 0}
+              if [catch { set cur_level [xmlrpc $HS485D_URL logLevel]  } ] {set cur_level 0}
                                             cgi_select log_hs485d= {id="select_log_hs485d"} {disabled} {
                                                 foreach level [lsort [array names LOGLEVELS]] {
                                                     set selected [expr { $level == $cur_level ? "selected":""}]
@@ -550,7 +631,7 @@ proc action_put_page {} {
                                             puts "\${dialogSettingsCMLblLogLogic}"
                                         }
                                         table_data {align="right"} {
-					    if [catch { set cur_level [rega system.LogLevel()]  } ] {set cur_level 2}
+              if [catch { set cur_level [rega system.LogLevel()]  } ] {set cur_level 2}
                                             cgi_select log_rega= {id="select_log_rega"} {
                                                 foreach level [lsort [array names REGA_LOGLEVELS]] {
                                                     set selected [expr { $level == $cur_level ? "selected":""}]
@@ -578,7 +659,7 @@ proc action_put_page {} {
                                             }
                                         }
                                     }
-				    table_row {
+            table_row {
                                         table_data {align="left"} {colspan="2"} {
                                             division {class="popupControls CLASS20905"} {
                                                 division {class="CLASS20910"} "onClick=\"window.location.href='$env(SCRIPT_NAME)?sid=$sid&action=download_logfile';\"" {
@@ -595,8 +676,8 @@ proc action_put_page {} {
                 table_data {align="left"} {class="CLASS20904"} {
                     #puts "Hier stellen Sie die Anzahl der Logmeldungen ein, die die verschiedenen Softwareteile der Zentrale generieren.<br>"
                     #puts "Sie k&ouml;nnen au&szlig;erdem einen Rechner angeben, dem die Zentrale ihre Logmeldungen per Syslog schickt."
-		                #puts "Auf diesem Rechner mu&szlig; entsprechende Software installiert sein, die die Meldungen entgegennimmt.<br>"
-		                #puts "Zu Diagnosezwecken k&ouml;nnen Sie sich die aktuellen Logmeldungen der Zentrale in einer Textdatei herunterladen."
+                    #puts "Auf diesem Rechner mu&szlig; entsprechende Software installiert sein, die die Meldungen entgegennimmt.<br>"
+                    #puts "Zu Diagnosezwecken k&ouml;nnen Sie sich die aktuellen Logmeldungen der Zentrale in einer Textdatei herunterladen."
 
                     puts "\${dialogSettingsCMHintErrorLog}"
                 }
@@ -678,6 +759,33 @@ proc action_put_page {} {
           }
         }
 
+        puts {
+          showCCULicense = function() {
+            ShowWaitAnim();
+            HideWaitAnimAutomatically(60);
+            if (showDummyLicense == "true") {
+              homematic.com.showCCUDummyLicense(function (result) {
+                HideWaitAnim();
+                var dlg = new EulaDialog(translateKey('dialogEulaTitle'), result ,function(userAction) {
+                  if (userAction == 1) {
+                    jQuery("#btnFwDownload").click();
+                  }
+                }, "html");
+              });
+            } else {
+              homematic.com.showCCULicense(function (result) {
+                HideWaitAnim();
+                jQuery("#homematic_license_script").remove();
+                var dlg = new EulaDialog(translateKey('dialogEulaTitle'), result ,function(userAction) {
+                  if (userAction == 1) {
+                    jQuery("#btnFwDownload").click();
+                  }
+                }, "html");
+              });
+            }
+
+          }
+        }
     }
     cgi_javascript {
       puts "translatePage('#messagebox');"
@@ -763,7 +871,7 @@ proc action_reboot_confirm {} {
                     table {class="CLASS20909"} {width="100%"} {
                         table_row {
                             table_data {colspan="3"} {
-			        puts "\${dialogQuestionRestart}"
+              puts "\${dialogQuestionRestart}"
                             }
                         }                        
                         table_row {
@@ -869,7 +977,7 @@ proc set_log_config {loghost level_rfd level_hs485d level_rega} {
     if { $fd <0 } { return 0 }
     
     if { "$loghost" != "" } {
-	puts $fd "LOGHOST=$loghost"
+  puts $fd "LOGHOST=$loghost"
     }
     puts $fd "LOGLEVEL_RFD=$level_rfd"
     puts $fd "LOGLEVEL_HS485D=$level_hs485d"
@@ -914,14 +1022,15 @@ proc action_download_logfile {} {
     puts "Content-Disposition:attachment;filename=[set HOSTNAME]-$year-$month-$day.log\n"
     
     cd /var/log
-    foreach f {messages.1 messages.0 messages} {
+    foreach f {messages.1 messages.0 messages hmserver.log.1 hmserver.log} {
         catch {
             set fd [open $f r]
+            puts -nonewline "\r\n***** $f *****\r\n"
             while { ! [eof $fd]} {
                 puts -nonewline "[gets $fd]\r\n"
             }
-	    close $fd
-	}
+            close $fd
+        }
     }
 }
 

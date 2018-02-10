@@ -140,8 +140,9 @@
     });
   };
 
-  SetStatusDisplay = function(regaDialogID) {
-    var elm = jQuery("#setStatusDisplay" + regaDialogID);
+  SetStatusDisplay = function(regaDialogID, mode) {
+    var elm = (mode == "DIS") ? jQuery("#setStatusDisplay" + regaDialogID) : jQuery("#setStatusDisplayEPaper" + regaDialogID) ;
+
     jQuery(elm).prop("disabled", true);
 
     var url = "/pages/msg/setStatusDisplay.htm";
@@ -152,18 +153,35 @@
       dataType: "html"
     });
     req.done(function(htmlContent) {
-      var statusDisplayDialog = new StatusDisplayDialog(translateKey("statusDisplayDialogTitle"), htmlContent, jQuery(inputElm).val(), function(result) {
-        jQuery(elm).prop("disabled", false);
-        if (result == 1) {
-          conInfo("SetStatusDisplay: Yes pressed");
-          var inputElm = jQuery(elm).prev();
-          var cfgString = this.getConfigString();
-          conInfo(cfgString);
-          inputElm.val(cfgString); //.change();
-          encodeStringStatusDisplay(inputElm.prop("id"));
-          inputElm.change();
-        }
-      }, "html");
+      if (mode == "DIS") {
+         statusDisplayDialog = new StatusDisplayDialog(translateKey("statusDisplayDialogTitle"), htmlContent, jQuery(inputElm).val(), function (result) {
+          jQuery(elm).prop("disabled", false);
+          if (result == 1) {
+            conInfo("SetStatusDisplay: Yes pressed");
+            var inputElm = jQuery(elm).prev();
+            var cfgString = this.getConfigString();
+            conInfo(cfgString);
+            inputElm.val(cfgString); //.change();
+            encodeStringStatusDisplay(inputElm.prop("id"));
+            inputElm.change();
+          }
+        }, "html");
+      } else if (mode == "DIS-EP") {
+         statusDisplayDialog = new StatusDisplayDialogEPaper(translateKey("statusDisplayDialogTitle"), htmlContent, jQuery(inputElm).val(), function (result) {
+          jQuery(elm).prop("disabled", false);
+          if (result == 1) {
+            conInfo("SetStatusDisplay: Yes pressed");
+            var inputElm = jQuery(elm).prev();
+            var cfgString = this.getConfigString();
+            conInfo(cfgString);
+            inputElm.val(cfgString); //.change();
+            encodeStringStatusDisplay(inputElm.prop("id"));
+            inputElm.change();
+          }
+        }, "html");
+      }
+
+
     });
   };
 
@@ -191,6 +209,121 @@
         }, "html");
       });
     };
+
+
+  Set_VIR_LG_RGBWController = function(regaDialogID, param) {
+      var elm = jQuery("#setRGBWController" + regaDialogID), // this is the notepad symbol
+      url = "/pages/msg/setVIR_LG_RGBWController.htm";
+      jQuery(elm).prop("disabled", true);
+      var inputElm = jQuery(elm).prev(); // this is the element which contains the relevant string to transmit
+
+      var req = jQuery.ajax({
+        url : url +"?sid=" + SessionId,
+        dataType: "html"
+      });
+      req.done(function(htmlContent) {
+        var vir_lg_rgbwControllerDialog = new VIR_LG_RGBWControllerDialog(translateKey("titleRGBWControllerDialogTitle"), htmlContent, param, jQuery(inputElm).val(), function(result) {
+          jQuery(elm).prop("disabled", false);
+          if (result == 1) {
+            conInfo("Set_VIR_LG_RGBWController: Yes pressed");
+            var inputElm = jQuery(elm).prev();
+            var cfgString = this.getConfigString();
+            conInfo(cfgString);
+            inputElm.val(cfgString);
+            inputElm.change();
+          }
+        }, "html");
+      });
+    };
+
+  Set_VIR_LG_WHITEController = function(regaDialogID, minVal, maxVal, curVal) {
+      var elm = jQuery("#setWhiteController" + regaDialogID), // this is the notepad symbol
+      url = "/pages/msg/setVIR_LG_WHITEController.htm";
+      jQuery(elm).prop("disabled", true);
+      var inputElm = jQuery("#prgStringOptionValue"  + regaDialogID); // this is the element which contains the relevant string to transmit
+
+      var args = {};
+      args.minVal = minVal;
+      args.maxVal = maxVal;
+      args.curVal = curVal;
+
+      var req = jQuery.ajax({
+        url : url +"?sid=" + SessionId,
+        dataType: "html"
+      });
+      req.done(function(htmlContent) {
+        var vir_lg_whiteControllerDialog = new VIR_LG_WHITEControllerDialog(translateKey("titleRGBWControllerDialogTitle"), htmlContent, args, function(result) {
+          jQuery(elm).prop("disabled", false);
+          if (result == VIR_LG_WHITEControllerDialog.RESULT_YES) {
+            conInfo("Set_VIR_LG_RGBWHITEController: Yes pressed");
+            var value = this.getValue();
+            conInfo("Color temperature (white level): " + value);
+            inputElm.val(value);
+            inputElm.change();
+          }
+        }, "html");
+      });
+    };
+
+  SetJalousieActor = function(regaDialogID, param) {
+    var elm = jQuery("#setJalousieActor" + regaDialogID), // this is the element which contains the relevant string to transmit
+    url = "/pages/msg/setJalousieActor.htm";
+    jQuery(elm).prop("disabled", true);
+    var inputElm = jQuery(elm).prev(); // this is the element which contains the relevant string to transmit
+
+    var req = jQuery.ajax({
+      url : url +"?sid=" + SessionId,
+      dataType: "html"
+    });
+
+    req.done(function(htmlContent) {
+
+      var jalousieActorDialog = new JalousieActorConvertHexValDialog(translateKey("titleConfigDialog"), htmlContent, jQuery(inputElm).val(), function(result) {
+        jQuery(elm).prop("disabled", false);
+        if (result == 1) {
+          conInfo("jalousieActorDialog: Yes pressed");
+          var inputElm = jQuery(elm).prev();
+          var cfgString = this.getConfigString();
+          conInfo(cfgString);
+          inputElm.val(cfgString); //.change();
+          inputElm.change();
+        }
+      }, "html");
+
+    });
+  };
+
+  SetWTHControlMode = function(regaDialogID) {
+    var elm = jQuery("#wthControlMode" + regaDialogID),
+    url = "/pages/msg/setWTHControlAndSetPointTemperatureMode.htm";
+    jQuery(elm).prop("disabled", true);
+    var inputElm = jQuery(elm).prev(); // this is the element which contains the relevant string to transmit
+    var paramElm = jQuery(elm).prev().prev().prev(); // this is the element which contains the parameter
+
+    inputElm.prop("disabled",true);
+
+    var req = jQuery.ajax({
+      url : url +"?sid=" + SessionId,
+      dataType: "html"
+    });
+
+    req.done(function(htmlContent) {
+
+      var wthSelectModeDialog = new WTHSelectModeDialog(translateKey("titleConfigDialog"), htmlContent, jQuery(inputElm).val(), jQuery(paramElm).find("option:selected").html(),function(result) {
+        var inputElm = jQuery(elm).prev();
+        jQuery(elm).prop("disabled", false);
+        inputElm.prop("disabled",false);
+        if (result == 1) {
+          conInfo("wthSelectModeDialog: Yes pressed");
+          var selectedMode = this.getSelectedMode();
+          conInfo(selectedMode);
+          inputElm.val(selectedMode);
+          inputElm.change();
+        }
+      }, "html");
+
+    });
+  };
 
   ChangeDelayUnit = function( sdid )
   {
@@ -308,7 +441,15 @@
   {
     var callback = function ( result )
     {
-      if (result) { iseSingleCondition.SetChannel(scid, result); }
+      if (result) {
+
+        window.setTimeout(function() {
+          iseSingleCondition.SetChannel(scid, result);
+          window.setTimeout(function() {
+            jQuery("#selectConditionWhen" + scid).change();
+          },250);
+        },500);
+      }
     };
     ChannelChooser.show(callback, ChannelChooser.SHOW_READABLE | ChannelChooser.SHOW_EVENTABLE, ChannelChooser.PRG_CONDITION);
   };
@@ -375,7 +516,7 @@
     isePrograms.Delete(copy);
   };
   SaveProgramEdit = function(orig,copy)
-  {  
+  {
     setTimeout( "isePrograms.Restore("+orig+","+copy+")", 500 );
   };
   CopyToNewProgram = function(copy)
@@ -444,7 +585,7 @@
     var pb = '';
     pb += 'string action = "ReloadSiCo";';
     pb += 'string id = "'+scid+'";';
-    var opts = { postBody: pb, onComplete: ReloadSiCoCallback }
+    var opts = { postBody: pb, onComplete: ReloadSiCoCallback };
     new Ajax.Updater("sico"+scid,url,opts);
   };
   LoadRuleCallback = function(t)

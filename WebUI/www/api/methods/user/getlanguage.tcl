@@ -3,14 +3,18 @@
 # Ermittelt die vom User gewählte Sprache
 #
 # Parameter:
-#   userName: [string] userName des Anwenders
+#   userID: [string] userId des Anwenders
 #
 # Rückgabewert: Gewählte Sprache des Users
 ##
 
+set script {
+  var user = dom.GetObject(userID);
+  Write(user.UserFirstName());
+}
+set userName [hmscript $script args]
 
-
-if {[catch {set fp [open "/etc/config/userprofiles/$args(userName).lang" r]}] == 0} {
+if {[catch {set fp [open "/etc/config/userprofiles/$userName.lang" r]}] == 0} {
   set data [read $fp]
   set lang [split $data "\n"]
   close $fp

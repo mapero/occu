@@ -119,11 +119,12 @@ proc cmd_addLink {} {
 
   set errorCode [catch { xmlrpc $url addLink [list string $sender_address] [list string $receiver_address] }]
 
-  if { ! $errorCode } then {
+  # errorCode -10 = config pending
+  if { (! $errorCode) || (($iface == $HmIPIdentifier) && ($errorCode == -10))  } then {
 
     #Verknüpfung erfolgreich angelegt. Namen und Beschreibungen noch nicht gesetzt.
     set ret 1
-    
+
     if { $description != "" || $name != "" } then {
 
       if { [catch { xmlrpc $url setLinkInfo [list string $sender_address] [list string $receiver_address] [list string $name] [list string $description] } ] } then {
@@ -164,6 +165,8 @@ proc cmd_ShowConfigPendingMsg {} {
   ise_getChannelNames ise_CHANNELNAMES
 
   set HmIPIdentifier "HmIP-RF"
+  set HmIPGroupID "HM-CC-VG"
+  set VirtualDevicesID "VirtualDevices"
 
   set iface            ""
   set sender_address   ""
@@ -240,7 +243,10 @@ proc cmd_ShowConfigPendingMsg {} {
 
   #puts "<script type=\"text/javascript\">if (ProgressBar) ProgressBar.IncCounter(\"ConfigPending-PopUp wird angezeigt.\");</script>"
   puts "<script type=\"text/javascript\">"
-  if {$iface != "VirtualDevices"} {
+  if {$iface == $VirtualDevicesID && (([string range $receiver_type 0 7] == $HmIPGroupID) || ([string range $receiver_type 0 7] == $HmIPGroupID)) } {
+    puts "var data = '{ \"virtualDeviceSerialNumber\" : \"$sender_address\" }';"
+    puts "CreateCPPopup(\"/pages/jpages/group/configureDevices\", data);"
+  } else {
     puts "try \{"
     puts "  ConfigPendingFrm.ResetTable();"
     puts "\} catch (e) \{"
@@ -258,12 +264,9 @@ proc cmd_ShowConfigPendingMsg {} {
     } else {
       puts "ConfigPendingFrm.SetDevice('$iface', '$receiver_address', ConfigPendingFrm.CONFIGPENDING_RECEIVER);"
     }
-
     puts "ConfigPendingFrm.setReturnURL('$sidname', '$sid', '$redirect_url', $go_back);"
     puts "ConfigPendingFrm.show();"
-  } else {
-      puts "var data = '{ \"virtualDeviceSerialNumber\" : \"$sender_address\" }';"
-      puts "CreateCPPopup(\"/pages/jpages/group/configureDevices\", data);"
+
   }
   puts "</script>"
 }
@@ -337,14 +340,21 @@ proc cmd_firmware_update {} {
     puts "</script>"
   } else {
     # The errorCode is the error as an integer as returned from the xmlrpc call 'updateFirmware' and can be -1, -2 and so on
+    # errorCode -1 = rfd says 'Device not reachable'
+    # errorCode -10 = Legacy API says 'Transmission Pending'
     set errorCode [getFwUpdateError "faultCode=" $result]
     set userHint ""
-    if {$errorCode == -1} {
+    if {$errorCode == -1 || $errorCode == -10} {
       set userHint "fwUpdatePressConfigKey"
     }
     # The errorString is the error in plain text as returned from the xmlrpc call 'updateFirmware'
     set errorString [getFwUpdateError "faultString=" $result]
-    puts "<script type=\"text/javascript\">ShowErrorMsg(\"$errorString\" + \"<br/><br/>\" + translateKey(\"dialogFirmwareUpdateFailed\") +\"<br/><br/>\"+ translateKey(\"$userHint\"));</script>"
+
+    if {$errorCode == -1} {
+      puts "<script type=\"text/javascript\">ShowErrorMsg(\"$errorString\" + \"<br/><br/>\" + translateKey(\"dialogFirmwareUpdateFailed\") +\"<br/><br/>\"+ translateKey(\"$userHint\"));</script>"
+    } else {
+      puts "<script type=\"text/javascript\">ShowErrorMsg(\"$errorString\" + \"<br/><br/>\" + translateKey(\"$userHint\"));</script>"
+    }
   }
 }
 
@@ -509,8 +519,19 @@ proc cmd_SendInternalKeyPress {} {
   catch {import iface}
   catch {import sender}
   catch {import receiver}
+  catch {import longKeyPress}
+
+  set simLongKeyPress "false"
+
+  catch {
+    if {[info exists longKeyPress] == 1} {
+      if {$longKeyPress == 1} {
+        set simLongKeyPress "true"
+      }
+    }
+  }
     
-  if {[catch {xmlrpc $iface_url($iface) activateLinkParamset [list string $receiver] [list string $sender] [list bool "false"]}]} then {
+  if {[catch {xmlrpc $iface_url($iface) activateLinkParamset [list string $receiver] [list string $sender] [list bool $simLongKeyPress]}]} then {
     set error "<div class=\"CLASS20700\">\${dialogSimulateKeyPressError}</div>"
     puts "<script type=\"text/javascript\">MessageBox.show('\${dialogHint}','$error' ,'', 400, 80);</script>"
   } else {

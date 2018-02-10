@@ -11,8 +11,10 @@ jQuery.extend(true, langJSON, {
     "btnSelectRoomOrFunctionNew": "New...",
     "btnSelectRoomOrFunctionClose": "Close",
     "btnSimKeyPress": "Simulate button press",
+    "btnSimShortKeyPress": "Simulate short button press",
+    "btnSimLongKeyPress" : "Simulate long button press",
     "btnDirectDeviceLinkCheckAgain": "Check again",
-    "btnDirectDeviceLinkIgnore": "Ignore",
+    "lblIgnore": "Ignore",
     "lblNewRoom": "new room",
     "lblNewFunction": "new function",
     "lblEmpty": "empty",
@@ -196,7 +198,6 @@ jQuery.extend(true, langJSON, {
     "Budapest": "Budapest",
     "SanFrancisco": "San Francisco",
     "NewYork": "New York",
-
     "Adana": "Adana",
     "Ankara": "Ankara",
     "Antalya": "Antalya",
@@ -205,7 +206,6 @@ jQuery.extend(true, langJSON, {
     "Izmir": "Izmir",
     "Konya": "Konya",
     "Mersin": "Mersin",
-
     "commentCitiesEnd": "***********************************************",
     "commentDatePicker": "***********************************************",
     "Sun": "Su",
@@ -213,7 +213,7 @@ jQuery.extend(true, langJSON, {
     "Tue": "Tu",
     "Wed": "We",
     "Thu": "Th",
-    "Fre": "Fr",
+    "Fri": "Fr",
     "Sat": "Sa",
     "Jan": "January",
     "Feb": "February",
@@ -245,7 +245,7 @@ jQuery.extend(true, langJSON, {
     "dialogSettingsCMDialogPerformSoftwareUpdateP1" : "The software update is now in progress. After the update has been performed, the " + HMIdentifier.en.CCUShortName + " will be restarted automatically.",
     "dialogSettingsCMDialogPerformSoftwareUpdateP2" : "It is highly recommended to delete the cache of your browser, after the update has been performed. Therefore, please proceed as follows:",
     "dialogSettingsCMDialogPerformSoftwareUpdateLi1" : "Close all browser windows.",
-    "dialogSettingsCMDialogPerformSoftwareUpdateLi2" : "Please delete the cache of your browser.<br />You will find further information in the tutorial <a href='http://www.homematic.com/fileadmin/pdfs/einleitungen/Web-UI_Firmware_Update_-_Browser-Cache_leeren.pdf'>Web-UI Firmware Update: Browser-Cache leeren</a> on http://www.homematic.com.",
+    "dialogSettingsCMDialogPerformSoftwareUpdateLi2" : "Please delete the cache of your browser.<br />You will find further information in the tutorial <a href='http://www.eq-3.de/service/faq.html?id=38' target='_blank'>Web-UI Firmware Update: Browser-Cache leeren</a> on http://www.eq-3.de",
     "dialogSettingsCMDialogPerformSoftwareUpdateLi3" : "Restart your browser.",
     "dialogSettingsCMDialogPerformSoftwareUpdateStartTitle" : "Software update - confirmation",
     "dialogSettingsCMDialogPerformSoftwareUpdateStart" : "The software file that has to be installed has been uploaded to your " + HMIdentifier.en.CCUShortName + ".<br/>",
@@ -279,6 +279,7 @@ jQuery.extend(true, langJSON, {
     "ConfirmDeleteDeviceWindowDeleteOptions" : "Delete options",
     "ConfirmDeleteDeviceWindowRemove" : "Teach-out device",
     "ConfirmDeleteDeviceWindowRemoveDescription" : "The device will be deleted from the HomeMatic CCU. Direct connections will be kept.",
+    "ConfirmDeleteDeviceWindowRemoveDescriptionNoneCCUDevice" : "The device will be deleted from the HomeMatic CCU.",
     "ConfirmDeleteDeviceWindowReset" : "Restore the factory settings of the device",
     "ConfirmDeleteDeviceWindowResetDescription" : "The device will be deleted from the HomeMatic CCU and the factory settings will be restored.",
     "ConfirmDeleteDeviceWindowDeleteButton" : "Delete",
@@ -509,65 +510,32 @@ jQuery.extend(true, langJSON, {
     "lblMinutes" : "minutes",
     "lblErrorCheck" : "Error check",
     "lblNoError" : "No error",
-
-    "lblLinkPartnerTempSensor" : "Connection partner<br/>temperature sensor",
-    "lblLinkPartnerWallMountedThermostat" : "Connection partner<br/>wall thermostat",
-    "lblLinkPartnerHeatingThermostat" : "Connection partner<br/>radiator thermostat",
-    "lblLinkPartnerShutterContact" : "Connection partner<br/>shutter contact",
-    "lblLinkPartnerHeatingThermostatSender" : "Connection partner<br/>radiator thermostat<br/>transmitter",
-    "lblLinkPartnerHeatingThermostatReceiver" : "Connection partner<br/>radiator thermostat<br/>receiver",
-    "lblLinkPartnerKey" : "Connection partner<br/>button",
-    "lblLinkPartnerSwitchActor" : "Connection partner<br/>switch actor",
-
-    "lblSwitchActor" : "Switch actor",
-    "lblMeasurementChannel" : "Measurement channel",
-    "lblPower" : "Power sensor",
-    "lblCurrent" : "Current sensor",
-    "lblVoltage" : "Voltage sensor",
-    "lblFrequency" : "Frequency sensor",
-
     "lblInfoStatusControlEnergyCounter" : "Energy counter " + HMIdentifier.en.CCUShortName,
     "lblInfoStatusControlDevice" : "Energy counter device",
     "lblInfoStatusControlVoltage" : "Voltage",
     "lblInfoStatusControlCurrent" : "Current",
     "lblInfoStatusControlPower" : "Power",
     "lblInfoStatusControlFrequency" : "Frequency",
-
-    // Schüco - don´t change
-    "lblTipTronicChn1" : "Actor channel",
-    "lblTipTronicChn2" : "Sensor channel",
-    "lblTipTronicChn3" : "Ventilation lock channel",
-    // End Schüco
-
     "noLinkableChannelsAvailable" : "There are no channels available which can be connected.",
-
     "performingFirmwareUpdate" : "Firmware update in progress...",
-
     "interfaceProcessNotReadyA" : "Interface-Process",
     "interfaceProcessNotReadyB" : "not ready.",
-
     "dialogSettingsSecurityTDSSH" : "SSH",
     "dialogSettingsSecurityLblActivateSSH" : "SSH active: ",
     "dialogSettingsSecurityLblPassword" : "Password: ",
     "dialogSettingsSecurityLblPasswordRepeat" : "Repeat password: ",
     "dialogSettingsSecuritySSHDescription" : "Here you can change the SSH settings of the " + HMIdentifier.en.CCUShortName,
     "dialogSettingsSecuritySSHAlert": "The passwords aren´t equal." ,
-
     "dialogSettingsSecuritySSHMsgBoxSavePasswdTitle" : "Saving the settings!",
     "dialogSettingsSecuritySSHMsgBoxSavePasswdContent" : "",
-
     "dialogSettingsSecuritySSHMsgBoxNoErrorTitle" : "OK",
     "dialogSettingsSecuritySSHMsgBoxNoErrorContent" : "Saving the settings was successful!",
     "dialogSettingsSecuritySSHMsgBoxErrorTitle" : "Error!",
-
     "btnSettingsDiagrams" : "Diagrams",
     "btnSettingsGroups" : "Groups",
-
     "sessionInvalid" : "The session is invalid or expired",
 	  "forward" : "Forward to start page",
-
     "unknownMessage" : "unknown message",
-
     "dialogEulaTitle" : "End User License Agreement",
     "acceptEula": "I accept the terms of the license agreement",
     "dialogEulaBtnInstall" : "Install",
@@ -584,7 +552,6 @@ jQuery.extend(true, langJSON, {
     "stringTableCommunicatingReporting" : "Communication error message",
     "stringTableCommunicatingReportingTrue" : "Communication error message",
     "stringTableCommunicatingReportingFalse" : "No communication error message",
-
     "thVersion" : "Version",
     "thMinCCU" : "Minimum required CCU version",
     "submenuDeviceFirmware" : "Device firmware",
@@ -594,14 +561,11 @@ jQuery.extend(true, langJSON, {
     "addDevFirmwareSuccess" : "Firmware successful added!",
     "addDevFirmwareFailed" : "Error: Adding the firmware failed!",
     "addDevFirmwareInfoCorrupt" : "The info file is corrupt or not available!",
-
     "delDevFirmwareFailed" : "Error while deleting the firmware file!",
     "delDevFirmwareSuccessA" : "Firmware ",
     "delDevFirmwareSuccessB" : " deleted",
-
     "delDevFirmwareMsgTitle" : "Confirmation!",
     "delDevFirmwareMsgBody" : "Do you really want to remove the firmware?",
-
     "fwUpdatePressConfigKey" :
       "Please place the device in radio range of the "+HMIdentifier.en.CCUShortName+" and press the configuration key! "+
       "Afterwards, the firmware update will be performed.",
@@ -609,38 +573,31 @@ jQuery.extend(true, langJSON, {
     "partyStart" : "Start",
     "partyEnd" : "End",
     "partyTemperature" : "Temperature",
-
     "errorComfortLTEco" : "Comfort temp. less than Eco temp.",
-
     "stringTableBatteryDefect" : "Battery resistance too high",
     "stringTableBatteryNotDefect" : "Battery resistance OK",
-
     "stringTablePartyModeSubmit" : "Holiday mode",
     "partyModeEndTime" : "End holiday mode:",
-
     "changeTimeZoneHint" : "To change the timezone the "+HMIdentifier.en.CCUShortName+" needs a restart.",
-
     "tdPowerCost" : "Price per kWh",
     "lblPowerCost" : "Price/kWh",
     "lblCurrency" : "Currency",
-    "btnSavePowerCost" : "Save",
+    "btnSave" : "Save",
     "helpPowerCost" : "Here you can set the price per kWh of your electricity provider.",
-
     "stringTableDeviceInBootloader": "The device is in bootloader.",
     "stringTableUpdatePending" : "Firmware update ready for transmission.",
+    "stringTableUpdatePendingFalse" : "No Firmware update ready for transmission.",
+    "stringTableUpdatePendingTrue" : "Firmware update ready for transmission.",
     "dialogNewDiagramTitle" : "Create a new diagram!",
     "dialogNewDiagramSettings" : "Choose the type of the diagram:",
-
     "temperatureMeasurement" : "Temperature measurement",
     "energyMeasurement" : "Energy measurement",
     "powerMeasurement" : "Consumption",
     "userSpecific" : "User specific",
-
     "diagramPeriodToday" : "Today",
     "diagramPeriodThisWeek" : "This week",
     "diagramPeriodThisMonth" : "This month",
     "diagramPeriodThisYear" : "This year",
-
     "iconOff":"Off",
     "iconOn":"On",
     "iconOpen":"Open",
@@ -653,39 +610,30 @@ jQuery.extend(true, langJSON, {
     "iconSignalGreen":"Signal green",
     "iconSignalYellow":"Signal yellow",
     "iconSignalRed":"Signal red",
-
     "statusDisplayDialogTitle" : "Display configuration",
     "statusDisplayOptionText" : "Text",
-
     "statusDisplayOptionWhite" : "white",
     "statusDisplayOptionRed" : "red",
     "statusDisplayOptionOrange" : "orange",
     "statusDisplayOptionYellow" : "yellow",
     "statusDisplayOptionGreen" : "green",
     "statusDisplayOptionBlue" : "blue",
-
     "ruleDescrHexString" : "parameter string",
     "lblSysConfSetPowerCost" : "Set the price per kWh",
-
     "dialogChangeLogTitle" : "Changelog",
     "btnChangelog" : "Changelog",
     "errorReadChangelog": "Error, can%60t read the changelog...",
-
     "statusDisplayLine" : "Line",
     "statusDisplayOptionFreeText" : "Free text",
-
     "controlChannelNotActive" : "The channel is deactivated!",
     "remoteModeEM8SpecialValHint" : "After sending the configuration you can set the parameters of the channel.",
     "hintPrgExists" : "At least one program exists. Thus, some functions are disabled.",
-
     "lblGeneralSettingsCurrent" : "Current",
     "lblGeneralSettingsGas" : "Gas",
     "lblGeneralSettingsHeatingValue" : "Heating value kWh/m<sup>3</sup>",
     "lblGeneralSettingsConditionNumber" : "Condition number",
-
     "lblInfoStatusControlGas" : "Consumption",
-    "lblInfoDimmerLevelReal" : "Actual value",
-
+    "lblInfoLevelReal" : "Actual value",
     "optionRGBWControllerPrg0" : "Off",
     "optionRGBWControllerPrg1" : "Slow cycle",
     "optionRGBWControllerPrg2" : "Normal cycle",
@@ -693,31 +641,26 @@ jQuery.extend(true, langJSON, {
     "optionRGBWControllerPrg4" : "Bonfire",
     "optionRGBWControllerPrg5" : "Waterfall",
     "optionRGBWControllerPrg6" : "TV simulation",
-
     "titleRGBWControllerDialogTitle" : "Configuration dialog",
     "lblProgram": "Program",
     "lblColorValue" : "Color",
+    "lblColorValueBR" : "Color",
     "lblBrightnessLevel" : "Brightness",
     "lblRampTime" : "Ramp time",
     "lblOnTime" : "Switch-on time",
     "lblColorValueMin" : "Color value start",
     "lblcolorValueMax" : "Color value end",
-
     "lblAllowOnlyGroupOperation": "Deactivate single device operation",
     "lblAttentionGroupNameChange" : "Attention, the virtual device-/channel names will be overwritten!",
-
     "dialogRenameVirtualGroupDeviceTitle" : "Rename the virtual device",
     "dialogVirtualGroupDeviceContent" : "Would you like to rename the virtual device of the group and its channels to the group name?",
-
     "lblNewDeviceFirmwareAvailable" : "New device firmware available",
     "dialogShowDeviceFirmwareTitle" : "There are new device firmware updates available",
     "dialogShowDeviceFirmwareTHDevice": "Device",
     "dialogShowDeviceFirmwareTHCurFw": "Current",
     "dialogShowDeviceFirmwareTHNewFw": "New",
     "dialogShowDeviceFirmwareLinkDownload": "To download area",
-
     "diagramHelpCustomModeTitle" : "Description of the values for longer periods",
-
     "diagramHelpCustomModeContent" :
       "<ul>" +
        "<li class='diagramHelpCustomModeLi1'>Average values" +
@@ -725,13 +668,11 @@ jQuery.extend(true, langJSON, {
             "<li>In the view, the average values of subordinated time periods are displayed.</li>" +
           "</ul>"+
         "</li>" +
-
         "<li class='diagramHelpCustomModeLi1'>Minimum values" +
            "<ul>" +
              "<li>In the view, the minimum values of subordinated time periods are displayed.</li>" +
            "</ul>"+
          "</li>" +
-
         "<li class='diagramHelpCustomModeLi1'>Maximum values" +
            "<ul>" +
              "<li>In the view, the maximum values of subordinated time periods are displayed.</li>" +
@@ -739,41 +680,65 @@ jQuery.extend(true, langJSON, {
          "</li>" +
       "</ul>" +
       "<div>This setting only effects larger time periods (week/month/year).</div>",
-
     "lblSettingsDeviceFirmware0" : "Overview of the installed device firmware files",
     "lblSettingsDeviceFirmware1" : "Add device firmware",
     "lblSettingsDeviceFirmware2" : "Delete device firmware",
     "lblSettingsDeviceFirmware3" : "View changelog of the firmware",
-
     "hintDevFwAlreadyUploaded" : "" +
       "The latest firmware version of the device is alreay installed on the  " + HMIdentifier.de.CCUShortName + ".\n"+
           "Please perform the firmware update on the configuration page.\n\n",
-
-    "lblRGBWControllerDimmer" : "Dimmer",
-    "lblRGBWControllerColor" : "Colour",
-    "lblRGBWControllerAutomatic" : "Program",
-
     "deviceUpdate" : "Device update:",
-
     "weeklyProfile1" : "1",
     "weeklyProfile2" : "2",
     "weeklyProfile3" : "3",
-
+    "weeklyProfile4" : "4",
+    "weeklyProfile5" : "5",
+    "weeklyProfile6" : "6",
     "optionUnitS" : "Seconds",
     "optionUnitM" : "Minutes",
     "optionUnitH" : "Hours",
+    "optionUnitD" : "Days",
+    "optionUnit1D" : "1 day",
+    "optionUnit7D" : "7 days",
+    "optionUnit14D" : "14 days",
+    "optionUnit28D" : "28 days",
+    "optionUnit30D" : "30 days",
+    "optionUnit10MS" : "10ms",
     "optionUnit100MS" : "100ms",
+    "optionUnit200MS" : "200ms",
+    "optionUnit300MS" : "300ms",
+    "optionUnit500MS" : "500ms",
+    "optionUnit1500MS" : "1500ms",
     "optionUnit1S" : "1 second",
     "optionUnit2S" : "2 seconds",
     "optionUnit3S" : "3 seconds",
+    "optionUnit4S" : "4 seconds",
     "optionUnit5S" : "5 seconds",
     "optionUnit10S" : "10 seconds",
+    "optionUnit15S" : "15 seconds",
+    "optionUnit20S" : "20 seconds",
+    "optionUnit25S" : "25 seconds",
     "optionUnit30S" : "30 seconds",
-    "optionUnit1M" : "1 minute",
-    "optionUnit2M" : "2 minutes",
-    "optionUnit5M" : "5 minutes",
-    "optionUnit10M" : "10 minutes",
-    "optionUnit30M" : "30 minutes",
+    "optionUnit45S" : "45 seconds",
+    "optionUnit60S" : "60 seconds",
+    "optionUnit90S" : "90 seconds",
+    "optionUnit1M": "1 minute",
+    "optionUnit2M": "2 minutes",
+    "optionUnit4M": "4 minutes",
+    "optionUnit5M": "5 minutes",
+    "optionUnit6M": "6 minutes",
+    "optionUnit8M": "8 minutes",
+    "optionUnit10M": "10 minutes",
+    "optionUnit12M": "12 minutes",
+    "optionUnit14M": "14 minutes",
+    "optionUnit15M": "15 minutes",
+    "optionUnit16M": "16 minutes",
+    "optionUnit18M": "18 minutes",
+    "optionUnit20M": "20 minutes",
+    "optionUnit25M": "25 minutes",
+    "optionUnit30M": "30 minutes",
+    "optionUnit60M": "60 minutes",
+    "optionUnit120M": "120 minutes",
     "optionUnit1H" : "1 hour",
     "optionUnit2H" : "2 hours",
     "optionUnit3H" : "3 hours",
@@ -788,35 +753,11 @@ jQuery.extend(true, langJSON, {
     "optionNormalLength" : "Normal length",
     "optionFileLength" : "File length",
     "optionSetLength" : "Specify length",
-
     "lblDeviceFwPerformUpdate" : "The device update is carried out",
-    "lblDeviceFwDeliverFwImage" : "The update file is transmitted to the device",
-    "lblHmIP_PSChn1" : "Push button channel<br/>button press",
-    "lblHmIP_PSChn2" : "Status report relay",
-    "lblHmIP_PSChn3" : "Connection partner<br/>button",
-    "lblHmIP_PSChn4" : "Currently not supported",
-    "lblHmIP_PSChn5" : "Currently not supported",
-    "lblHmIP_PSMChn1" : "Push button channel<br/>button press",
-    "lblHmIP_PSMChn2" : "Status report relay",
-    "lblHmIP_PSMChn3" : "Connection partner<br/>button",
-    "lblHmIP_PSMChn4" : "Currently not supported",
-    "lblHmIP_PSMChn5" : "Currently not supported",
-    "lblHmIP_PSMChn6" : "Status report measured value channel",
+    "lblDeviceFwDeliverFwImage" : "The update file will be transferred to the device",
+    "lblGenericLinkPartner" : "Connection partner",
     //"lblHmIP_PSMChn7" : "Connection partner<br/>switch actuator",
-    "lblHmIP_PSMChn7" : "Currently not supported",
-    "lblHmIP_WTHChn1" : "Connection partner radiator thermostat (manual operation, transmitter)",
-    "lblHmIP_WTHChn2" : "Connection partner radiator thermostat (manual operation, receiver)",
-    "lblHmIP_WTHChn3" : "Connection partner radiator thermostat (cycl. data, setpoint and actual temp.)",
-    "lblHmIP_WTHChn4" : "Connection partner door/window contact",
-    "lblHmIP_WTHChn5" : "Connection partner switch actuator for two-point control",
-    "lblHmIP_WTHChn6" : "Connection partner push button",
-    "lblHmIP_TRVChn1" : "Connection partner radiator thermostat (manual operation, transmitter)",
-    "lblHmIP_TRVChn2" : "Connection partner radiator thermostat (manual operation, receiver)",
-    "lblHmIP_TRVChn3" : "Connection partner wall thermostat (cycl. data, setpoint and actual temp.)",
-    "lblHmIP_TRVChn4" : "Connection partner door/window contact",
-    "lblHmIP_TRVChn5" : "Connection partner wall thermostat (manual operation, transmitter)",
-    "lblHmIP_TRVChn6" : "Connection partner wall thermostat (manual operation, receiver)",
-    "lblHmIP_TRVChn7" : "Connection partner push button",
+    "lblHmIP_NotSupported" : "Currently not supported",
     "lblSetMode" : "Set mode!",
     "lblChannelActivInactiv" : "Channel active / inactive:",
     "lblRepetition" : "Repetitions",
@@ -847,7 +788,7 @@ jQuery.extend(true, langJSON, {
     "lblTeachInSGTIN" : "SGTIN",
     "lblTeachInKEY" : "KEY",
     "lblIntrusionAlarm" : "Burglar alarm",
-
+    "btnTakeCurrentBrightness" : "Apply current brightness",
     "dialogNewDevicesBidCosRFLbl1" : "<h1>Direct teaching-in of "+HMIdentifier.en.LabelHomematic+" device</h1>",
     "dialogNewDevicesBidCosRFLbl2" : "To teach-in a "+HMIdentifier.en.LabelHomematic+" device to the "+HMIdentifier.en.CCUShortName+" please click on &quot;Teach-in HM device&quot;. Teach-in mode of the "+HMIdentifier.en.CCUShortName+" remains activated for 60 seconds. Meanwhile, please activate the teach-in mode of the "+HMIdentifier.en.LabelHomematic+" device you want to teach-in as well.",
     "dialogNewDevicesBidCosRFLbl3" : "<h1>Teaching-in of "+HMIdentifier.en.LabelHomematic+" device with serial number</h1>",
@@ -862,20 +803,173 @@ jQuery.extend(true, langJSON, {
     "dialogNewDevicesHmIPWithInternet" : "<h1>Teaching-in of "+HMIdentifier.en.LabelHomematicIPText+" device with active Internet connection</h1>",
     "dialogNewDevicesHmIPWithoutInternet" : "<h1>Teaching-in of "+HMIdentifier.en.LabelHomematicIPText+" device without Internet connection</h1>",
     "dialogNewDevicesHmIPRFLbl1" : HMIdentifier.en.LabelHomematicIPText+" devices can be taught-in to the "+HMIdentifier.en.CCUShortName+" as well. Please click on the button&quot;Teach-in HmIP device&quot;. Teach-in mode of the "+HMIdentifier.en.CCUShortName+" remains activated for 60 seconds. Meanwhile, please activate the teach-in mode of the "+HMIdentifier.en.LabelHomematicIPText+" device you want to teach-in as well.",
-    "dialogNewDevicesHmIPRFLbl2" : HMIdentifier.en.LabelHomematicIPText+" devices can be taught-in to the "+HMIdentifier.en.CCUShortName+" also without active Internet connection. Please enter the SGTIN and the KEY and click on &quot;Teach-in HmIP device (local)&quot;.",
-
+    "dialogNewDevicesHmIPRFLbl2" : HMIdentifier.en.LabelHomematicIPText+" devices can be taught-in to the "+HMIdentifier.en.CCUShortName+" also without active Internet connection. Please enter the KEY and the SGTIN and click on &quot;Teach-in HmIP device (local)&quot;.",
     "energyMeterTransmitterHeader" : "Consumption and power metering",
     "PMSwChannel2Hint_Energy" : "the energy consumption by",
     "controlChannelHasNoFunction" : "The channel has no function here",
     "weeklyProfileLbl" : "Week profile",
-    "tooltipHmIPDeliverFirmwareImage" : "Transferring the update file to the device is performed <br/>in the background and takes longer time.<br/><br/>After the file has been transferred successfully,<br/>the button for activating the<br/>device firmware update will appear here.",
-
+    "_tooltipHmIPDeliverFirmwareImage" : "* old Version *Transferring the update file to the device is performed <br/>in the background and takes longer time.<br/><br/>After the file has been transferred successfully,<br/>the button for activating the<br/>device firmware update will appear here.",
+    "tooltipHmIPDeliverFirmwareImage" :
+      "Please note: New firmware files for Homematic IP devices are currently transferred in the background.<br/>" +
+      "Depending on the device, this procedure can take between 8 and 42 hours.<br/>" +
+       "After the firmware files have been transferred, an update button for executing the update of the device will be displayed.",
     "selectFlashSequence" : "Definition of flashing sequence",
-
     "stringTableButtonLock" : "Local operating lock",
     "stringTableGlobalButtonLock" : "Global operating lock",
+    "stringTableTxThresholdPercent" : "Necessary change in %25 for state report",
+    "stringTableLux" : "Brightness",
+    "optionBaud300" : "300 baud",
+    "optionBaud600" : "600 baud",
+    "optionBaud1200" : "1200 baud",
+    "optionBaud2400" : "2400 baud",
+    "optionBaud4800" : "4800 baud",
+    "optionBaud9600" : "9600 baud",
+    "optionBaud19200" : "19200 baud",
+    "actionAlarmControlLblOff" :  "Alarm<br />deactivated",
+    "actionAlarmControlLblExtern" :  "All sensors<br />armed<br />(absence mode)",
+    "actionAlarmControlLblIntern" :  "Outdoor sensors<br />armed<br />(presence mode)",
+    "actionAlarmControlLblBlocked" :  "Alarm<br />blocked",
+    "lblSabotageUnknown" :  "Sabotage contact:<br >status unknown",
+    "lblSabotage_0" :  "Sabotage contact: OK",
+    "lblSabotage_1" :  "Sabotage contact<br />triggered",
+    "pirOperationModeNormal" :  "Normal",
+    "pirOperationModeEco" :  "Eco",
+    "lblIndoorSirenInternAlarm" :  "Internal alarm",
+    "lblIndoorSirenExternAlarm" :  "External alarm",
+    "lblIndoorSirenPanicAlarm" :  "Panic alarm",
+    "lblIndoorSirenArming" :  "Arming",
+    "lblAcusticalSignal" :  "Audible signal",
+    "lblOpticalSignal" :  "Visual signal",
+    "redFlash" :  "red flashing",
+    "greenFlash" :  "green flashing",
+    "orangeFlash" :  "orange flashing",
+    "lblTextBlock" :  "Text block",
+    "optionLong" :  "Long",
+    "optionShort" :  "Short",
+    "optionInfinite" :  "Continuously",
+    "lblQuantity" :  "Quantity",
+    "lblTimeLag" :  "Distance",
+    "lblLinkInternalDescInternalKey" :  "Connection of internal device button",
+    "lblLicenseInformation" : "License information",
+    "stringTableHeating" : "Heating",
+    "stringTableCooling" : "Cooling",
+    "actionAlarmControlLblStart" : "Trigger alarm",
+    "lblAlarmDuration" : "Alarm duration",
+    "optionSetDuration" : "Define duration",
+    "setAlarmDialogTitle" : "Trigger alarm",
+    "titleConfigDialog" : "Configuration dialog",
+    "btnToday" : "Today",
+    "unknown" : "unknown",
+    "lblDewPointAlarm" :  "Dew point alarm",
+    "lblEmergencyOperation" : "Connection failure with room control unit",
+    "lblExternalClock" :  "Energy-saving temperature mode",
+    "lblFrostProtection" :  "Frost protection",
+    "lblHumidityLimiter" :  "Humidity limit",
+    "lblSwitchingStatus" :  "Controlling",
+    "lblLinkNoDescriptionAvailable" : "There is no description available.<br/>Please enter the description manually.",
+    "lblPassed" : "exceeded",
+    "lblNotPassed" :  "not exceeded",
+    "lblDigitalStatus" :  "Current value:",
+    "lblDataInputPropertie" : "Data input settings",
+    "lblTransmitterDataInputPropertie" :  "Invert data input",
+    "lblHeaderHelpTransmitterTransmissionCondition" : "<u>Information about selected data transmission condition!</u>",
+    "lblSysConfCoupling1" : "DESCRIPTION",
+    "lblOsramLightify" :  "OSRAM Lightify",
+    "lblCheckIpAddress" : "Please check the IP address",
+    "lblColorTemperatureBR" : "Colour<br/>temperature",
+    "lblKelvin" : "K",
+    "lblUnknown" : "unknown",
+
+    "optionDisable" : "Inactive",
+    "optionEnable" : "Active",
+    "optionFloorHeatingStandard" : "Standard floor heating system",
+    "optionFloorHeatingLowEnergy" : "Low-energy floor heating system",
+    "optionRadiator" : "Radiator",
+    "optionConvectorPassiv" : "Passive convector",
+    "optionConvectorActive" : "Active convector (with fan)",
+    "optionStandardRoom" : "Standard room",
+    "optionRoomWithFirePlace" : "Room with fireplace",
+    "optionRoomWithTowelRail" : "Room with towel rail heating",
+
+    "channelModeChangeOver" : "Change over",
+    "channelModeExternalClock" :  "Temperature reduction (eco mode)",
+    "channelModeHumidityLimiter" :  "Humidity limiter",
+    "channelModeTactileSwitch" :  "Push-button",
+    "channelModeTemperatureLimiter" : "Temperature limiter",
+    "dialogQuestionRemoveInternalLink" :  "<span class='attention'>PLEASE NOTE:</span><br/><br>This is an internal connection of the device. It may occur that the device cannot be operated any more if you delete this connection. In this case, you have to create the connection again.<br/><br/>Do you really want to delete the connection?",
+    "descriptionTransmitterDataTransmissionCondition0" :  "<b>Mode 1</b><br/><br/>Transmit on level change of data transmission pin (DU30) from HIGH to LOW level.",
+    "descriptionTransmitterDataTransmissionCondition1" :  "<b>Mode 2</b><br/><br/>Transmit on level change of data transmission pin (DU30) from LOW to HIGH level.",
+    "descriptionTransmitterDataTransmissionCondition2" :  "<b>Mode 3</b><br/><br/>Transmit on level change of data transmission pin (DU30) on every logic level change.",
+    "descriptionTransmitterDataTransmissionCondition3" :  "<b>Mode 4</b><br/><br/>Transmit if new logic state on the data inputs is stable for the data stability filter time.<br/><br/>The data input is deactivated, if the data transmission pin (DU30) is on HIGH level (low active).  ",
+    "descriptionTransmitterDataTransmissionCondition4" :  "<b>Mode 5</b><br/><br/>Transmit new logic state immediately, afterwards transmit interval lasting from the data stability filter time until the next evaluation of the data input.<br/><br/>The data input is deactivated, if the data transmission pin (DU30) is on HIGH level (low active).",
+    "descriptionTransmitterDataTransmissionCondition5" :  "<b>Mode 6</b><br/><br/>Transmit if new logic state on the data inputs is stable for the data stability filter time.<br/><br/>The data input is deactivated, if the data transmission pin (DU30) is on LOW level (high active).",
+    "descriptionTransmitterDataTransmissionCondition6" :  "<b>Mode 7</b><br/><br/>Transmit new logic state immediately, afterwards transmit interval lasting from the data stability filter time until the next evaluation of the data input.<br/><br/>The data input is deactivated, if the data transmission pin (DU30) is on LOW level (high active).",
+    "dlgEnterMeterReadingsTitle" :  "Configuration of CCU energy meter",
+    "btnSysConfCoupling" :  "Connections",
+    "couplingDialogTitle" : "Dialogue connections",
+    "lblIPAddress" :  "IP address",
+    "enterIPAddress" :  "Manual IP input",
+    "invalidIP" : "Invalid IP adress",
+    "btnScanGateway" :  "Search gateway",
+    "btnScanDevices" :  "Search devices",
+    "helpOsramLightifyToolTip" :
+      "<h1>Please note:</h1>" +
+      "<ul>"+
+        "<li>Only one OSRAM gateway may be connected to your network.</li>" +
+        "<li>The gateway should always receive the same IP address from the DHCP server (WLAN router)!</li>" +
+        "<li>To make sure that the OSRAM gateway can be found using the button <b>Start</b>,<br/>" +
+          "it has to be available for the "+HMIdentifier.en.CCUShortName+".</li>" +
+        "<li>If searching was successful, the IP address of the gateway is displayed and all connected<br/>" +
+          "lights and lamps are available as devices in the CCU.</li>" +
+      "</ul>",
+    "timeoutAddNewDevices" : "Timeout addNewDevices",
+    "unknownError" : "Unknown Error",
+    "helpOsramLightify" : "You can create the pairing between the "+HMIdentifier.en.CCUShortName+" and <b>OSRAM Lightify</b> here. Please find further information here:",
+    "helpPhilipsHue" : "You can create the pairing between the "+HMIdentifier.en.CCUShortName+" and <b>Philips Hue</b> here. Please find further information here:",
+    "msgNoGatewayFound" : "No Gateway found",
+
+    "dialogDeleteCertificateTitle" : "Delete certificate",
+    "dialogSettingsNetworkLblDeleteCertificate" : "Remove certificate from CCU2",
+
+    "confirmCertificationPurgeA" : "If the certificate is deleted, you can no longer establish a secured connection to your "+HMIdentifier.en.CCUShortName+".",
+    "confirmCertificationPurgeB" : "Do you really want to delete the certificate from the "+HMIdentifier.en.CCUShortName +"?",
+
+    "dialogRestartWebserverTitle" : "Lighttpd Restart",
+    "dialogRestartWebserverContent" : "The web server will now be restarted.",
+    "lblHideStickyUnreach" : "Automatically confirm the device message<br/>'Device communication interrupted'",
+
+    "timeModuleUserHint" : "When using the time module, we recommend to use no time intervals shorter than 15 minutes. This ensures that all configured programmes can be executed.",
+
+    "lblLocation" :                              "Place of residence",
+    "lblMode" :                                  "Mode",
+    "dialogSetWPModeTitle" :                     "Set mode",
+    "lblAutoCalibrationActiv" :                  "Auto calibration active",
+    "statePresenceFalse" :                       "No presence detected",
+    "statePresenceTrue" :                        "Presence detected",
+    "presenceDetectionFalse" :                   "Presence detection not active",
+    "presenceDetectionTrue" :                    "Presence detection active",
+    "btnPresenceDetectionFalse" :                "Switch on presence detection",
+    "btnPresenceDetectionTrue" :                 "Switch off presence detection",
+    "btnResetPresence" :                         "Reset status",
+    "lblTDRegaVersion" :                         "Logic tier<br/>version",
+    "lblTDReGaVersionHelp" :                     "Here you can specify which logic layer version of the CCU2 should be used. Select the version <b>'Standard'</b> to be able to use bug fixes in the time module as well as new features like mathematical operations in scripts. " +
+                                                 "<br/><br/>Select the version <b>'Community'</b> for additional improvements to troubleshooting in scripts. Please note that in this version scripts may be cancelled even if these have been executed with previous versions of the CCU2 software. " +
+                                                 "<br/><br/>If any problems have occurred after the update to the current CCU2 software has been performed, you can change back to the previous version by selecting <b>'Legacy'</b>." ,
+
+    "optionReGaNORMAL" :                         "Standard",
+    "optionReGaLEGACY" :                         "Legacy",
+    "optionReGaCOMMUNITY" :                      "Community",
+    "dialogRestart2ChanceReGaVersion" :          "For the change of the logic tier version to apply, the " +HMIdentifier.en.CCUShortName + " must be restarted.",
+    "dialogBtnPerformLaterRestart" :             "Later",
+
+    "lblAttentionNoPasswd" : "For security reasons, we recommend that you assign a password for the CCU2!",
+    "dialogLblAckSecurityHint" : "I have read the above warning",
+    "btnNext" : "Next",
+
+    "powerSupply" : "Power supply",
+    "operationModeBattery" : "Battery operation",
+    "operationModeMains" : "Mains voltage",
 
     "theEnd" : ""
   }
 });
-

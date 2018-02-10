@@ -8,6 +8,10 @@
     display: none;
 }
 
+.btnActive {
+  background-color: $_(active) !important;
+}
+
 .attention {
     color: $_(attention);
     font-weight: bold;
@@ -35,6 +39,10 @@
 
 .width160px {
 	width:160px;
+}
+
+.minWidth230px {
+  min-width: 230px;
 }
 
 .conditionEven
@@ -782,8 +790,9 @@ a img {
   font-weight: bold;
   text-align: center;
   border: solid 1px $_(black); /* black */
-  border-top: inset 4px $_(clickable);
+  /* border-top: inset 4px $_(clickable);*/
   border-right: inset 4px $_(clickable);
+  cursor: pointer;
 }
 
 .ControlBtnOn {
@@ -794,6 +803,7 @@ a img {
   border: solid 1px $_(black); /* black */
   border-top: inset 4px $_(active);
   border-right: inset 4px $_(active);
+  cursor: pointer;
 }
 
 .PercBtn {
@@ -810,10 +820,11 @@ a img {
 
 .ControlBtnInfo {
   background-color: $_(clickable);
-  color: $_(textColorB); /* black */
+  color: $_(textColorA); /* white */
   border: solid 1px $_(black); /* black */
   padding: 5px;
   font-weight: bold;
+  min-height: 30px;
 }
 
 .ControlBtnPushed {
@@ -1555,7 +1566,10 @@ div.caption  { display: table-caption; }
 #ic_deviceparameters #Timeouts_Area .TimeoutTable,
 #ic_deviceparameters #P1_Timeouts_Area .TimeoutTable,
 #ic_deviceparameters #P2_Timeouts_Area .TimeoutTable,
-#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable
+#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable,
+#ic_deviceparameters #P4_Timeouts_Area .TimeoutTable,
+#ic_deviceparameters #P5_Timeouts_Area .TimeoutTable,
+#ic_deviceparameters #P6_Timeouts_Area .TimeoutTable
 {
 	background-color: $_(white); /* white */
 	border: 0;
@@ -1567,7 +1581,10 @@ div.caption  { display: table-caption; }
 #ic_deviceparameters #Timeouts_Area .TimeoutTable thead td,
 #ic_deviceparameters #P1_Timeouts_Area .TimeoutTable thead td,
 #ic_deviceparameters #P2_Timeouts_Area .TimeoutTable thead td,
-#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable thead td
+#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable thead td,
+#ic_deviceparameters #P4_Timeouts_Area .TimeoutTable thead td,
+#ic_deviceparameters #P5_Timeouts_Area .TimeoutTable thead td,
+#ic_deviceparameters #P6_Timeouts_Area .TimeoutTable thead td
 {
 	height: auto;
 	border: 0;
@@ -1579,7 +1596,10 @@ div.caption  { display: table-caption; }
 #ic_deviceparameters #Timeouts_Area .TimeoutTable thead td,
 #ic_deviceparameters #P1_Timeouts_Area .TimeoutTable thead td,
 #ic_deviceparameters #P2_Timeouts_Area .TimeoutTable thead td,
-#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable thead td
+#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable thead td,
+#ic_deviceparameters #P4_Timeouts_Area .TimeoutTable thead td,
+#ic_deviceparameters #P5_Timeouts_Area .TimeoutTable thead td,
+#ic_deviceparameters #P6_Timeouts_Area .TimeoutTable thead td
 {
 	height: auto;
 	text-align: center;
@@ -1591,7 +1611,10 @@ div.caption  { display: table-caption; }
 #ic_deviceparameters #Timeouts_Area .TimeoutTable tbody td,
 #ic_deviceparameters #P1_Timeouts_Area .TimeoutTable tbody td,
 #ic_deviceparameters #P2_Timeouts_Area .TimeoutTable tbody td,
-#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable tbody td
+#ic_deviceparameters #P3_Timeouts_Area .TimeoutTable tbody td,
+#ic_deviceparameters #P4_Timeouts_Area .TimeoutTable tbody td,
+#ic_deviceparameters #P5_Timeouts_Area .TimeoutTable tbody td,
+#ic_deviceparameters #P6_Timeouts_Area .TimeoutTable tbody td
 {
 	height: auto;
 	padding: 1px 10px;
@@ -2078,6 +2101,7 @@ html, body {
   position:relative;
   width:50px;
   height:50px;
+  margin:auto;
 }
 
 #canvas {
@@ -2088,8 +2112,20 @@ html, body {
     display:none;
 }
 
+.visibilityHidden {
+    visibility: hidden;
+}
+
+.alignRight {
+  text-align: right;
+}
+
 .alignLeft {
   text-align: left;
+}
+
+.alignCenter {
+  text-align: center;
 }
 
 .borderWidth2Px {
@@ -5103,6 +5139,21 @@ application {
 	font-size: 10px;
 	width:220px;
 	height:25px;
+  /* line-height:25px; problem with controls with a long parameter name */
+}
+
+.CLASS02532a {
+	font-size: 10px;
+	width:220px;
+	height:25px;
+  color: $_(white) ! important;
+}
+
+.CLASS02532b {
+	font-size: 10px;
+	width:220px;
+	height:30px;
+  color: $_(white) ! important;
 }
 
 .CLASS02533 {
@@ -5111,6 +5162,7 @@ application {
 
 .CLASS02534 {
 	float: left;
+  text-align: left;
 }
 
 .CLASS02535 {

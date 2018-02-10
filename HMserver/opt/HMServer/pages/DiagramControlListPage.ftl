@@ -604,6 +604,10 @@
       refreshDiagram();
     });
 
+    jQuery("#showCustomModeHelp").click(function() {
+      showCustomModeHelp();
+    });
+
 		btnPeriodDay.click(function() {
       defaultPeriod = 1;
       timePeriod = arPeriod[defaultPeriod];
@@ -772,9 +776,11 @@
 		}
 
 		if (barRenderer) {
+		  jQuery("#tdCustomModeHelp").hide();
 		  jQuery(".j_barGraphMode").show();
 		  setSelectedBtn(selectedPeriod);
 		} else {
+		  jQuery("#tdCustomModeHelp").show();
 		  jQuery(".j_barGraphMode").hide();
 		  resetAllBtn();
 		}
@@ -961,7 +967,8 @@
 		for (var i = 0; i < diagramSettings.options.series.length; i++)
 		{
 			var oldLabel = diagramSettings.options.series[i].label;
-			var label = GetChannelName(oldLabel.substring(0,12)) + " ";
+			
+			var label = GetChannelName(oldLabel.substring(0,oldLabel.indexOf('_'))) + " ";
 			label += translateKey('diagramValueType' + oldLabel.split(" ")[1]);
 			diagramSettings.options.series[i].label = label;
 		}		
@@ -1261,7 +1268,17 @@
 			message: jQuery('#diagramPleaseWaitForLoadingNextDiagram').text()
 		});
 	}
-  
+
+  function showCustomModeHelp() {
+    MessageBox.show(translateKey("diagramHelpCustomModeTitle"),
+     translateKey("diagramHelpCustomModeContent")
+    ,
+    "",
+    600,
+    250
+    );
+  }
+
 	GetChannelName = function(address) {
 		var ch = DeviceList.getChannelByAddress(address);
 		if (ch != undefined) {
@@ -1361,9 +1378,11 @@
 							<option value="2">${"$"}{diagramConsolidationFunctionMaximum}</option>
 						</select>
 					</td>
-					<td>
-						<input type="button" value="btnDiagramRepaint" name="btnDiagramRepaint" class="StdButtonBig" id="selectPeriodDo"/>
-					</td>
+
+          <td id="tdCustomModeHelp" class="CLASS01408 hidden">
+            &nbsp;
+            <img id="showCustomModeHelp" height="25" width="25" src="/ise/img/help.png">
+          </td>
 
           <td>
             <input type="button" value="btnDiagramShowComparisonPeriod" name="btnDiagramShowComparisonPeriod" class="j_barGraphMode StdButtonBig hidden" id="showComparisonPeriod"/>
@@ -1385,6 +1404,9 @@
 		</div>
 		<table>
 			<tr>
+        <td>
+          <input type="button" value="btnDiagramRepaint" name="btnDiagramRepaint" class="StdButtonBig" id="selectPeriodDo"/>
+        </td>
 				<td>
 					<input type="button" value="btnDiagramResetZoom" name="btnDiagramResetDiagramZoom" class="StdButtonBig" id="resetDiagramZoom"/>
 				</td>

@@ -8,9 +8,8 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="pragma"        content="no-cache">
-  <meta http-equiv="expires"       content="-1">
-
-  <!--  <meta http-equiv="Expires" content="01 Jan 2006 00:00:00 GMT" /> -->
+  <!-- <meta http-equiv="expires"       content="-1"> -->
+  <meta http-equiv="Expires" content="01 Jan 2015 00:00:00 GMT" />
   <!-- <meta http-equiv="X-UA-Compatible" content="IE=8"> -->
 
   <link rel="shortcut icon" href="/ise/img/favicon.ico" type="image/vnd.microsoft.icon"/>
@@ -56,9 +55,9 @@
 
 
 
-  <link href="/webui/css/extern/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css">
+  <link href="/webui/css/extern/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css">
   <link href="/webui/css/extern/smoothness/jquery.ui.timepicker.css?v=0.3.2" rel="stylesheet" type="text/css" />
-  <script src="/webui/js/extern/jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="/webui/js/extern/jquery-ui.min.js"></script>
   <script src="/webui/js/extern/jquery.ui.timepicker.js"></script>
   
   
@@ -72,7 +71,7 @@
     /*########################################################################*/
 
     PLATFORM = "Central";
-    WEBUI_VERSION = "2.14.0";
+    WEBUI_VERSION = "2.31-TRUNK";
   
     /**
      * Flags
@@ -109,6 +108,7 @@
     forceUpdate = false;
     urlParamInterfaces = jQuery.url().param('showRFInterfaces');
     urlDebug = jQuery.url().param('debug');
+    showDummyLicense = jQuery.url().param('showDummyLicense');
     createNewProgram = false;
 
     /**

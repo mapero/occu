@@ -61,7 +61,7 @@
   <th><div id="name" class="pt11 <%Write(sCssName); %>" onclick="IseSort(arChns,'name',true);">${thName}</div></th>
   <%string sCssName="Sort"; if(system.GetSessionVar("sessionLS")=="func"){sCssName="SortSelected";} %>
   <th><div id="func" class="pt11 <%Write(sCssName); %>" onclick="IseSort(arChns,'func',true);">${thFunc}</div></th>
-  <th>${thLastUpdate}</th>
+  <th>${thLastChange}</th>
   <th>${thControl}</th>
   </tr>
   
@@ -110,6 +110,11 @@
     <script type="text/javascript">translatePage("#tblHRoomChannels");</script>
   
   <%
+
+  object oUser = dom.GetObject( system.GetSessionVar('sessionUserID'));
+  integer userID = oUser.ID();
+  object user = dom.GetObject(userID);
+
     object room = dom.GetObject(system.GetVar("id"));
     if (room)
     {
@@ -120,13 +125,44 @@
         {
           object chn = dom.GetObject(tmp);
           object oDev = dom.GetObject(chn.Device());
+
+          string oDevHssType = oDev.HssType();
+          integer chNumber = chn.ChnNumber();
+
+          ! Determine the name of the interface
+          integer iFaceID = chn.Interface();
+          object oIface = dom.GetObject(iFaceID);
+          string sInterface = oIface.Name();
           
           boolean bShow = false;
           if (chn.Visible() && (chn.UserAccessRights(iulOtherThanAdmin) == iarFullAccess)) {
             bShow = true;
           }
-          
-          if( bShow && chn.ReadyConfig() && oDev.ReadyConfig() )
+
+          boolean bShowChannel = false;
+
+          if (user.UserEasyLinkMode() != true) {
+            ! User is expert
+            bShowChannel = true;
+          } else {
+            if (chn.HssType().Find("VIRTUAL_") == -1) {
+                ! not a virtual channel
+                bShowChannel = true;
+            } else {
+              if (chn.HssType().Find("VIRTUAL_KEY") != -1) {
+                ! virtual key of the ccu
+                bShowChannel = true;
+              }
+            }
+          }
+
+          if (sInterface != "HmIP-RF") {
+            Call("/esp/functions.fn::showHideRFChannel()");
+          } else {
+            Call("/esp/functions.fn::showHideHmIPChannel()");
+          }
+
+          if( bShow && chn.ReadyConfig() && oDev.ReadyConfig() && bShowChannel )
           {
             string trId = room.ID()#tmp;
             Write("<tr id='"#trId#"'>");

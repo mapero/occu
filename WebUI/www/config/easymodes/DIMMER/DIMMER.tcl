@@ -109,8 +109,8 @@ set PROFILE_2(LONG_CT_ON)     0
 set PROFILE_2(LONG_CT_ONDELAY)    0
 set PROFILE_2(LONG_CT_RAMPOFF)    0
 set PROFILE_2(LONG_CT_RAMPON)   0
-set PROFILE_2(LONG_DIM_MAX_LEVEL) 1.0
-set PROFILE_2(LONG_DIM_MIN_LEVEL) 0.0
+set PROFILE_2(LONG_DIM_MAX_LEVEL) {1.0 range 0.0 - 1.0}
+set PROFILE_2(LONG_DIM_MIN_LEVEL) {0.0 range 0.0 - 1.0}
 set PROFILE_2(LONG_DIM_STEP)    0.05
 set PROFILE_2(LONG_JT_OFF)      4
 set PROFILE_2(LONG_JT_OFFDELAY)   5
@@ -146,8 +146,8 @@ set PROFILE_2(SHORT_CT_ON)      0
 set PROFILE_2(SHORT_CT_ONDELAY)   0
 set PROFILE_2(SHORT_CT_RAMPOFF)   0
 set PROFILE_2(SHORT_CT_RAMPON)    0
-set PROFILE_2(SHORT_DIM_MAX_LEVEL)  1.0
-set PROFILE_2(SHORT_DIM_MIN_LEVEL)  0.0
+set PROFILE_2(SHORT_DIM_MAX_LEVEL)  {1.0 range 0.0 - 1.0}
+set PROFILE_2(SHORT_DIM_MIN_LEVEL)  {0.0 range 0.0 - 1.0}
 set PROFILE_2(SHORT_DIM_STEP)   0.05
 set PROFILE_2(SHORT_JT_OFF)     4
 set PROFILE_2(SHORT_JT_OFFDELAY)  5
@@ -880,15 +880,21 @@ set PROFILE_12(UI_HINT) 12
 
 proc set_htmlParams {iface address pps pps_descr special_input_id peer_type} {
   
-  global dev_descr_sender
+  global dev_descr_sender simulateLongKeyPress
 
   upvar PROFILES_MAP  PROFILES_MAP
   upvar HTML_PARAMS   HTML_PARAMS
   upvar PROFILE_PNAME PROFILE_PNAME
   upvar $pps          ps      
   upvar $pps_descr    ps_descr
-  
+
+  set simulateLongKeyPress 0
   set device $dev_descr_sender(TYPE)
+
+  if {$device == "DUAL_WHITE_BRIGHTNESS"} {
+    set device "DIMMER"
+  }
+
   set ch $dev_descr_sender(INDEX)
   
   foreach pro [array names PROFILES_MAP] {
@@ -911,8 +917,6 @@ proc set_htmlParams {iface address pps pps_descr special_input_id peer_type} {
 
 # die Texte der Platzhalter einlesen
   puts "<script type=\"text/javascript\">getLangInfo('$device', '$device');</script>"
-
-
 
   
   set prn 0 

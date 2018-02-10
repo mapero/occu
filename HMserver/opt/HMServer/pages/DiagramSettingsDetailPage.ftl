@@ -101,14 +101,14 @@
 	<#assign i = 0>
 	<#list object.dataSources as dataSource>
 		jQuery('#assignedGroupName${i}').text(GetDeviceName('${dataSource.getGroupId()}'));
-		jQuery('#assignedName${i}').text(GetChannelName('${dataSource.getId()?substring(0,12)}'));	
+		jQuery('#assignedName${i}').text(GetChannelName('${dataSource.getId()?substring(0,dataSource.getId()?index_of("_"))}'));	
 	<#assign i = i + 1>		
 	</#list> 
 		
 	<#assign i = 0>
 	<#list notAssignedDataSources as dataSource>
 		jQuery('#notAssignedGroupName${i}').text(GetDeviceName('${dataSource.getGroupId()}'));
-		jQuery('#notAssignedName${i}').text(GetChannelName('${dataSource.getId()?substring(0,12)}'));
+		jQuery('#notAssignedName${i}').text(GetChannelName('${dataSource.getId()?substring(0,dataSource.getId()?index_of("_"))}'));
 		
 	<#assign i = i + 1>
 	</#list>
@@ -437,22 +437,22 @@ background-color:#${colors[x]};
     pb += GetCurrentDiagram();
     pb += '}';
     var opt = {
-        postBody: pb,
-        onComplete: function(t){
-			jQuery("#messageBoxDiagram").remove();
-			var response = JSON.parse(t.responseText);
-			if(!response.isSuccessful)
-			{
-				if(response.errorCode == "42")
-				{
-					jQuery("#content").html(response.content);
-				} else {
-					alert(translateKey('diagramErrorCouldNotSave'));
-				}
-			} else {			
-        		ReturnToListWithoutSave();
-			}
+      postBody: pb,
+      onComplete: function(t){
+        jQuery("#messageBoxDiagram").remove();
+        var response = JSON.parse(t.responseText);
+        if(!response.isSuccessful)
+        {
+          if(response.errorCode == "42")
+          {
+            jQuery("#content").html(response.content);
+          } else {
+            alert(translateKey('diagramErrorCouldNotSave'));
+          }
+        } else {
+          ReturnToListWithoutSave();
         }
+      }
     }
 	new Ajax.Request(url,opt);
   };

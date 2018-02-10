@@ -324,9 +324,10 @@ function ::UpdateUI()
     }
   }
   WriteLine("setAlarmMessageCount(" # iAlCount # ");");
-  
+
   WriteLine( 'if( typeof(serviceLogSystem) == "object" ) serviceLogSystem.deleteAll();' );
   integer iSvcCount = 0;
+  integer stickyCounter = 0;
   object servicesCollection = dom.GetObject( ID_SERVICES );
   string sAID;
   foreach( sAID, servicesCollection.EnumIDs() )
@@ -347,6 +348,11 @@ function ::UpdateUI()
           object oLastTrigger = dom.GetObject( oAlarm.LastTriggerID() );
           if( oLastTrigger )
           {
+            if (oLastTrigger.HSSID() == "STICKY_UNREACH")
+            {
+              stickyCounter = stickyCounter + 1;
+              ! Write(' if (WebUI.HIDESTICKYUNREACH) {ReceiptAlarm('#oAlarm.ID()#', false);} ');
+            }
             string sTimestamp = oAlarm.LastTriggerTime();
             Call( "/esp/TimeStamp.fn::TimeStampToString()" );
             string sLastUse = sTimestamp;
@@ -398,13 +404,28 @@ function ::UpdateUI()
     }
   }
 
-  Write("if( typeof(updateMessageView) == 'function' )");
-    Write("updateMessageView("#iSvcCount#");");
-  
-  WriteLine("setServiceMessageCount(" # iSvcCount # ");");
+  Write( "if (WebUI.HIDESTICKYUNREACH) {" );
+
+  Write( "var svcCount = "#iSvcCount#";" );
+  Write( "var stickyCount = "#stickyCounter#";" );
+  Write( "var visibleSvcCount = svcCount - stickyCount;" );
+
+  ! This should never happen
+  Write( "if(visibleSvcCount < 0) {visibleSvcCount = 0;}" );
+
+    Write( "if( typeof(updateMessageView) == 'function' )" );
+      Write( "updateMessageView(visibleSvcCount);" );
+    WriteLine( "setServiceMessageCount(visibleSvcCount);" );
+  Write( "} else {" );
+    Write( "if( typeof(updateMessageView) == 'function' )" );
+      Write( "updateMessageView("#iSvcCount#");" );
+    WriteLine( "setServiceMessageCount(" # iSvcCount # ");" );
+  Write(" } ");
+
+
+
   Write( 'if(urlParamInterfaces == "true") showRFInterfaces();');
 
-  
   !###################
   !# Systemvariablen #
   !###################
@@ -441,12 +462,6 @@ function ::UpdateUI()
       WriteLine("updateSysVar('" # svId # "', '" # svValue # "');");
     }    
   }
-
-  !###################
-  !# PowerMeter #
-  !###################
-
-  ! WriteLine("updateSysVarEnergyCounter();");
 
   string s;
   foreach(s,dom.TestReadyIDs().EnumIDs())
@@ -568,15 +583,16 @@ function ::UpdateUI()
       {
         string sLastTime = "";
         Call("/esp/system.fn::getLastTime()");
-				if ( oTmp.IsTypeOf(OT_PROGRAM) ) {
+        if ( oTmp.IsTypeOf(OT_PROGRAM) ) {
           if ( ( sTM != sLastTime # oTmp.Active() ) ) {
             Write( 'recreateControl('#cId#',"'#sLastTime#'");' );
           }
         } else {
-          if ( ( sTM != sLastTime ) ) {
+          if ( (sLastTime != "") && ( sTM != sLastTime ) ) {
             Write( 'recreateControl('#cId#',"'#sLastTime#'");' );
           }
-        }        Call("/esp/system.fn::writeWarnStateJS()");
+        }
+        Call("/esp/system.fn::writeWarnStateJS()");
       }
     }
   }
@@ -1143,12 +1159,12 @@ function ::getLastTime()
       sLastTime = obj.ProgramLastExecuteTime();
       iSeconds = obj.ProgramLastExecuteTimeSeconds();
     }
-	  if( iSeconds == 0 )
-	  {
-	    sLastTime = "";
-	  }
-	  else
-	  {
+    if( iSeconds == 0 )
+    {
+      sLastTime = "";
+    }
+    else
+    {
       sLastTime = sLastTime.Format("%d.%m.%Y %H:%M:%S");
     }
   }
@@ -1200,7 +1216,7 @@ function ::writeProgCtrl()
     Write("<td></td>");
   }
   Write("<td></td><td></td><td></td>");
-	
+  
   Write("</tr>");
   Write("</table>");
     Write("<script type='text/javascript'>");

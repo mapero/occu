@@ -5,7 +5,7 @@ function isNoProgramScript(cont) {
   return true;
 }
 
-function setTextContent(cont) {
+function setTextContent(cont, callback) {
   var lang = getLang(),
     container = "#header, #menubar, #content, #footer",
     invisibleBeforeTranslationSelector = ".j_translate";
@@ -51,11 +51,16 @@ function setTextContent(cont) {
         }
       } catch(e) {}
     });
+
+  if (callback) {
+    callback();
+  }
+
   jQuery(invisibleBeforeTranslationSelector).show();
 }
 
-function translatePage(container) {
-  setTextContent(container);
+function translatePage(container, callback) {
+  setTextContent(container, callback);
 }
 
 /**
@@ -156,6 +161,7 @@ function translateFilter() {
   jQuery(".j_Filter_MODE_AES").html(translateKey("lblSecured"));
   jQuery(".j_Filter_INTERFACE_BIDCOS_RF").html(translateKey("BidCosRF"));
   jQuery(".j_Filter_INTERFACE_BIDCOS_WIRED").html(translateKey("BidCosWired"));
+  jQuery(".j_Filter_INTERFACE_HMIP_RF").html(translateKey("HmIPRF"));
   jQuery(".j_Filter_INTERFACE_VIRTUAL_DEVICES").html(translateKey("VirtualDevices"));
 }
 

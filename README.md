@@ -26,7 +26,7 @@ subfolder arm-gnueabihf:
 subfolder X86_32:
 - Debian Wheezy
 
-subfolder mips:
+subfolder mips (outdated):
 - vu+ solo² with vti Image
 
 The script install.sh in the cpu specific subfolder copies all binary packages
@@ -72,6 +72,8 @@ pleace contact support@eq-3.de.
 OCCU based Community Projects
 =============================
  * [Hmcon](https://github.com/hobbyquaker/hmcon) - Installer Script for rfd, hs485d and Homematic Manager. "The ReGa-less CCU" for use with Software like OpenHAB, ioBroker, ...
+ * [RaspberryMatic] (https://github.com/jens-maus/RaspberryMatic) - A collaborate effort to create an open sourced HomeMatic-aware distribution for the RaspberryPi platform based on buildroot.
+ * [OGEMA] (http://www.ogema.org/) - open energy management; Homematic driver (https://www.ogema-source.net/wiki/display/OGEMA/Homematic+XML-RPC+high+level+driver)
 
 Docker for ARM
 ==============
@@ -79,6 +81,27 @@ Dockerfile for ARM devices
 
 Version History
 ===============
+
+2017-03-31: Version 2.27.8
+- Create 2.27.8 release tag. 
+
+2017-03-13: Version 2.27.7
+- Create 2.27.7 release tag. 
+
+2017-01-27: Version 2.25.15
+- Create 2.25.15 release tag. 
+
+2016-07-29: Version 2.21.10
+- Update to CCU2 2.21.10 release. 
+
+2016-06-06: Version 2.19.9
+- Update to CCU2 2.19.9 release. 
+
+2016-05-29: Version 2.17.15
+- Update to CCU2 2.17.15 release. 
+
+2016-01-24: Version 2.15.5
+- Update to CCU2 2.15.5 release. 
 
 2015-04-02: Version 1.0.0
 - First initial version, no change history.

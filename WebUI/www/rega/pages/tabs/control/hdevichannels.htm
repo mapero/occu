@@ -1,6 +1,6 @@
-<script type="text/javascript">
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
   Cursor.set(Cursor.WAIT);
-  iseInitUpdateArrays();
+   iseInitUpdateArrays();
   <%
     boolean firstSort = false;
     object oUser = dom.GetObject( system.GetSessionVar("sessionUserID") );
@@ -38,10 +38,10 @@
 <table id="tblHDeviChannel" class="filterTable CLASS03500 j_translate" cellpadding="0" cellspacing="0" border="1" >
   <colgroup>
      <col width="12%" />
-     <col width="12%" />
-     <col width="12%" />
-     <col width="12%" />
-     <col width="52%" />
+     <col width="10%" />
+     <col width="10%" />
+     <col width="10%" />
+     <col width="58%" />
   </colgroup>
   <tr>
   <%string sCssName="Sort"; if(system.GetSessionVar("sessionLS")=="name"){sCssName="SortSelected";} %>
@@ -50,7 +50,7 @@
   <th><div id="room" class="pt11 <%Write(sCssName); %>" onclick="IseSort(arChns,'room',true);">${thRoom}</div></th>
   <%string sCssName="Sort"; if(system.GetSessionVar("sessionLS")=="func"){sCssName="SortSelected";} %>
   <th><div id="func" class="pt11 <%Write(sCssName); %>" onclick="IseSort(arChns,'func',true);">${thFunc}</div></th>
-  <th>${thLastUpdate}</th>
+  <th>${thLastChange}</th>
   <th>${thControl}</th>
   </tr>
   <%
@@ -167,57 +167,28 @@
           }
 
           if (sInterface != "HmIP-RF") {
-            if(chn.HssType().Find("CONDITION_") != -1) {
-              ! channel 3 - 6 of the powermeter
-              bShowChannel = false;
-            }
-
-            if((chn.HssType().Find("SWITCH_TRANSMIT") != -1) && (chn.HssType().Find("SWITCH_TRANSMITTER") == -1)) {
-              ! channel 7 of the ThermalControl-IndoorTemperatureSensor (e. g. HM-TC-IT-WM-W-EU)
-              bShowChannel = false;
-            }
+            Call("/esp/functions.fn::showHideRFChannel()");
           } else {
-             bShowChannel = true;
-            ! Interface HmIP-RF
-            if(chn.HssType().Find("MAINTENANCE") != -1) {
-              ! Don't show the maintenance channel of the new HmIP devices
-              ! This is necessary because the name of such a channel of an HmIP device
-              !   can be MAINTENANCE_BAT_BL, MAINTENANCE_BAT_EL, MAINTENANCE_BAT_CL and so on
-              ! For BidCos-RF this isn't necessary
-              bShowChannel = false;
-            }
-
-            ! Pluggable Switch (PS)
-            if(( (oDevHssType == "HMIP-PS") || (oDevHssType == "HmIP-PS") ) && (chNumber != 3)) {
-              ! Show only channel 3 of this device
-              bShowChannel = false;
-            }
-
-            ! Pluggable Switch and Meter (PSM)
-            if ( (oDevHssType == "HMIP-PSM") || (oDevHssType == "HmIP-PSM") ) {
-              if ((chNumber == 1) || (chNumber == 2) || (chNumber == 4) || (chNumber == 5)) {
-                bShowChannel = false;
-              }
-            }
-
-            ! Wall Thermostat (WTH) - this shouldn't be necessary because channel 5 has no params
-            ! so it should never appear. Currently channel 5 has some wrongly params.
-            ! So we have to hide this channel. With a modified crRFD this can easily be removed
-            if( ((oDevHssType == "HMIP-WTH") || (oDevHssType == "HmIP-WTH")) && (chNumber == 5) ) {
-              ! Hide channel 5. Channel 1 is visible,
-              ! The channels 2, 3, 4 and 6 don´t have any parameters so they don`t appear in the list
-              bShowChannel = false;
-            }
+            Call("/esp/functions.fn::showHideHmIPChannel()");
           }
-
-          ! Write("<script type='text/javascript'>console.log('bShowChannel: "#bShowChannel#"');</script>");
 
           if( bShow && chn.ReadyConfig() && oDev.ReadyConfig() && bShowChannel )
           {
             string trId = device.ID()#tmp;
             Write("<tr id='"#trId#"'>");
-            Write("<td class='GrayBkg'>");
-            Write(chn.Name());
+            Write("<td class='GrayBkg' name='devName'>");
+
+            if ((chn.HssType() == "SWITCH_TRANSMITTER") && (chn.Label() == "HmIP-MOD-OC8") ) {
+              Write(chn.Name()#"<br/><br><span name='hssType' class='hidden'>${chType_"#chn.HssType()#"_OC}</span>");
+            } else {
+              if ((chn.HssType() == "PASSAGE_DETECTOR_DIRECTION_TRANSMITTER") && (chn.Label() == "HmIP-SPDR")) {
+                ! Show the device address instead of the channel address because channel 2 and 3 are summarized together in channel 2.
+                ! Channel 3 is not visible.
+                Write(chn.Label()#"<br/>&nbsp;"#device.Address()#"&nbsp;");
+              } else {
+                Write(chn.Name()#"<br/><br><span name='hssType' class='hidden'>${chType_"#chn.HssType()#"}</span>");
+              }
+            }
             Write("</td>");
             Write("<td class='GrayBkg'>");
             string rooms = "";
@@ -244,7 +215,7 @@
             Write("<td class='GrayBkg'>");
             
             Write("<table>");
-            Write("<tr><td class='CLASS03502'><span id='tmc"#chn.ID()#"'>");
+            Write("<tr><td class='CLASS03502'><span id='tmc"#chn.ID()#"' name='timeStamp'>");
             
             integer cId = chn.ID();
             string sLastTime = "";
@@ -292,7 +263,7 @@
   </script>
 </table>
 <script type="text/javascript">
-  <% 
+  <%
     if(firstSort)
     {
       Write("//IseSort(arChns,'name',true);");
@@ -312,5 +283,13 @@
     jQuery("#ftName").focus();
   });
 
-  translatePage("#tblHDeviChannel");
+  translatePage("#tblHDeviChannel", function () {
+    jQuery("[name='hssType']").each(function(index, elm) {
+      var chText = jQuery(elm).text();
+      if (chText.indexOf("chType_") == -1) {
+        jQuery(elm).show();
+      }
+    });
+  });
+
 </script>

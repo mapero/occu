@@ -105,8 +105,8 @@
                         "<div class='sp-fill'></div>",
                         "<div class='sp-top-inner'>",
                             "<div class='sp-color'>",
-                                "<div class='sp-sat'>",
-                                    "<div class='sp-val'>",
+                                "<div id='sp-sat' class='sp-sat'>",
+                                    "<div id='sp-val' class='sp-val'>",
                                         "<div class='sp-dragger'></div>",
                                     "</div>",
                                 "</div>",
@@ -121,7 +121,14 @@
                         "<div class='sp-alpha'><div class='sp-alpha-inner'><div class='sp-alpha-handle'></div></div></div>",
                     "</div>",
                     "<div class='sp-input-container sp-cf'>",
-                        "<input class='sp-input' type='text' spellcheck='false'  />",
+                        "<input id='sp-input' class='sp-input hidden' type='text' spellcheck='false'  />",
+
+                        "<table align='left'>",
+                          "<tr><td><div>${statusDisplayOptionRed}</div></td><td><input id='inputRed' class='sp-input' type='text' spellcheck='false' size='3' style='text-align: center'/></td></tr>",
+                          "<tr><td><div>${statusDisplayOptionGreen}</div></td><td><input id='inputGreen' class='sp-input' type='text' spellcheck='false' size='3' style='text-align: center'/></td></tr>",
+                          "<tr><td><div>${statusDisplayOptionBlue}</div></td><td><input id='inputBlue' class='sp-input' type='text' spellcheck='false' size='3' style='text-align: center'/></td></tr>",
+                        "</table>",
+
                     "</div>",
                     "<div class='sp-initial sp-thumb sp-cf'></div>",
                     "<div class='sp-button-container sp-cf'>",
@@ -221,7 +228,11 @@
             alphaSliderInner = container.find(".sp-alpha-inner"),
             alphaSlider = container.find(".sp-alpha"),
             alphaSlideHelper = container.find(".sp-alpha-handle"),
-            textInput = container.find(".sp-input"),
+            //textInput = container.find(".sp-input"),
+            textInput = container.find("#sp-input"),
+            inputRed = container.find("#inputRed"),
+            inputGreen = container.find("#inputGreen"),
+            inputBlue = container.find("#inputBlue"),
             paletteContainer = container.find(".sp-palette"),
             initialColorContainer = container.find(".sp-initial"),
             cancelButton = container.find(".sp-cancel"),
@@ -333,6 +344,11 @@
             });
             textInput.keydown(function (e) { if (e.keyCode == 13) { setFromTextInput(); } });
 
+            inputRed.change(function() {setTextInput();}).keydown(function (e) { if (e.keyCode == 13) { inputGreen.focus().select(); }});
+            inputGreen.change(function() {setTextInput();}).keydown(function (e) { if (e.keyCode == 13) { inputBlue.focus().select(); }});
+            inputBlue.change(function() {setTextInput();}).keydown(function (e) { if (e.keyCode == 13) { inputRed.focus().select(); } });
+
+
             cancelButton.text(opts.cancelText);
             cancelButton.bind("click.spectrum", function (e) {
                 e.stopPropagation();
@@ -407,41 +423,43 @@
                 move();
             }, dragStart, dragStop);
 
-            /*
-            draggable(dragger, function (dragX, dragY, e) {
+
+            /* */
+            if (preferredFormat != "convert360To200") {
+              draggable(dragger, function (dragX, dragY, e) {
 
                 // shift+drag should snap the movement to either the x or y axis.
                 if (!e.shiftKey) {
-                    shiftMovementDirection = null;
+                  shiftMovementDirection = null;
                 }
                 else if (!shiftMovementDirection) {
-                    var oldDragX = currentSaturation * dragWidth;
-                    var oldDragY = dragHeight - (currentValue * dragHeight);
-                    var furtherFromX = Math.abs(dragX - oldDragX) > Math.abs(dragY - oldDragY);
+                  var oldDragX = currentSaturation * dragWidth;
+                  var oldDragY = dragHeight - (currentValue * dragHeight);
+                  var furtherFromX = Math.abs(dragX - oldDragX) > Math.abs(dragY - oldDragY);
 
-                    shiftMovementDirection = furtherFromX ? "x" : "y";
+                  shiftMovementDirection = furtherFromX ? "x" : "y";
                 }
 
                 var setSaturation = !shiftMovementDirection || shiftMovementDirection === "x";
                 var setValue = !shiftMovementDirection || shiftMovementDirection === "y";
 
                 if (setSaturation) {
-                    currentSaturation = parseFloat(dragX / dragWidth);
+                  currentSaturation = parseFloat(dragX / dragWidth);
                 }
                 if (setValue) {
-                    currentValue = parseFloat((dragHeight - dragY) / dragHeight);
+                  currentValue = parseFloat((dragHeight - dragY) / dragHeight);
                 }
 
                 isEmpty = false;
                 if (!opts.showAlpha) {
-                    currentAlpha = 1;
+                  currentAlpha = 1;
                 }
 
                 move();
 
-            }, dragStart, dragStop);
+              }, dragStart, dragStop);
+            }
 
-            */
 
             if (!!initialColor) {
                 set(initialColor);
@@ -485,6 +503,8 @@
             if (opts.id != null) {
               chooseButton.prop("id", opts.id);
             }
+
+            translatePage(".sp-input-container");
         }
 
         function updateSelectionPaletteFromStorage() {
@@ -586,6 +606,23 @@
             boundElement.trigger('dragstop.spectrum', [ get() ]);
         }
 
+        function isSingleRGBValueValid(val) {
+         return (val >= 0 || val <= 255) ? val : 255;
+        }
+
+        function setTextInput() {
+          var red = parseInt(inputRed.val()) ,
+            green = parseInt(inputGreen.val()),
+            blue = parseInt(inputBlue.val());
+
+          red = isSingleRGBValueValid(red);
+          green = isSingleRGBValueValid(green);
+          blue = isSingleRGBValueValid(blue);
+
+          textInput.val("rgb(" + red + ", " + green + ", " + blue + ")");
+          setFromTextInput();
+        }
+
         function setFromTextInput() {
 
             var value = textInput.val();
@@ -646,6 +683,11 @@
             drawInitial();
             callbacks.show(colorOnShow);
             boundElement.trigger('show.spectrum', [ colorOnShow ]);
+
+            if (preferredFormat == "convert360To200") {
+              container.find("#sp-sat").removeClass("sp-sat");
+              container.find("#sp-val").removeClass("sp-val");
+            }
         }
 
         function onkeydown(e) {
@@ -755,9 +797,16 @@
             // Update dragger background color (gradients take care of saturation and value).
             var flatColor = tinycolor.fromRatio({ h: currentHue, s: 1, v: 1 });
 
-            // AG
-            //dragger.css("background-color", flatColor.toHexString());
-            dragger.css("background-color", previewElement.css("background-color"));
+
+              // AG
+
+              if (preferredFormat == "convert360To200") {
+                dragger.css("background-color", previewElement.css("background-color"));
+              } else {
+                dragger.css("background-color", flatColor.toHexString());
+              }
+
+
 
             // Get a format that alpha will be included in (hex and names ignore alpha)
             var format = currentPreferredFormat;
@@ -785,7 +834,9 @@
                 // Update the replaced elements background color (with actual selected color)
                 if (rgbaSupport || realColor.alpha === 1) {
                     previewElement.css("background-color", realRgb);
-                    dragger.css("background-color", previewElement.css("background-color")); // AG
+                    if (preferredFormat == "convert360To200") {
+                      dragger.css("background-color", previewElement.css("background-color"));
+                    }
                 }
                 else {
                     previewElement.css("background-color", "transparent");
@@ -817,6 +868,7 @@
             // Update the text entry input as it changes happen
             if (opts.showInput) {
                 textInput.val(displayColor);
+                initRGBValues(displayColor);
             }
 
             if (opts.showPalette) {
@@ -824,6 +876,13 @@
             }
 
             drawInitial();
+        }
+
+        function initRGBValues(displayColor) {
+          var oRGBVal = displayColor.replace("rgb(", "").replace(")","").split(",");
+          inputRed.val(oRGBVal[0]);
+          inputGreen.val(oRGBVal[1]);
+          inputBlue.val(oRGBVal[2]);
         }
 
         function updateHelperLocations() {
@@ -840,9 +899,12 @@
                 //make sure helpers are visible
                 alphaSlideHelper.show();
                 slideHelper.show();
-                //AG dragHelper.show();
 
-                dragHelper.hide();
+                if (preferredFormat == "convert360To200") {
+                  dragHelper.hide();
+                } else {
+                  dragHelper.show();
+                }
 
                 // Where to show the little circle in that displays your current selected color
                 var dragX = s * dragWidth;

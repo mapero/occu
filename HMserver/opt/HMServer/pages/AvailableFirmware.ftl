@@ -30,6 +30,7 @@
    </table>
 
    <script type="text/javascript">
+   		setPath("<span onclick='WebUI.enter(SystemConfigPage);'>"+translateKey('menuSettingsPage')+"</span> &gt; "+ translateKey('submenuDeviceFirmware'));
    	  var s = "";
    	  s += "<table cellspacing='8'>";
    	  s += "<tr>";
@@ -64,6 +65,7 @@
                     MessageBox.show("Delete firmware", translateString(response.content));
                     WebUI.reload();
                     var ok = homematic("Interface.refreshDeployedDeviceFirmwareList", {"interface": "BidCos-RF"});
+                    homematic("Interface.refreshDeployedDeviceFirmwareList", {"interface": "HmIP-RF"});
                     conInfo("Delete firmware - refreshing device firmware list: " + ok);
                 }
               }
@@ -107,6 +109,7 @@
                 MessageBox.show(translateKey("dialogInfo"),translateString(result), null,"320", "80");
                 WebUI.reload();
                 var ok = homematic("Interface.refreshDeployedDeviceFirmwareList", {"interface": "BidCos-RF"});
+                homematic("Interface.refreshDeployedDeviceFirmwareList", {"interface": "HmIP-RF"});
                 conInfo("Add firmware - refreshing device firmware list: " + ok);
               },
               error: function(error) {
@@ -147,6 +150,7 @@
             MessageBox.show(translateKey("dialogInfo"),translateString(response), null,"320", "80");
             WebUI.reload();
             var ok = homematic("Interface.refreshDeployedDeviceFirmwareList", {"interface": "BidCos-RF"});
+            homematic("Interface.refreshDeployedDeviceFirmwareList", {"interface": "HmIP-RF"});
             conInfo("Add firmware - refreshing device firmware list: " + ok);
           }
         };

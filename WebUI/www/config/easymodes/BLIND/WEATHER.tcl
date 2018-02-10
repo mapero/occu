@@ -24,7 +24,7 @@ set PROFILE_1(SHORT_CT_OFF)			0
 set PROFILE_1(SHORT_CT_ON)			0
 set PROFILE_1(SHORT_CT_REFOFF)		0
 set PROFILE_1(SHORT_CT_REFON)		0
-set PROFILE_1(SHORT_COND_VALUE_LO)	200 
+set PROFILE_1(SHORT_COND_VALUE_LO)	200
 set PROFILE_1(SHORT_COND_VALUE_HI)	100
 set PROFILE_1(SHORT_ONDELAY_TIME)	0
 set PROFILE_1(SHORT_ON_TIME)		111600
@@ -37,7 +37,7 @@ set PROFILE_1(SHORT_JT_OFF)			1
 set PROFILE_1(SHORT_JT_ON)			1
 set PROFILE_1(SHORT_JT_OFFDELAY)	1
 set PROFILE_1(SHORT_JT_ONDELAY)		2
-set PROFILE_1(SHORT_JT_RAMPOFF)		1 
+set PROFILE_1(SHORT_JT_RAMPOFF)		8
 set PROFILE_1(SHORT_JT_RAMPON)		3 
 set PROFILE_1(SHORT_JT_REFOFF)		1
 set PROFILE_1(SHORT_JT_REFON)		3 
@@ -138,7 +138,7 @@ proc set_htmlParams {iface address pps pps_descr special_input_id peer_type} {
 	append HTML_PARAMS(separate_$prn) [get_ComboBox options SHORT_ONDELAY_TIME separate_${special_input_id}_$prn\_$pref PROFILE_$prn SHORT_ONDELAY_TIME "onchange=\"ActivateFreeTime(\$('${special_input_id}_profiles'),$pref);\""]
 	EnterTime_h_m_s $prn $pref ${special_input_id} ps_descr SHORT_ONDELAY_TIME
 	append HTML_PARAMS(separate_$prn) "</td></tr>"
-	
+
 	append HTML_PARAMS(separate_$prn) "</table></textarea></div>"
 #2
 	incr prn
@@ -160,7 +160,7 @@ proc set_htmlParams {iface address pps pps_descr special_input_id peer_type} {
 	append HTML_PARAMS(separate_$prn) [get_ComboBox options SHORT_OFFDELAY_TIME separate_${special_input_id}_$prn\_$pref PROFILE_$prn SHORT_OFFDELAY_TIME "onchange=\"ActivateFreeTime(\$('${special_input_id}_profiles'),$pref);\""]
 	EnterTime_h_m_s $prn $pref ${special_input_id} ps_descr SHORT_OFFDELAY_TIME
 	append HTML_PARAMS(separate_$prn) "</td></tr>"
-	
+
 	append HTML_PARAMS(separate_$prn) "</table></textarea></div>"
 }
 
