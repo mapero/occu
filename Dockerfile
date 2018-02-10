@@ -1,6 +1,4 @@
-FROM jsurf/rpi-java
-
-RUN [ "cross-build-start" ]
+FROM openjdk:8
 
 RUN apt-get update && apt-get install -y \
         msmtp \
